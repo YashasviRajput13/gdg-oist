@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
+import heroVideo from "@/assets/hero-video.mp4";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const Hero = () => {
@@ -8,14 +9,19 @@ const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background image */}
+      {/* Background video */}
       <div className="absolute inset-0">
-        <img
-          src={heroBg}
-          alt="GDG OIST Bhopal hero background"
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={heroBg}
           className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-background/50" />
       </div>
 
       {/* Content */}
