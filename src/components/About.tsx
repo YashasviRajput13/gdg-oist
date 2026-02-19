@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Code, Users, Lightbulb, Globe } from "lucide-react";
 
@@ -14,101 +14,138 @@ const pillars = [
     icon: Code,
     title: "Hands-on Learning",
     description: "Workshops and codelabs on cutting-edge Google technologies.",
-    dotColor: "bg-google-blue",
     gradient: "from-[hsl(217,89%,61%)] to-[hsl(217,89%,45%)]",
   },
   {
     icon: Users,
     title: "Community First",
     description: "A welcoming space for developers of every skill level.",
-    dotColor: "bg-google-red",
     gradient: "from-[hsl(7,81%,56%)] to-[hsl(7,81%,42%)]",
   },
   {
     icon: Lightbulb,
     title: "Innovation",
     description: "Hackathons and challenges that push creative boundaries.",
-    dotColor: "bg-google-yellow",
     gradient: "from-[hsl(43,96%,50%)] to-[hsl(43,96%,38%)]",
   },
   {
     icon: Globe,
     title: "Open Source",
     description: "Contributing to and learning from the global open-source ecosystem.",
-    dotColor: "bg-google-green",
     gradient: "from-[hsl(142,53%,43%)] to-[hsl(142,53%,30%)]",
   },
 ];
 
+const headingWords = ["Empowering", "developers,", "one", "event", "at", "a", "time."];
+
 const About = () => {
   const ref = useRef(null);
+  const sectionRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -80]);
 
   return (
-    <section id="about" className="section-padding bg-card relative overflow-hidden" ref={ref}>
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-primary/5 blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-accent/5 blur-3xl translate-y-1/2 -translate-x-1/2" />
+    <section id="about" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
+      {/* Parallax decorations */}
+      <motion.div
+        style={{ y: bgY }}
+        className="absolute top-0 right-0 w-96 h-96 rounded-full bg-primary/5 blur-3xl -translate-y-1/2 translate-x-1/2"
+      />
+      <motion.div
+        style={{ y: useTransform(scrollYProgress, [0, 1], [0, -40]) }}
+        className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-accent/5 blur-3xl translate-y-1/2 -translate-x-1/2"
+      />
 
-      <div className="max-w-7xl mx-auto relative">
-        {/* Section header */}
+      <div className="max-w-7xl mx-auto relative" ref={ref}>
+        {/* Section header with word-by-word reveal */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.5 }}
           className="max-w-3xl mb-20"
         >
-          <p className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-4">
+          <motion.p
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-4"
+          >
             About Us
-          </p>
+          </motion.p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6">
-            Empowering developers,{" "}
-            <span className="text-gradient-google">one event at a time.</span>
+            {headingWords.map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+                animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+                transition={{ duration: 0.6, delay: 0.15 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className={`inline-block mr-[0.3em] ${i >= 5 ? "text-gradient-google" : ""}`}
+              >
+                {word}
+              </motion.span>
+            ))}
           </h2>
-          <p className="text-lg text-muted-foreground font-body leading-relaxed">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.8 }}
+            className="text-lg text-muted-foreground font-body leading-relaxed"
+          >
             GDG OIST Bhopal is a community-driven group of developers, designers,
             and tech enthusiasts passionate about Google technologies. We believe
             in learning together, building together, and growing together.
-          </p>
+          </motion.p>
         </motion.div>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
-        >
-          {stats.map((stat) => (
+        {/* Stats - count-up style stagger */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
+          {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              whileHover={{ y: -4, scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
+              initial={{ opacity: 0, y: 60, rotateY: -15 }}
+              animate={isInView ? { opacity: 1, y: 0, rotateY: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.9 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -8, scale: 1.03, rotateY: 5 }}
               className="relative p-8 rounded-2xl bg-background border border-border overflow-hidden group hover:shadow-xl transition-shadow duration-500"
+              style={{ transformStyle: "preserve-3d" }}
             >
               <div className={`absolute top-0 left-0 w-full h-1 ${stat.color} transition-all duration-300 group-hover:h-1.5`} />
-              <p className="font-display text-4xl md:text-5xl font-bold text-foreground mb-1">
+              <motion.p
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={isInView ? { scale: 1, opacity: 1 } : {}}
+                transition={{ duration: 0.5, delay: 1.1 + i * 0.12, type: "spring", stiffness: 200 }}
+                className="font-display text-4xl md:text-5xl font-bold text-foreground mb-1"
+              >
                 {stat.value}
-              </p>
+              </motion.p>
               <p className="text-sm text-muted-foreground">{stat.label}</p>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Pillars */}
+        {/* Pillars - 3D card flip in */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {pillars.map((pillar, i) => (
             <motion.div
               key={pillar.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.3 + i * 0.1 }}
-              whileHover={{ y: -6 }}
-              className="group p-6 rounded-2xl hover:bg-background hover:shadow-lg transition-all duration-500 border border-transparent hover:border-border"
+              initial={{ opacity: 0, y: 50, rotateX: 25 }}
+              animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+              transition={{ duration: 0.8, delay: 1.3 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -10, rotateX: -5, scale: 1.03 }}
+              className="group p-6 rounded-2xl hover:bg-background hover:shadow-xl transition-all duration-500 border border-transparent hover:border-border"
+              style={{ transformStyle: "preserve-3d", perspective: "800px" }}
             >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${pillar.gradient} flex items-center justify-center mb-6`}>
+              <motion.div
+                whileHover={{ rotateY: 15, scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${pillar.gradient} flex items-center justify-center mb-6`}
+              >
                 <pillar.icon className="text-primary-foreground" size={22} strokeWidth={1.5} />
-              </div>
+              </motion.div>
               <h3 className="font-display text-lg font-semibold text-foreground mb-2">
                 {pillar.title}
               </h3>

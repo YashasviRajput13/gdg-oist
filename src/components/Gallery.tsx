@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 const galleryImages = [
@@ -14,22 +14,39 @@ const galleryImages = [
 
 const Gallery = () => {
   const ref = useRef(null);
+  const sectionRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const headingWords = ["Moments", "from", "our", "events"];
 
   return (
-    <section id="gallery" className="section-padding" ref={ref}>
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16"
-        >
-          <p className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-4">
+    <section id="gallery" className="section-padding" ref={sectionRef}>
+      <div className="max-w-7xl mx-auto" ref={ref}>
+        <motion.div className="text-center mb-16">
+          <motion.p
+            initial={{ opacity: 0, x: -20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-4"
+          >
             Gallery
-          </p>
+          </motion.p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
-            Moments from our events
+            {headingWords.map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 50, filter: "blur(8px)" }}
+                animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+                transition={{ duration: 0.6, delay: 0.1 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block mr-[0.3em]"
+              >
+                {word}
+              </motion.span>
+            ))}
           </h2>
         </motion.div>
 
@@ -37,22 +54,27 @@ const Gallery = () => {
           {galleryImages.map((img, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
-              whileHover={{ scale: 1.03, zIndex: 10 }}
+              initial={{ opacity: 0, scale: 0.8, rotateY: -15 }}
+              animate={isInView ? { opacity: 1, scale: 1, rotateY: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.3 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ scale: 1.05, zIndex: 10, rotateY: 5 }}
               className={`relative rounded-2xl overflow-hidden group cursor-pointer ${img.span}`}
+              style={{ transformStyle: "preserve-3d" }}
             >
-              <img
+              <motion.img
                 src={img.src}
                 alt={img.alt}
                 loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <p className="absolute bottom-4 left-4 right-4 text-sm font-medium text-primary-foreground opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+              <motion.p
+                initial={{ y: 10, opacity: 0 }}
+                whileHover={{ y: 0, opacity: 1 }}
+                className="absolute bottom-4 left-4 right-4 text-sm font-medium text-primary-foreground opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+              >
                 {img.alt}
-              </p>
+              </motion.p>
             </motion.div>
           ))}
         </div>

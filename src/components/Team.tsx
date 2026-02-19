@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { Github, Linkedin, Twitter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,8 +23,14 @@ const avatarGradients = [
 
 const Team = () => {
   const ref = useRef(null);
+  const sectionRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [members, setMembers] = useState<TeamMember[]>([]);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -37,22 +43,34 @@ const Team = () => {
     fetchTeam();
   }, []);
 
-  return (
-    <section id="team" className="section-padding bg-card relative overflow-hidden" ref={ref}>
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/3 blur-3xl" />
+  const headingWords = ["The", "people", "behind", "GDG"];
 
-      <div className="max-w-7xl mx-auto relative">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-20"
-        >
-          <p className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-4">
+  return (
+    <section id="team" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
+      <motion.div style={{ y: bgY }} className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/3 blur-3xl" />
+
+      <div className="max-w-7xl mx-auto relative" ref={ref}>
+        <motion.div className="text-center mb-20">
+          <motion.p
+            initial={{ opacity: 0, x: -20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-4"
+          >
             Our Team
-          </p>
+          </motion.p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
-            The people behind GDG
+            {headingWords.map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 50, filter: "blur(8px)" }}
+                animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+                transition={{ duration: 0.6, delay: 0.1 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block mr-[0.3em]"
+              >
+                {word}
+              </motion.span>
+            ))}
           </h2>
         </motion.div>
 
@@ -60,58 +78,56 @@ const Team = () => {
           {members.map((member, i) => (
             <motion.div
               key={member.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.2 + i * 0.08 }}
-              whileHover={{ y: -6 }}
+              initial={{ opacity: 0, y: 60, scale: 0.9 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ duration: 0.7, delay: 0.4 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -10, scale: 1.03 }}
               className="group text-center p-8 rounded-2xl hover:bg-background hover:shadow-xl transition-all duration-500 border border-transparent hover:border-border"
             >
-              {/* Avatar */}
-              <div className={`w-28 h-28 mx-auto rounded-2xl bg-gradient-to-br ${avatarGradients[i % avatarGradients.length]} flex items-center justify-center mb-6 group-hover:scale-105 group-hover:rounded-3xl transition-all duration-500 shadow-lg`}>
+              <motion.div
+                whileHover={{ rotateY: 15, scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className={`w-28 h-28 mx-auto rounded-2xl bg-gradient-to-br ${avatarGradients[i % avatarGradients.length]} flex items-center justify-center mb-6 shadow-lg`}
+                style={{ transformStyle: "preserve-3d" }}
+              >
                 {member.avatar_url ? (
                   <img
                     src={member.avatar_url}
                     alt={member.name}
-                    className="w-full h-full object-cover rounded-2xl group-hover:rounded-3xl transition-all duration-500"
+                    className="w-full h-full object-cover rounded-2xl"
                   />
                 ) : (
                   <span className="text-3xl font-bold text-primary-foreground">
-                    {member.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
+                    {member.name.split(" ").map((n) => n[0]).join("")}
                   </span>
                 )}
-              </div>
+              </motion.div>
 
               <h3 className="font-display text-xl font-semibold text-foreground mb-1">
                 {member.name}
               </h3>
-              <p className="text-sm text-primary font-medium mb-3">
-                {member.role}
-              </p>
+              <p className="text-sm text-primary font-medium mb-3">{member.role}</p>
               {member.bio && (
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4 max-w-xs mx-auto">
                   {member.bio}
                 </p>
               )}
 
-              {/* Socials */}
               <div className="flex items-center justify-center gap-3">
                 {member.github_url && (
-                  <a href={member.github_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
+                  <motion.a whileHover={{ scale: 1.2, rotate: 5 }} href={member.github_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
                     <Github size={18} />
-                  </a>
+                  </motion.a>
                 )}
                 {member.linkedin_url && (
-                  <a href={member.linkedin_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
+                  <motion.a whileHover={{ scale: 1.2, rotate: -5 }} href={member.linkedin_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
                     <Linkedin size={18} />
-                  </a>
+                  </motion.a>
                 )}
                 {member.twitter_url && (
-                  <a href={member.twitter_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
+                  <motion.a whileHover={{ scale: 1.2, rotate: 5 }} href={member.twitter_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
                     <Twitter size={18} />
-                  </a>
+                  </motion.a>
                 )}
               </div>
             </motion.div>
