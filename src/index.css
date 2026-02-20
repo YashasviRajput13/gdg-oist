@@ -53,25 +53,25 @@
   }
 
   .dark {
-    --background: 220 20% 6%;
-    --foreground: 40 33% 97%;
-    --card: 220 20% 8%;
-    --card-foreground: 40 33% 97%;
-    --popover: 220 20% 8%;
-    --popover-foreground: 40 33% 97%;
-    --primary: 217 89% 61%;
+    --background: 224 25% 7%;
+    --foreground: 40 33% 95%;
+    --card: 224 22% 10%;
+    --card-foreground: 40 33% 95%;
+    --popover: 224 22% 10%;
+    --popover-foreground: 40 33% 95%;
+    --primary: 217 89% 65%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 40 33% 97%;
-    --muted: 220 15% 15%;
-    --muted-foreground: 220 10% 60%;
-    --accent: 142 53% 43%;
+    --secondary: 224 18% 16%;
+    --secondary-foreground: 40 33% 95%;
+    --muted: 224 18% 14%;
+    --muted-foreground: 220 12% 62%;
+    --accent: 142 53% 47%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 7 81% 56%;
+    --destructive: 7 81% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 18%;
-    --input: 220 15% 18%;
-    --ring: 217 89% 61%;
+    --border: 224 18% 16%;
+    --input: 224 18% 16%;
+    --ring: 217 89% 65%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -91,10 +91,26 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', 'Space Grotesk', system-ui, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.6);
   }
 }
 
@@ -110,18 +126,15 @@
     );
   }
 
-  .google-dot-blue {
-    color: hsl(217 89% 61%);
+  .text-gradient-blue {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(217 89% 61%), hsl(190 89% 55%));
   }
-  .google-dot-red {
-    color: hsl(7 81% 56%);
-  }
-  .google-dot-yellow {
-    color: hsl(43 96% 50%);
-  }
-  .google-dot-green {
-    color: hsl(142 53% 43%);
-  }
+
+  .google-dot-blue { color: hsl(217 89% 61%); }
+  .google-dot-red { color: hsl(7 81% 56%); }
+  .google-dot-yellow { color: hsl(43 96% 50%); }
+  .google-dot-green { color: hsl(142 53% 43%); }
 
   .bg-google-blue { background-color: hsl(217 89% 61%); }
   .bg-google-red { background-color: hsl(7 81% 56%); }
@@ -130,6 +143,10 @@
 
   .section-padding {
     @apply py-24 px-6 md:py-32 md:px-12 lg:px-20;
+  }
+
+  .card-hover {
+    @apply hover:shadow-2xl hover:-translate-y-2 transition-all duration-500;
   }
 }
 

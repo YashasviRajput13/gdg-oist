@@ -1,6 +1,6 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { Code, Users, Lightbulb, Globe } from "lucide-react";
+import { Code, Users, Lightbulb, Globe, ArrowRight } from "lucide-react";
 
 const stats = [
   { value: "500+", label: "Members", color: "bg-google-blue" },
@@ -128,30 +128,37 @@ const About = () => {
         </div>
 
         {/* Pillars - 3D card flip in */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {pillars.map((pillar, i) => (
             <motion.div
               key={pillar.title}
               initial={{ opacity: 0, y: 50, rotateX: 25 }}
               animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
               transition={{ duration: 0.8, delay: 1.3 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -10, rotateX: -5, scale: 1.03 }}
-              className="group p-6 rounded-2xl hover:bg-background hover:shadow-xl transition-all duration-500 border border-transparent hover:border-border"
+              whileHover={{ y: -10, scale: 1.03 }}
+              className="group p-7 rounded-2xl bg-background border border-border hover:shadow-2xl hover:border-primary/20 transition-all duration-500"
               style={{ transformStyle: "preserve-3d", perspective: "800px" }}
             >
               <motion.div
                 whileHover={{ rotateY: 15, scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 300 }}
-                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${pillar.gradient} flex items-center justify-center mb-6`}
+                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${pillar.gradient} flex items-center justify-center mb-5 shadow-lg`}
               >
-                <pillar.icon className="text-primary-foreground" size={22} strokeWidth={1.5} />
+                <pillar.icon className="text-white" size={22} strokeWidth={1.5} />
               </motion.div>
-              <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+              <h3 className="font-display text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                 {pillar.title}
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                 {pillar.description}
               </p>
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                className="flex items-center gap-1 text-xs text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                Learn more <ArrowRight size={12} />
+              </motion.div>
             </motion.div>
           ))}
         </div>
