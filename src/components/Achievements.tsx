@@ -1,31 +1,72 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Trophy, Target, Rocket, Heart, Star, Users, Calendar, Code2 } from "lucide-react";
+import { Star, Users, Calendar, Code2 } from "lucide-react";
+
+// Clean, professional SVG icons — consistent 1.5px stroke, no glow
+const TrophyIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+    <path d="M6 9H4a2 2 0 01-2-2V5a1 1 0 011-1h3" />
+    <path d="M18 9h2a2 2 0 002-2V5a1 1 0 00-1-1h-3" />
+    <path d="M6 4h12v5a6 6 0 01-12 0V4z" />
+    <path d="M10 16h4" />
+    <path d="M12 15v5" />
+    <path d="M8 20h8" />
+  </svg>
+);
+
+const TargetIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+    <circle cx="12" cy="12" r="9" />
+    <circle cx="12" cy="12" r="5.5" />
+    <circle cx="12" cy="12" r="2" />
+    <path d="M12 3v2M12 19v2M3 12h2M19 12h2" />
+  </svg>
+);
+
+const RocketIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+    <path d="M12 2c-2 4-4 7-4 11a4 4 0 108 0c0-4-2-7-4-11z" />
+    <path d="M12 18v4" />
+    <path d="M8 13c-2.5 0-4 1.5-4 3l4 1" />
+    <path d="M16 13c2.5 0 4 1.5 4 3l-4 1" />
+    <circle cx="12" cy="13" r="1.5" fill="white" stroke="none" opacity="0.5" />
+  </svg>
+);
+
+const HeartHandIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+    <path d="M12 8c-1.5-2.5-5-3-6.5-1S4 11 12 16c8-5 8.5-7.5 7-9.5s-5-1-7 1.5z" />
+    <path d="M4 20h3l2-2" />
+    <path d="M20 20h-3l-2-2" />
+    <path d="M12 16v4" />
+  </svg>
+);
+
 
 const achievements = [
   {
-    icon: Trophy,
+    icon: TrophyIcon,
     title: "Google I/O Extended",
     description: "Successfully hosted Google I/O Extended events with 200+ attendees each year, live-streaming keynotes and running hands-on sessions.",
     gradient: "from-[hsl(217,89%,61%)] to-[hsl(217,89%,45%)]",
     tag: "Annual Event",
   },
   {
-    icon: Target,
+    icon: TargetIcon,
     title: "Solution Challenge",
     description: "Multiple teams from OIST have participated in the global Google Solution Challenge, creating impactful solutions for real-world problems.",
     gradient: "from-[hsl(7,81%,56%)] to-[hsl(7,81%,42%)]",
     tag: "Global Program",
   },
   {
-    icon: Rocket,
+    icon: RocketIcon,
     title: "DevFest 2025",
     description: "Organized the biggest DevFest in central India with 20+ speakers, hands-on workshops, and a 24-hour hackathon.",
     gradient: "from-[hsl(43,96%,50%)] to-[hsl(43,96%,38%)]",
     tag: "Flagship Event",
   },
   {
-    icon: Heart,
+    icon: HeartHandIcon,
     title: "Community Impact",
     description: "Helped 100+ students land tech internships and full-time roles through skill-building programs, resume reviews, and mock interviews.",
     gradient: "from-[hsl(142,53%,43%)] to-[hsl(142,53%,30%)]",
@@ -124,7 +165,7 @@ const Achievements = () => {
                 transition={{ type: "spring", stiffness: 300 }}
                 className={`flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-lg`}
               >
-                <item.icon className="text-white" size={24} strokeWidth={1.5} />
+                <item.icon />
               </motion.div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-2">
