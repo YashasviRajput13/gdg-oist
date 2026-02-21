@@ -90,27 +90,21 @@ const Navbar = () => {
               </a>
             ))}
 
-            {/* Dark mode toggle */}
+            {/* Dark mode toggle - pill switch */}
             {mounted && (
-              <motion.button
+              <button
                 onClick={toggleTheme}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-full border border-border bg-card/50 backdrop-blur-sm text-foreground hover:bg-secondary transition-colors"
+                className="relative w-16 h-8 rounded-full border border-border bg-muted/60 backdrop-blur-sm transition-colors duration-300 focus:outline-none"
                 aria-label="Toggle dark mode"
               >
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.div
-                    key={theme}
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-                  </motion.div>
-                </AnimatePresence>
-              </motion.button>
+                <Sun size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-yellow-500" />
+                <Moon size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <motion.div
+                  className="absolute top-1 w-6 h-6 rounded-full bg-yellow-400 dark:bg-slate-600 shadow-md"
+                  animate={{ left: theme === "dark" ? "calc(100% - 28px)" : "4px" }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                />
+              </button>
             )}
 
             <motion.a
@@ -126,14 +120,20 @@ const Navbar = () => {
           {/* Mobile: dark mode + hamburger */}
           <div className="md:hidden flex items-center gap-3">
             {mounted && (
-              <motion.button
+              <button
                 onClick={toggleTheme}
-                whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-full border border-border bg-card/50 text-foreground"
+                className="relative w-14 h-7 rounded-full border border-border bg-muted/60 transition-colors duration-300"
                 aria-label="Toggle dark mode"
               >
-                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-              </motion.button>
+                <Sun size={12} className="absolute left-1.5 top-1/2 -translate-y-1/2 text-yellow-500" />
+                <Moon size={12} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <motion.div
+                  className="absolute top-0.5 rounded-full bg-yellow-400 dark:bg-slate-600 shadow-md"
+                  style={{ width: 22, height: 22 }}
+                  animate={{ left: theme === "dark" ? "calc(100% - 25px)" : "3px" }}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                />
+              </button>
             )}
             <button
               onClick={() => setIsOpen(!isOpen)}
