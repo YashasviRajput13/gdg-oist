@@ -1,6 +1,6 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { Code, Users, Lightbulb, Globe, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const stats = [
   { value: "500+", label: "Members", color: "bg-google-blue" },
@@ -9,27 +9,60 @@ const stats = [
   { value: "10+", label: "Hackathons", color: "bg-google-green" },
 ];
 
+const CodeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
+    <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0L19.2 12l-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" fill="white"/>
+  </svg>
+);
+
+const CommunityIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
+    <circle cx="9" cy="7" r="3" fill="white" opacity="0.9"/>
+    <circle cx="17" cy="9" r="2.5" fill="white" opacity="0.7"/>
+    <path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6" fill="white" opacity="0.9"/>
+    <path d="M13.5 19c0-2.5 1.6-4.5 3.5-4.5s3.5 2 3.5 4.5" fill="white" opacity="0.7"/>
+  </svg>
+);
+
+const IdeaIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17a1 1 0 001 1h6a1 1 0 001-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7z" fill="white" opacity="0.9"/>
+    <rect x="9" y="19" width="6" height="1.5" rx="0.75" fill="white" opacity="0.7"/>
+    <rect x="10" y="21.5" width="4" height="1.5" rx="0.75" fill="white" opacity="0.5"/>
+    <path d="M12 6v4M10 8h4" stroke="white" strokeWidth="1.2" strokeLinecap="round" opacity="0.5"/>
+  </svg>
+);
+
+const OpenSourceIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
+    <circle cx="12" cy="12" r="9" stroke="white" strokeWidth="1.8" opacity="0.9"/>
+    <ellipse cx="12" cy="12" rx="4" ry="9" stroke="white" strokeWidth="1.5" opacity="0.7"/>
+    <line x1="3" y1="9" x2="21" y2="9" stroke="white" strokeWidth="1.3" opacity="0.6"/>
+    <line x1="3" y1="15" x2="21" y2="15" stroke="white" strokeWidth="1.3" opacity="0.6"/>
+  </svg>
+);
+
 const pillars = [
   {
-    icon: Code,
+    icon: CodeIcon,
     title: "Hands-on Learning",
     description: "Workshops and codelabs on cutting-edge Google technologies.",
     gradient: "from-[hsl(217,89%,61%)] to-[hsl(217,89%,45%)]",
   },
   {
-    icon: Users,
+    icon: CommunityIcon,
     title: "Community First",
     description: "A welcoming space for developers of every skill level.",
     gradient: "from-[hsl(7,81%,56%)] to-[hsl(7,81%,42%)]",
   },
   {
-    icon: Lightbulb,
+    icon: IdeaIcon,
     title: "Innovation",
     description: "Hackathons and challenges that push creative boundaries.",
     gradient: "from-[hsl(43,96%,50%)] to-[hsl(43,96%,38%)]",
   },
   {
-    icon: Globe,
+    icon: OpenSourceIcon,
     title: "Open Source",
     description: "Contributing to and learning from the global open-source ecosystem.",
     gradient: "from-[hsl(142,53%,43%)] to-[hsl(142,53%,30%)]",
@@ -144,7 +177,7 @@ const About = () => {
                 transition={{ type: "spring", stiffness: 300 }}
                 className={`w-12 h-12 rounded-xl bg-gradient-to-br ${pillar.gradient} flex items-center justify-center mb-5 shadow-lg`}
               >
-                <pillar.icon className="text-white" size={22} strokeWidth={1.5} />
+                <pillar.icon />
               </motion.div>
               <h3 className="font-display text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                 {pillar.title}
