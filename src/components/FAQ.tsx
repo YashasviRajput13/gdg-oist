@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { ChevronDown, MessageCircle } from "lucide-react";
+import { ChevronDown, MessageCircle, Mail } from "lucide-react";
 
 const faqs = [
   {
@@ -111,21 +111,43 @@ const FAQ = () => {
           ))}
         </div>
 
-        {/* Still have questions CTA */}
+        {/* Still Have Questions card */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 1, duration: 0.6 }}
-          className="mt-12 text-center p-8 rounded-2xl border border-dashed border-border"
+          transition={{ delay: 1, duration: 0.7 }}
+          className="mt-16 relative"
         >
-          <p className="text-muted-foreground mb-4 font-body">Still have questions?</p>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:shadow-lg hover:shadow-primary/25 transition-all"
-          >
-            <MessageCircle size={16} />
-            Contact Us
-          </a>
+          {/* Envelope icon floating above card */}
+          <div className="flex justify-center -mb-8 relative z-10">
+            <div className="relative">
+              <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center shadow-lg border border-border">
+                <Mail size={28} className="text-muted-foreground" />
+              </div>
+              <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-destructive text-destructive-foreground text-xs font-bold flex items-center justify-center shadow-md">
+                2
+              </span>
+            </div>
+          </div>
+
+          <div className="bg-accent/40 border border-border rounded-3xl px-8 pt-14 pb-10 text-center">
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+              Still Have Questions?
+            </h3>
+            <p className="text-muted-foreground font-body max-w-md mx-auto mb-2">
+              We've got you covered! Whether you're curious about our programs, partnerships,
+              or opportunities, we're here to help.
+            </p>
+            <p className="text-muted-foreground font-body mb-6">
+              Reach out to us & get the answers you need!
+            </p>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:shadow-lg hover:shadow-primary/25 transition-all"
+            >
+              Contact Us
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>
