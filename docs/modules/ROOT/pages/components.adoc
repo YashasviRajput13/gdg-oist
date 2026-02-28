@@ -1,0 +1,37 @@
+= Connected Components
+:navtitle: Components
+
+This site uses React components connected to a Supabase Content Management System.
+
+== `Events.tsx`
+Handles displaying a grid of the upcoming Google Developer Group events.
+It fetches data from the `events` table. 
+
+Key details:
+* Uses the `Calendar` and `date-fns` `format()` helper to show dates.
+* Orders events by the `event_date` ascending, ensuring the soonest events appear at the top.
+* Limits results to the top 4 upcoming elements.
+
+== `Gallery.tsx`
+Handles the masonry / rotating image gallery for the site.
+It fetches data from the `gallery_items` table.
+
+Key details:
+* The Gallery has a set of `fallbackGalleryItems` built-in. If the query to Supabase fails or returns 0 records, the gallery will gently fall back to the placeholder 10 images.
+* Each item from Supabase can configure `rotate`, `grid_column`, and `grid_row` integers to dictate how the masonry layout works dynamically.
+
+== `Team.tsx`
+Renders out the members, organizers, or developers of the GDG chapter.
+It fetches data from the `team_members` table.
+
+Key details:
+* Orders individuals based on their `display_order` ascending.
+* Uses `lucide-react` icons (Github, Linkedin, Twitter) based on which social URLs are supplied in the database.
+* Fallback avatar feature: If `avatar_url` is null, the component splits the name string and creates an initial avatar (e.g. "John Doe" becomes "JD").
+
+== `Contact.tsx`
+Handles input validation and POSTs information to the `contact_submissions` table.
+
+Key details:
+* Powered by `react-hook-form` and `zod` schema to ensure valid email strings and required fields.
+* Posts an `alert` via the `sonner` toast system on a successful submission or failure.

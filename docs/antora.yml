@@ -1,0 +1,5 @@
+name: gdg
+title: GDG OIST
+version: ~
+nav:
+  - modules/ROOT/nav.adoc

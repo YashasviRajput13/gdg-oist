@@ -1,0 +1,20 @@
+= GDG OIST Crafted Website
+:navtitle: Welcome
+
+Welcome to the internal engineering documentation for the GDG OIST project!
+
+== Overview
+This project is built to power the online presence for Google Developer Group (GDG) at OIST. It handles displaying upcoming events, a dynamic photo gallery, team details, and collecting contact submissions. 
+
+Unlike a static HTML website, this project is fully powered by a modern React frontend and hooked up to a Headless Content Management System (CMS) through Supabase.
+
+== Key Features 🚀
+* *Dynamic Content*: Events, Galleries, and Team Members are fetched dynamically on page load.
+* *Contact Integration*: The contact form saves submissions directly to a structured database.
+* *Beautiful UI*: Built with `framer-motion` for fluid animations and `tailwindcss` for styling.
+
+== Navigation
+To learn more about the project components, use the sidebar navigation menu:
+* xref:setup.adoc[Local Setup]: How to get the project running on your computer.
+* xref:architecture.adoc[Architecture Details]: A breakdown of our tech stack.
+* xref:components.adoc[Connected Components]: Details on how our components interact with Supabase.

@@ -1,0 +1,31 @@
+= Architecture & Tech Stack
+:navtitle: Architecture Details
+
+Our website sits on top of a highly optimized and developer-friendly stack designed for high velocity and scalability.
+
+== Frontend Tools
+=== React & Vite
+The project uses *React (v18)* for its component-driven View layer, bundled by *Vite*. Vite provides out-of-the-box support for TypeScript and JSX, and is significantly faster than Webpack or Create-React-App.
+
+=== Tailwind CSS & shadcn/ui
+All layout and design is composed using *Tailwind CSS* utility classes. This removes the need for large, unmaintainable global CSS files. We also leverage reusable component primitives sourced from `shadcn/ui`, such as accordions, buttons, and text inputs.
+
+=== Framer Motion
+For micro-animations and smooth scroll-triggered animations (like the Hero and Gallery staggering), the project heavily relies on *Framer Motion*.
+
+== Backend CMS (Supabase)
+Instead of hardcoding text or embedding images into the GitHub repository, we treat *Supabase* as our Headless Content Management System.
+
+Supabase is an open-source Firebase alternative built natively on PostgreSQL.
+
+Data Flow Architecture:
+. Component Mounts (`useEffect`).
+. Client queries Supabase using `@supabase/supabase-js`.
+. Data is returned via REST and deserialized.
+. Component updates React local state, triggering a re-render.
+
+Our Supabase Database instances requires 4 primary tables to function:
+* `events`: Stores upcoming and past GDG events.
+* `gallery_items`: Stores the rotating masonry gallery image details.
+* `team_members`: Holds developer/organizer information and social URLs.
+* `contact_submissions`: The sink for Contact form incoming requests.

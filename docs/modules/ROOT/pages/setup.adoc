@@ -1,0 +1,47 @@
+= Local Development Setup
+:navtitle: Local Setup
+
+This guide will explain how to get the GDG OIST project running locally on your computer.
+
+== Prerequisites
+You will need the following installed:
+* Node.js (v18+)
+* npm (v9+)
+
+== 1. Installation
+First, clone the project and install all top-level runtime dependencies and development tools.
+
+[source,bash]
+----
+cd gdg-oist-crafted
+npm install
+----
+
+== 2. Environment Configuration
+The project requires environment variables to connect to Supabase.
+
+Create a `.env` file in the root of the project folder:
+----
+VITE_SUPABASE_URL=https://<your-project>.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsIn...
+----
+
+WARNING: Do not commit your `.env` file! It should remain ignored by Git.
+
+== 3. Running the Development Server
+This project uses Vite, which provides incredibly fast Hot Module Replacement (HMR).
+
+[source,bash]
+----
+npm run dev
+----
+The development server will boot up and usually host the website at `http://localhost:5173/` or `http://localhost:8080/`. Changes to the React or Tailwind code will reflect instantly in the browser.
+
+== 4. Building for Production
+When it's time to deploy the site (e.g., to Vercel, Netlify, or Github Pages), run:
+
+[source,bash]
+----
+npm run build
+----
+This produces an optimized build directory containing minified HTML, CSS, and JS.
