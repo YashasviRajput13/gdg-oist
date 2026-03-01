@@ -103,7 +103,7 @@ const FAQ = () => {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="overflow-hidden"
               >
-                <p className="px-6 pb-6 pt-3 text-sm text-muted-foreground leading-relaxed border-x border-b border-primary/20 rounded-b-2xl bg-primary/5">
+                <p className="px-6 pb-6 pt-3 text-sm text-muted-foreground leading-relaxed border-x border-b border-primary/15 rounded-b-2xl bg-primary/5">
                   {faq.answer}
                 </p>
               </motion.div>
