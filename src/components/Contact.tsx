@@ -93,7 +93,7 @@ const Contact = () => {
               <p className="text-muted-foreground">We'll get back to you soon.</p>
             </motion.div>
           ) : (
-            <div className="bg-card rounded-3xl border border-border p-8 md:p-12">
+            <div className="bg-card rounded-3xl border border-border p-8 md:p-12 shadow-sm">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   {[

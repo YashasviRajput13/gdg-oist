@@ -81,8 +81,8 @@ const Team = () => {
               initial={{ opacity: 0, y: 60, scale: 0.9 }}
               animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{ duration: 0.7, delay: 0.4 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -10, scale: 1.03 }}
-              className="group text-center p-8 rounded-2xl hover:bg-background hover:shadow-xl transition-all duration-500 border border-transparent hover:border-border"
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="group text-center p-8 rounded-3xl hover:bg-background hover:shadow-xl transition-all duration-500 border border-transparent hover:border-border"
             >
               <motion.div
                 whileHover={{ rotateY: 15, scale: 1.1 }}
