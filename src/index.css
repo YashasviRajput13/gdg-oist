@@ -6,23 +6,23 @@
 
 @layer base {
   :root {
-    --background: 40 33% 97%;
-    --foreground: 220 20% 10%;
+    --background: 30 40% 98%;
+    --foreground: 230 15% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card: 30 30% 99%;
+    --card-foreground: 230 15% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover: 30 30% 99%;
+    --popover-foreground: 230 15% 15%;
 
     --primary: 217 89% 61%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 20% 94%;
-    --secondary-foreground: 220 20% 10%;
+    --secondary: 30 25% 95%;
+    --secondary-foreground: 230 15% 15%;
 
-    --muted: 40 15% 92%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 30 20% 93%;
+    --muted-foreground: 220 10% 50%;
 
     --accent: 142 53% 43%;
     --accent-foreground: 0 0% 100%;
@@ -30,11 +30,11 @@
     --destructive: 7 81% 56%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 15% 90%;
-    --input: 40 15% 90%;
+    --border: 30 20% 91%;
+    --input: 30 20% 91%;
     --ring: 217 89% 61%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* Google brand colors */
     --google-blue: 217 89% 61%;
