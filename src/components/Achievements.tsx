@@ -137,7 +137,7 @@ const Achievements = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={statsInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] as const }}
-              className="text-center p-6 rounded-2xl bg-background border border-border hover:shadow-lg transition-shadow group"
+              className="text-center p-6 rounded-3xl bg-background border border-border hover:shadow-lg transition-shadow group"
             >
               <num.icon size={22} className={`${num.color} mx-auto mb-3 group-hover:scale-110 transition-transform`} />
               <p className={`font-display text-3xl md:text-4xl font-bold ${num.color} mb-1`}>

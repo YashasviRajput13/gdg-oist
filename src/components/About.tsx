@@ -138,8 +138,8 @@ const About = () => {
               initial={{ opacity: 0, y: 50, rotateX: 25 }}
               animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
               transition={{ duration: 0.8, delay: 1.3 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -10, scale: 1.03 }}
-              className="group p-7 rounded-2xl bg-background border border-border hover:shadow-2xl hover:border-primary/20 transition-all duration-500"
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="group p-7 rounded-3xl bg-background border border-border hover:shadow-xl hover:border-primary/15 transition-all duration-500"
               style={{ transformStyle: "preserve-3d", perspective: "800px" }}
             >
               <motion.div
