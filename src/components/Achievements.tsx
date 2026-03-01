@@ -137,7 +137,7 @@ const Achievements = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={statsInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] as const }}
-              className="text-center p-6 rounded-2xl bg-background border border-border hover:shadow-lg transition-shadow group"
+              className="text-center p-6 rounded-3xl bg-background border border-border hover:shadow-lg transition-shadow group"
             >
               <num.icon size={22} className={`${num.color} mx-auto mb-3 group-hover:scale-110 transition-transform`} />
               <p className={`font-display text-3xl md:text-4xl font-bold ${num.color} mb-1`}>
@@ -156,8 +156,8 @@ const Achievements = () => {
               initial={{ opacity: 0, y: 50, rotateX: 10 }}
               animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.5 + i * 0.12, ease: [0.16, 1, 0.3, 1] as const }}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="group flex gap-6 p-8 rounded-2xl bg-background border border-border hover:shadow-2xl hover:border-primary/20 transition-all duration-500"
+              whileHover={{ y: -6, scale: 1.01 }}
+              className="group flex gap-6 p-8 rounded-3xl bg-background border border-border hover:shadow-xl hover:border-primary/15 transition-all duration-500"
               style={{ transformStyle: "preserve-3d" }}
             >
               <motion.div

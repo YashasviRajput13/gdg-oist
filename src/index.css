@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,23 +6,23 @@
 
 @layer base {
   :root {
-    --background: 40 33% 97%;
-    --foreground: 220 20% 10%;
+    --background: 30 40% 98%;
+    --foreground: 230 15% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card: 30 30% 99%;
+    --card-foreground: 230 15% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover: 30 30% 99%;
+    --popover-foreground: 230 15% 15%;
 
     --primary: 217 89% 61%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 20% 94%;
-    --secondary-foreground: 220 20% 10%;
+    --secondary: 30 25% 95%;
+    --secondary-foreground: 230 15% 15%;
 
-    --muted: 40 15% 92%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 30 20% 93%;
+    --muted-foreground: 220 10% 50%;
 
     --accent: 142 53% 43%;
     --accent-foreground: 0 0% 100%;
@@ -30,11 +30,11 @@
     --destructive: 7 81% 56%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 15% 90%;
-    --input: 40 15% 90%;
+    --border: 30 20% 91%;
+    --input: 30 20% 91%;
     --ring: 217 89% 61%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* Google brand colors */
     --google-blue: 217 89% 61%;
@@ -90,12 +90,12 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', 'Space Grotesk', system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   }
 
   /* Custom scrollbar */

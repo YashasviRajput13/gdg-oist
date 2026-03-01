@@ -134,27 +134,20 @@ const Hero = () => {
         </h1>
 
         {/* Subtitle - letter-by-letter reveal */}
-        <p className="text-base md:text-xl text-foreground/70 max-w-2xl mx-auto mb-12 font-body leading-relaxed">
-          {subtitle.split("").map((char, i) => (
-            <motion.span
-              key={i}
-              custom={i}
-              initial="hidden"
-              animate="visible"
-              variants={letterVariants}
-              className="inline-block"
-              style={{ whiteSpace: char === " " ? "pre" : undefined }}
-            >
-              {char === " " ? "\u00A0" : char}
-            </motion.span>
-          ))}
-        </p>
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.3, ease: [0.16, 1, 0.3, 1] }}
+          className="text-base md:text-xl text-foreground/70 max-w-2xl mx-auto mb-12 font-body leading-relaxed"
+        >
+          {subtitle}
+        </motion.p>
 
         {/* CTA buttons - staggered slide up */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 1.6, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <motion.a
@@ -181,7 +174,7 @@ const Hero = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5 }}
+        transition={{ delay: 2 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2"
       >
         <motion.div

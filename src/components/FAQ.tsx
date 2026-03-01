@@ -79,7 +79,7 @@ const FAQ = () => {
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className={`w-full flex items-center justify-between p-6 rounded-2xl border text-left transition-all duration-300 group ${
                   openIndex === i
-                    ? "bg-primary/5 border-primary/20 shadow-md"
+                    ? "bg-primary/5 border-primary/15 shadow-md"
                     : "bg-background border-border hover:shadow-md hover:border-primary/10"
                 }`}
               >
@@ -103,7 +103,7 @@ const FAQ = () => {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="overflow-hidden"
               >
-                <p className="px-6 pb-6 pt-3 text-sm text-muted-foreground leading-relaxed border-x border-b border-primary/20 rounded-b-2xl bg-primary/5">
+                <p className="px-6 pb-6 pt-3 text-sm text-muted-foreground leading-relaxed border-x border-b border-primary/15 rounded-b-2xl bg-primary/5">
                   {faq.answer}
                 </p>
               </motion.div>
