@@ -104,12 +104,12 @@ const Gallery = () => {
   useEffect(() => {
     const fetchGallery = async () => {
       const { data, error } = await supabase
-        .from("gallery_items")
+        .from("gallery_items" as any)
         .select("*")
         .order("created_at", { ascending: true });
 
       if (data && data.length > 0) {
-        setGalleryItems(data);
+        setGalleryItems(data as any);
       }
     };
 
