@@ -19,12 +19,12 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("form"), 1400);
-    const t2 = setTimeout(() => setPhase("exit"), 2600);
+    const t1 = setTimeout(() => setPhase("form"), 1000);
+    const t2 = setTimeout(() => setPhase("exit"), 1800);
     const t3 = setTimeout(() => {
       setVisible(false);
       onComplete();
-    }, 3300);
+    }, 2400);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [onComplete]);
 
