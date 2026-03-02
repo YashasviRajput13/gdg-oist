@@ -156,13 +156,20 @@ const Gallery = () => {
           {galleryItems.map((item, i) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, scale: 0.85, rotate: item.rotate * 2 }}
-              animate={isInView ? { opacity: 1, scale: 1, rotate: item.rotate } : {}}
-              transition={{ duration: 0.8, delay: 0.2 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, scale: 0.95, x: -120, rotate: item.rotate }}
+              animate={isInView ? { opacity: 1, scale: 1, x: 0, rotate: item.rotate } : {}}
+              transition={{ duration: 1, delay: 0.15 + i * 0.12, ease: [0.42, 0, 0.58, 1] }}
               whileHover={{ scale: 1.06, rotate: 0, zIndex: 20 }}
-              className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500"
+              className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-none hover:shadow-2xl transition-all duration-700"
               style={{ gridColumn: item.grid_column, gridRow: item.grid_row, transformStyle: "preserve-3d" }}
             >
+              {/* Soft shadow that fades in with the image */}
+              <motion.div
+                className="absolute -bottom-2 inset-x-2 h-6 rounded-full bg-foreground/10 blur-xl -z-10"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 1, delay: 0.4 + i * 0.12, ease: [0.42, 0, 0.58, 1] }}
+              />
               <img
                 src={item.src}
                 alt={item.alt}
@@ -186,9 +193,9 @@ const Gallery = () => {
           {galleryItems.slice(0, 6).map((item, i) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
+              initial={{ opacity: 0, scale: 0.95, x: -80 }}
+              animate={isInView ? { opacity: 1, scale: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.15 + i * 0.12, ease: [0.42, 0, 0.58, 1] }}
               className={`relative rounded-xl overflow-hidden shadow-md ${i === 0 || i === 3 ? "row-span-2" : ""}`}
               style={{ minHeight: i === 0 || i === 3 ? 280 : 140 }}
             >
