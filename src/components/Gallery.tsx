@@ -160,7 +160,16 @@ const Gallery = () => {
               animate={isInView ? { opacity: 1, scale: 1, x: 0, rotate: item.rotate } : {}}
               transition={{ duration: 1, delay: 0.15 + i * 0.12, ease: [0.42, 0, 0.58, 1] }}
               whileHover={{ scale: 1.06, rotate: 0, zIndex: 20 }}
-              className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500"
+              className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-none hover:shadow-2xl transition-all duration-700"
+              style={{ gridColumn: item.grid_column, gridRow: item.grid_row, transformStyle: "preserve-3d" }}
+            >
+              {/* Soft shadow that fades in with the image */}
+              <motion.div
+                className="absolute -bottom-2 inset-x-2 h-6 rounded-full bg-foreground/10 blur-xl -z-10"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 1, delay: 0.4 + i * 0.12, ease: [0.42, 0, 0.58, 1] }}
+              />
               style={{ gridColumn: item.grid_column, gridRow: item.grid_row, transformStyle: "preserve-3d" }}
             >
               <img
