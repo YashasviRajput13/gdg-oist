@@ -170,8 +170,6 @@ const Gallery = () => {
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ duration: 1, delay: 0.4 + i * 0.12, ease: [0.42, 0, 0.58, 1] }}
               />
-              style={{ gridColumn: item.grid_column, gridRow: item.grid_row, transformStyle: "preserve-3d" }}
-            >
               <img
                 src={item.src}
                 alt={item.alt}
