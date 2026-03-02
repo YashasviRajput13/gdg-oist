@@ -193,9 +193,9 @@ const Gallery = () => {
           {galleryItems.slice(0, 6).map((item, i) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
+              initial={{ opacity: 0, scale: 0.95, x: -80 }}
+              animate={isInView ? { opacity: 1, scale: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.15 + i * 0.12, ease: [0.42, 0, 0.58, 1] }}
               className={`relative rounded-xl overflow-hidden shadow-md ${i === 0 || i === 3 ? "row-span-2" : ""}`}
               style={{ minHeight: i === 0 || i === 3 ? 280 : 140 }}
             >
