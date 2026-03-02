@@ -77,6 +77,30 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_items: {
+        Row: {
+          alt: string
+          caption: string | null
+          created_at: string
+          id: string
+          src: string
+        }
+        Insert: {
+          alt: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          src: string
+        }
+        Update: {
+          alt?: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          src?: string
+        }
+        Relationships: []
+      }
       team_members: {
         Row: {
           avatar_url: string | null

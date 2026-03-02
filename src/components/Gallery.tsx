@@ -30,11 +30,11 @@ const Gallery = () => {
   useEffect(() => {
     const fetchGallery = async () => {
       const { data } = await supabase
-        .from("gallery_items" as any)
-        .select("*")
+        .from("gallery_items")
+        .select("id, src, alt, caption")
         .order("created_at", { ascending: true });
       if (data && data.length > 0) {
-        setGalleryItems(data as any);
+        setGalleryItems(data);
       }
     };
     fetchGallery();
