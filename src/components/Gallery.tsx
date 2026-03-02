@@ -156,9 +156,9 @@ const Gallery = () => {
           {galleryItems.map((item, i) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, scale: 0.85, rotate: item.rotate * 2 }}
-              animate={isInView ? { opacity: 1, scale: 1, rotate: item.rotate } : {}}
-              transition={{ duration: 0.8, delay: 0.2 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, scale: 0.95, x: -120, rotate: item.rotate }}
+              animate={isInView ? { opacity: 1, scale: 1, x: 0, rotate: item.rotate } : {}}
+              transition={{ duration: 1, delay: 0.15 + i * 0.12, ease: [0.42, 0, 0.58, 1] }}
               whileHover={{ scale: 1.06, rotate: 0, zIndex: 20 }}
               className="relative rounded-2xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-shadow duration-500"
               style={{ gridColumn: item.grid_column, gridRow: item.grid_row, transformStyle: "preserve-3d" }}
