@@ -1,7 +1,7 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { Github, Linkedin, Twitter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import ChromaGrid, { type ChromaGridItem } from "@/components/ChromaGrid";
 
 interface TeamMember {
   id: string;
@@ -14,11 +14,11 @@ interface TeamMember {
   twitter_url: string | null;
 }
 
-const avatarGradients = [
-  "from-[hsl(217,89%,61%)] to-[hsl(217,89%,45%)]",
-  "from-[hsl(7,81%,56%)] to-[hsl(7,81%,42%)]",
-  "from-[hsl(43,96%,50%)] to-[hsl(43,96%,38%)]",
-  "from-[hsl(142,53%,43%)] to-[hsl(142,53%,30%)]",
+const googleColors = [
+  { border: 'hsl(217 89% 61%)', gradient: 'linear-gradient(145deg, hsl(217 89% 61%), hsl(224 25% 7%))' },
+  { border: 'hsl(7 81% 56%)', gradient: 'linear-gradient(210deg, hsl(7 81% 56%), hsl(224 25% 7%))' },
+  { border: 'hsl(43 96% 50%)', gradient: 'linear-gradient(165deg, hsl(43 96% 50%), hsl(224 25% 7%))' },
+  { border: 'hsl(142 53% 43%)', gradient: 'linear-gradient(195deg, hsl(142 53% 43%), hsl(224 25% 7%))' },
 ];
 
 const Team = () => {
@@ -44,6 +44,16 @@ const Team = () => {
   }, []);
 
   const headingWords = ["The", "people", "behind", "GDG"];
+
+  const chromaItems: ChromaGridItem[] = members.map((m, i) => ({
+    image: m.avatar_url,
+    title: m.name,
+    subtitle: m.role,
+    handle: m.bio ? m.bio.substring(0, 60) : null,
+    borderColor: googleColors[i % googleColors.length].border,
+    gradient: googleColors[i % googleColors.length].gradient,
+    url: m.linkedin_url || m.github_url || m.twitter_url || null,
+  }));
 
   return (
     <section id="team" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
@@ -74,65 +84,17 @@ const Team = () => {
           </h2>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {members.map((member, i) => (
-            <motion.div
-              key={member.id}
-              initial={{ opacity: 0, y: 60, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{ duration: 0.7, delay: 0.4 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -8, scale: 1.02 }}
-              className="group text-center p-8 rounded-3xl hover:bg-background hover:shadow-xl transition-all duration-500 border border-transparent hover:border-border"
-            >
-              <motion.div
-                whileHover={{ rotateY: 15, scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className={`w-28 h-28 mx-auto rounded-2xl bg-gradient-to-br ${avatarGradients[i % avatarGradients.length]} flex items-center justify-center mb-6 shadow-lg`}
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                {member.avatar_url ? (
-                  <img
-                    src={member.avatar_url}
-                    alt={member.name}
-                    className="w-full h-full object-cover rounded-2xl"
-                  />
-                ) : (
-                  <span className="text-3xl font-bold text-primary-foreground">
-                    {member.name.split(" ").map((n) => n[0]).join("")}
-                  </span>
-                )}
-              </motion.div>
-
-              <h3 className="font-display text-xl font-semibold text-foreground mb-1">
-                {member.name}
-              </h3>
-              <p className="text-sm text-primary font-medium mb-3">{member.role}</p>
-              {member.bio && (
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4 max-w-xs mx-auto">
-                  {member.bio}
-                </p>
-              )}
-
-              <div className="flex items-center justify-center gap-3">
-                {member.github_url && (
-                  <motion.a whileHover={{ scale: 1.2, rotate: 5 }} href={member.github_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
-                    <Github size={18} />
-                  </motion.a>
-                )}
-                {member.linkedin_url && (
-                  <motion.a whileHover={{ scale: 1.2, rotate: -5 }} href={member.linkedin_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
-                    <Linkedin size={18} />
-                  </motion.a>
-                )}
-                {member.twitter_url && (
-                  <motion.a whileHover={{ scale: 1.2, rotate: 5 }} href={member.twitter_url} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
-                    <Twitter size={18} />
-                  </motion.a>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <ChromaGrid
+            items={chromaItems}
+            columns={3}
+            className="max-sm:[&]:!grid-cols-1 max-lg:[&]:!grid-cols-2"
+          />
+        </motion.div>
       </div>
     </section>
   );
