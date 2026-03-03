@@ -73,27 +73,17 @@ const Navbar = () => {
           </a>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-7">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`relative text-sm font-medium transition-colors duration-200 ${
-                  activeSection === link.href.replace("#", "")
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {link.label}
-                {activeSection === link.href.replace("#", "") && (
-                  <motion.div
-                    layoutId="activeNav"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </a>
-            ))}
+          <div className="hidden md:flex items-center gap-4">
+            <GooeyNav
+              items={navLinks}
+              activeIndex={activeIndex}
+              particleCount={12}
+              particleDistances={[70, 10]}
+              particleR={80}
+              animationTime={500}
+              timeVariance={200}
+              colors={[1, 2, 3, 4]}
+            />
 
             {/* Dark mode toggle - pill switch */}
             {mounted && (
