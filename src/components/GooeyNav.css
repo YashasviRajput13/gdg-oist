@@ -1,0 +1,120 @@
+.gooey-nav-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.gooey-nav-container nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.25rem;
+  position: relative;
+  z-index: 3;
+}
+
+.gooey-nav-container nav ul li {
+  position: relative;
+}
+
+.gooey-nav-container nav ul li a {
+  display: block;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  border-radius: 9999px;
+  transition: color 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.gooey-nav-container nav ul li a:hover {
+  color: hsl(var(--foreground));
+}
+
+.gooey-nav-container nav ul li.active a {
+  color: hsl(var(--primary-foreground));
+}
+
+/* Effect layers */
+.gooey-nav-container .effect {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 2;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              top 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gooey-nav-container .effect.filter {
+  background: hsl(var(--primary));
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='goo'%3E%3CfeGaussianBlur in='SourceGraphic' stdDeviation='6' result='blur'/%3E%3CfeColorMatrix in='blur' mode='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7' result='goo'/%3E%3CfeBlend in='SourceGraphic' in2='goo'/%3E%3C/filter%3E%3C/svg%3E#goo");
+  overflow: hidden;
+
+  --color-1: hsl(217 89% 61%);
+  --color-2: hsl(7 81% 56%);
+  --color-3: hsl(43 96% 50%);
+  --color-4: hsl(142 53% 43%);
+}
+
+.gooey-nav-container .effect.text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--primary-foreground));
+  z-index: 4;
+  opacity: 0;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              top 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.15s ease;
+}
+
+.gooey-nav-container .effect.text.active {
+  opacity: 1;
+}
+
+/* Particles */
+.gooey-nav-container .particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+}
+
+.gooey-nav-container .particle .point {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color, hsl(var(--primary)));
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%) translate(var(--start-x, 0), var(--start-y, 0)) scale(0);
+}
+
+.gooey-nav-container .effect.filter.active .particle .point {
+  animation: particle-anim var(--time, 600ms) ease forwards;
+}
+
+@keyframes particle-anim {
+  0% {
+    transform: translate(-50%, -50%) translate(var(--start-x, 0), var(--start-y, 0)) rotate(0deg) scale(var(--scale, 1));
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--end-x, 0), var(--end-y, 0)) rotate(var(--rotate, 0deg)) scale(0);
+    opacity: 0;
+  }
+}
