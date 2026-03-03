@@ -22,6 +22,7 @@ const Navbar = () => {
     const idx = navLinks.findIndex(l => l.href.replace("#", "") === activeSection);
     return idx >= 0 ? idx : 0;
   }, [activeSection]);
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
