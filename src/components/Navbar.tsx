@@ -18,7 +18,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const { theme, setTheme } = useTheme();
+  const activeIndex = useMemo(() => {
+    const idx = navLinks.findIndex(l => l.href.replace("#", "") === activeSection);
+    return idx >= 0 ? idx : 0;
+  }, [activeSection]);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
