@@ -88,29 +88,6 @@ const Index = () => {
               <TechMarquee />
             </SectionTransition>
 
-            <SectionTransition delay={0.05}>
-              <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-12">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="mb-12 text-center"
-                >
-                  <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-                    Explore Our <span className="text-google-blue">Core</span> Activities
-                  </h2>
-                  <p className="text-muted-foreground max-w-2xl mx-auto">
-                    From hands-on learning to global competitions, discover how we build the future together.
-                  </p>
-                </motion.div>
-                <MagicBento
-                  glowColor="66, 133, 244"
-                  enableTilt={true}
-                  enableMagnetism={true}
-                />
-              </div>
-            </SectionTransition>
 
             <OrganicDivider variant="curve" flip color="--card" />
 
