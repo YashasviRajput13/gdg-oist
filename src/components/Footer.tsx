@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="border-t border-border bg-card relative overflow-hidden">
@@ -99,8 +99,9 @@ const Footer = () => {
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} GDG OIST Bhopal. Not affiliated with Google Inc.
           </p>
-          <div className="flex gap-1 text-xs text-muted-foreground">
-            Made with <span className="google-dot-red">♥</span> in Bhopal
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <span>Made with <span className="google-dot-red">♥</span> in Bhopal</span>
+            <Link to="/admin/login" className="opacity-40 hover:opacity-100 transition-opacity">Admin</Link>
           </div>
         </motion.div>
       </div>
