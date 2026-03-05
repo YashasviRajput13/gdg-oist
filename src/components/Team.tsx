@@ -29,6 +29,7 @@ const Team = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [members, setMembers] = useState<TeamMember[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
