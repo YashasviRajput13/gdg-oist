@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, ArrowLeft, Image, Calendar } from "lucide-react";
+import { LogOut, ArrowLeft, Image, Calendar, Users } from "lucide-react";
 import AdminGalleryTab from "./AdminGalleryTab";
 import AdminEvents from "./AdminEvents";
+import AdminTeamTab from "./AdminTeamTab";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -58,12 +59,18 @@ const AdminDashboard = () => {
             <TabsTrigger value="events" className="gap-2">
               <Calendar className="h-4 w-4" /> Events
             </TabsTrigger>
+            <TabsTrigger value="team" className="gap-2">
+              <Users className="h-4 w-4" /> Team
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="gallery">
             <AdminGalleryTab />
           </TabsContent>
           <TabsContent value="events">
             <AdminEvents />
+          </TabsContent>
+          <TabsContent value="team">
+            <AdminTeamTab />
           </TabsContent>
         </Tabs>
       </main>
