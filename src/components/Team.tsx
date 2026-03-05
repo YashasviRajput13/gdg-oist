@@ -77,31 +77,57 @@ const Team = () => {
           </h2>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
-        >
-          {members.map((m, i) => {
-            const color = googleColors[i % googleColors.length];
-            return (
-              <ProfileCard
-                key={m.id}
-                avatarUrl={m.avatar_url || '/placeholder.svg'}
-                name={m.name}
-                title={m.role}
-                handle={m.name.toLowerCase().replace(/\s+/g, '')}
-                innerGradient={color.gradient}
-                behindGlowColor={color.glow}
-                onContactClick={() => {
-                  const url = m.linkedin_url || m.github_url || m.twitter_url;
-                  if (url) window.open(url, '_blank');
-                }}
-              />
-            );
-          })}
-        </motion.div>
+        {(() => {
+          const grouped = members.reduce<Record<string, TeamMember[]>>((acc, m) => {
+            const cat = m.category || "Other";
+            if (!acc[cat]) acc[cat] = [];
+            acc[cat].push(m);
+            return acc;
+          }, {});
+          const sortedCategories = Object.keys(grouped).sort(
+            (a, b) => (categoryOrder.indexOf(a) === -1 ? 99 : categoryOrder.indexOf(a)) - (categoryOrder.indexOf(b) === -1 ? 99 : categoryOrder.indexOf(b))
+          );
+          let globalIndex = 0;
+          return sortedCategories.map((cat, catIdx) => (
+            <div key={cat} className={catIdx > 0 ? "mt-16" : ""}>
+              <motion.h3
+                initial={{ opacity: 0, x: -20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.4 + catIdx * 0.1 }}
+                className="text-2xl md:text-3xl font-display font-semibold text-foreground mb-8 border-l-4 pl-4"
+                style={{ borderColor: googleColors[catIdx % googleColors.length].border }}
+              >
+                {cat}
+              </motion.h3>
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.5 + catIdx * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
+              >
+                {grouped[cat].map((m) => {
+                  const color = googleColors[globalIndex % googleColors.length];
+                  globalIndex++;
+                  return (
+                    <ProfileCard
+                      key={m.id}
+                      avatarUrl={m.avatar_url || '/placeholder.svg'}
+                      name={m.name}
+                      title={m.role}
+                      handle={m.name.toLowerCase().replace(/\s+/g, '')}
+                      innerGradient={color.gradient}
+                      behindGlowColor={color.glow}
+                      onContactClick={() => {
+                        const url = m.linkedin_url || m.github_url || m.twitter_url;
+                        if (url) window.open(url, '_blank');
+                      }}
+                    />
+                  );
+                })}
+              </motion.div>
+            </div>
+          ));
+        })()}
       </div>
     </section>
   );

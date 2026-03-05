@@ -133,7 +133,7 @@ const AdminTeamTab = () => {
               </TableRow>
             ))}
             {members.length === 0 && (
-              <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">No team members yet</TableCell></TableRow>
+              <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">No team members yet</TableCell></TableRow>
             )}
           </TableBody>
         </Table>
