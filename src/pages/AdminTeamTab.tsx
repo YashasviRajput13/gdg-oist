@@ -20,7 +20,7 @@ interface TeamMember {
   category: string | null;
 }
 
-const CATEGORIES = ["Tech", "Media", "Women in Tech", "Other"];
+const CATEGORIES = ["Tech", "Media", "Women in Tech", "Design", "Management", "Marketing", "Other"];
 
 const empty: Omit<TeamMember, "id"> = {
   name: "", role: "", bio: "", avatar_url: "", linkedin_url: "", github_url: "", twitter_url: "", display_order: 0, category: "Tech",
