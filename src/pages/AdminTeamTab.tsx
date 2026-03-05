@@ -72,7 +72,7 @@ const AdminTeamTab = () => {
 
   const startEdit = (m: TeamMember) => {
     setEditing(m); setAdding(false);
-    setForm({ name: m.name, role: m.role, bio: m.bio, avatar_url: m.avatar_url, linkedin_url: m.linkedin_url, github_url: m.github_url, twitter_url: m.twitter_url, display_order: m.display_order });
+    setForm({ name: m.name, role: m.role, bio: m.bio, avatar_url: m.avatar_url, linkedin_url: m.linkedin_url, github_url: m.github_url, twitter_url: m.twitter_url, display_order: m.display_order, category: m.category });
   };
 
   const cancel = () => { setEditing(null); setAdding(false); setForm(empty); };
