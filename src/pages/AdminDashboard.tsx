@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, ArrowLeft, Image, Calendar } from "lucide-react";
+import { LogOut, ArrowLeft, Image, Calendar, Users } from "lucide-react";
 import AdminGalleryTab from "./AdminGalleryTab";
 import AdminEvents from "./AdminEvents";
+import AdminTeamTab from "./AdminTeamTab";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
