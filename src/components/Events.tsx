@@ -160,6 +160,7 @@ const Events = () => {
                   Register Now <ArrowRight size={14} />
                 </motion.a>
               )}
+              </div>
             </motion.div>
           ))}
         </div>
