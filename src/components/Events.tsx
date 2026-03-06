@@ -100,8 +100,18 @@ const Events = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.3 + i * 0.12, ease: [0.16, 1, 0.3, 1] as const }}
               whileHover={{ y: -6, scale: 1.01 }}
-              className="group bg-card rounded-3xl border border-border p-8 hover:shadow-xl hover:border-primary/15 transition-all duration-500 relative overflow-hidden"
+              className="group bg-card rounded-3xl border border-border hover:shadow-xl hover:border-primary/15 transition-all duration-500 relative overflow-hidden"
             >
+              {event.image_url && (
+                <div className="w-full h-48 overflow-hidden">
+                  <img
+                    src={event.image_url}
+                    alt={event.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              )}
               {event.is_featured && (
                 <div className="absolute top-4 right-4">
                   <span className="text-xs px-2.5 py-1 rounded-full bg-google-yellow/15 text-google-yellow font-semibold">
