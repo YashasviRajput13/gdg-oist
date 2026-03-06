@@ -107,25 +107,42 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 2rem;
+    justify-content: flex-end;
+    padding: 1.5rem;
     position: relative;
 }
 
 .avatar {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
     object-fit: cover;
-    border: 4px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    margin-bottom: 1.5rem;
+    border: none;
+    box-shadow: none;
+    margin-bottom: 0;
     background: #111;
-    transition: transform 0.3s ease;
+    transition: transform 0.5s ease;
+    z-index: 0;
 }
 
 .pc-card-wrapper:hover .avatar {
-    transform: scale(1.05) translateY(-5px);
+    transform: scale(1.08);
+}
+
+.pc-avatar-content::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.pc-user-info {
+    position: relative;
+    z-index: 2;
 }
 
 .pc-user-info {
