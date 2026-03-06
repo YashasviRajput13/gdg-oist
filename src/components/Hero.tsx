@@ -203,6 +203,19 @@ const Hero = () => {
             Learn More
           </motion.a>
         </motion.div>
+
+        {/* Scroll-triggered counters */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 2, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 flex flex-wrap justify-center gap-2 md:gap-0 divide-x divide-border/30"
+        >
+          <AnimatedCounter value={25} suffix="+" icon={Users} label="Members" delay={2.1} />
+          <AnimatedCounter value={15} suffix="+" icon={Calendar} label="Events" delay={2.3} />
+          <AnimatedCounter value={10} suffix="+" icon={Code} label="Projects" delay={2.5} />
+          <AnimatedCounter value={5} suffix="" icon={Trophy} label="Awards" delay={2.7} />
+        </motion.div>
       </motion.div>
 
       {/* Scroll indicator */}
