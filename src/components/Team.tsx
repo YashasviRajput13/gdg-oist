@@ -67,7 +67,7 @@ const Team = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-4"
+            className="text-sm font-medium tracking-widest uppercase text-primary/70 mb-4"
           >
             Our Team
           </motion.p>
