@@ -15,7 +15,7 @@ interface TeamMember {
   category: string | null;
 }
 
-const categoryOrder = ["Tech", "Media", "Women in Tech", "Design", "Management", "Marketing", "Other"];
+const categoryOrder = ["Core", "Tech", "Design", "Marketing", "Volunteers", "Media", "Women in Tech", "Management", "Other"];
 
 const googleColors = [
   { border: 'hsl(217 89% 61%)', glow: 'rgba(66, 133, 244, 0.4)', gradient: 'linear-gradient(145deg, rgba(66, 133, 244, 0.2), rgba(6, 0, 16, 0.8))' },
