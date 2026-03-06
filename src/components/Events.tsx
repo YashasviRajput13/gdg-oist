@@ -112,6 +112,7 @@ const Events = () => {
                   />
                 </div>
               )}
+              <div className="p-8">
               {event.is_featured && (
                 <div className="absolute top-4 right-4">
                   <span className="text-xs px-2.5 py-1 rounded-full bg-google-yellow/15 text-google-yellow font-semibold">
