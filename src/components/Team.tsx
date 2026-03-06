@@ -15,7 +15,7 @@ interface TeamMember {
   category: string | null;
 }
 
-const categoryOrder = ["Tech", "Media", "Women in Tech", "Design", "Management", "Marketing", "Other"];
+const categoryOrder = ["Core", "Tech", "Design", "Marketing", "Volunteers", "Media", "Women in Tech", "Management", "Other"];
 
 const googleColors = [
   { border: 'hsl(217 89% 61%)', glow: 'rgba(66, 133, 244, 0.4)', gradient: 'linear-gradient(145deg, rgba(66, 133, 244, 0.2), rgba(6, 0, 16, 0.8))' },
@@ -48,6 +48,7 @@ const Team = () => {
   }, []);
 
   const headingWords = ["The", "people", "behind", "GDG"];
+  const subtitle = "MEET OUR HUB";
 
   const availableCategories = categoryOrder.filter(cat =>
     members.some(m => (m.category || "Other") === cat)
@@ -66,9 +67,9 @@ const Team = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="text-sm font-medium tracking-widest uppercase text-muted-foreground mb-4"
+            className="text-sm font-medium tracking-widest uppercase text-primary/70 mb-4"
           >
-            Our Team
+            {subtitle}
           </motion.p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
             {headingWords.map((word, i) => (
@@ -90,31 +91,23 @@ const Team = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap justify-center gap-3 mb-14"
+          className="flex flex-wrap justify-center gap-2.5 mb-14"
         >
-          {["All", ...availableCategories].map((cat, i) => {
+          {["All", ...availableCategories].map((cat) => {
             const isActive = activeCategory === cat;
-            const color = cat === "All" ? googleColors[0] : googleColors[(availableCategories.indexOf(cat)) % googleColors.length];
             return (
               <motion.button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
-                className="px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border"
-                style={{
-                  borderColor: isActive ? color.border : 'hsl(var(--border))',
-                  background: isActive ? color.gradient : 'transparent',
-                  color: isActive ? 'white' : 'hsl(var(--muted-foreground))',
-                  boxShadow: isActive ? `0 0 20px ${color.glow}` : 'none',
-                }}
+                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
+                  isActive
+                    ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30'
+                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground/50'
+                }`}
               >
                 {cat}
-                {cat !== "All" && (
-                  <span className="ml-2 text-xs opacity-70">
-                    {members.filter(m => (m.category || "Other") === cat).length}
-                  </span>
-                )}
               </motion.button>
             );
           })}
