@@ -55,6 +55,19 @@ const Footer = () => {
                   {link}
                 </motion.a>
               ))}
+              <motion.a
+                href="https://github.com/your-repo/docs"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.3 + 5 * 0.06 }}
+                whileHover={{ x: 6 }}
+                className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                📄 Documentation
+              </motion.a>
             </div>
           </motion.div>
 
