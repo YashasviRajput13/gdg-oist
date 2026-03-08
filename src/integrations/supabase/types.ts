@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_invites: {
+        Row: {
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string
+          token: string
+          used: boolean
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          invited_by: string
+          token?: string
+          used?: boolean
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string
+          token?: string
+          used?: boolean
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string
@@ -212,6 +242,19 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      use_invite_token: {
+        Args: { _token: string; _user_id: string }
+        Returns: boolean
+      }
+      validate_invite_token: {
+        Args: { _token: string }
+        Returns: {
+          email: string
+          expires_at: string
+          id: string
+          used: boolean
+        }[]
       }
     }
     Enums: {
