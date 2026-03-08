@@ -45,13 +45,24 @@ const AdminLogin = () => {
 
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const logAttempt = (success: boolean, userId?: string) => {
+      supabase.functions.invoke("log-login", {
+        body: {
+          email: result.data.email,
+          user_id: userId || null,
+          success,
+          user_agent: navigator.userAgent,
+        },
+      });
+    };
+
+    const { data: signInData, error } = await supabase.auth.signInWithPassword({
       email: result.data.email,
       password: result.data.password,
     });
 
     if (error) {
-      // Generic error message to avoid user enumeration
+      logAttempt(false);
       toast({ title: "Login failed", description: "Invalid email or password.", variant: "destructive" });
       setLoading(false);
       return;
@@ -60,6 +71,7 @@ const AdminLogin = () => {
     // Check admin role via server-validated getUser
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
+      logAttempt(false);
       toast({ title: "Error", description: "Authentication failed.", variant: "destructive" });
       setLoading(false);
       return;
@@ -72,12 +84,14 @@ const AdminLogin = () => {
       .eq("role", "admin");
 
     if (!roles || roles.length === 0) {
+      logAttempt(false, user.id);
       await supabase.auth.signOut();
       toast({ title: "Access denied", description: "You do not have admin privileges.", variant: "destructive" });
       setLoading(false);
       return;
     }
 
+    logAttempt(true, user.id);
     toast({ title: "Welcome back!", description: "Redirecting to admin panel..." });
     navigate("/admin");
   };
