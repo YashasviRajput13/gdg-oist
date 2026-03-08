@@ -102,7 +102,7 @@ const Team = () => {
                 className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
                   isActive
                     ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30'
-                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground/50'
+                    : 'bg-card text-foreground/70 border-border hover:border-primary/50 hover:text-foreground'
                 }`}
               >
                 {cat}
