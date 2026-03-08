@@ -107,7 +107,7 @@ const Achievements = () => {
               className="text-center p-6 rounded-3xl bg-background border border-border hover:shadow-lg transition-shadow group"
             >
               <num.icon size={22} className={`${num.color} mx-auto mb-3 group-hover:scale-110 transition-transform`} />
-              <p className={`font-display text-3xl md:text-4xl font-bold ${num.color} mb-1`}>
+              <p className={`font-display text-2xl md:text-3xl font-bold ${num.color} mb-1`}>
                 {num.value}
               </p>
               <p className="text-xs text-muted-foreground font-medium">{num.label}</p>
