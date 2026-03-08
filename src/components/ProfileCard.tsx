@@ -63,7 +63,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 }) => {
     const wrapRef = useRef<HTMLDivElement>(null);
     const shellRef = useRef<HTMLDivElement>(null);
-    const { playSound } = useSound();
+    
 
     const enterTimerRef = useRef<number | null>(null);
     const leaveRafRef = useRef<number | null>(null);
