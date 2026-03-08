@@ -8,10 +8,10 @@ import pillarInnovation from "@/assets/pillar-innovation.png";
 import pillarOpensource from "@/assets/pillar-opensource.png";
 
 const stats = [
-  { icon: Users, label: "Growing Community", color: "bg-google-blue", textColor: "text-google-blue" },
-  { icon: CalendarDays, label: "Events Hosted", color: "bg-google-red", textColor: "text-google-red" },
-  { icon: Wrench, label: "Hands-on Workshops", color: "bg-google-yellow", textColor: "text-google-yellow" },
-  { icon: Code2, label: "Hackathons", color: "bg-google-green", textColor: "text-google-green" },
+  { icon: Users, value: "25+", label: "Members", color: "bg-google-blue", textColor: "text-google-blue" },
+  { icon: CalendarDays, value: "10+", label: "Events Hosted", color: "bg-google-red", textColor: "text-google-red" },
+  { icon: Wrench, value: "5+", label: "Workshops", color: "bg-google-yellow", textColor: "text-google-yellow" },
+  { icon: Code2, value: "3+", label: "Hackathons", color: "bg-google-green", textColor: "text-google-green" },
 ];
 
 const pillars = [
