@@ -140,6 +140,11 @@ const AdminLogin = () => {
                 </p>
               )}
             </div>
+            <div className="flex justify-end">
+              <Link to="/admin/forgot-password" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+                Forgot password?
+              </Link>
+            </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Signing in..." : "Sign In"}
             </Button>
