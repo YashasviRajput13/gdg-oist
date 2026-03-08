@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Users, CalendarDays, Wrench, Code2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import FlowingMenu from "./FlowingMenu";
 import CircularGallery from "./CircularGallery";
 import milestoneIo from "@/assets/milestone-io.jpg";
