@@ -68,6 +68,30 @@ export type Database = {
         }
         Relationships: []
       }
+      event_highlights: {
+        Row: {
+          created_at: string
+          display_order: number | null
+          id: string
+          image_url: string
+          label: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          image_url: string
+          label: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          image_url?: string
+          label?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           created_at: string

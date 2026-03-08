@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Users, CalendarDays, Wrench, Code2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import FlowingMenu from "./FlowingMenu";
 import CircularGallery from "./CircularGallery";
 import milestoneIo from "@/assets/milestone-io.jpg";
@@ -41,7 +42,7 @@ const milestoneItems = [
   },
 ];
 
-const galleryItems = [
+const fallbackGalleryItems = [
   { image: "https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?q=80&w=2070&auto=format&fit=crop", text: "DevFest '24" },
   { image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop", text: "Tech Talk" },
   { image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=2070&auto=format&fit=crop", text: "Hackathon" },
@@ -55,6 +56,20 @@ const Achievements = () => {
   const statsRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const statsInView = useInView(statsRef, { once: true, margin: "-80px" });
+  const [galleryItems, setGalleryItems] = useState(fallbackGalleryItems);
+
+  useEffect(() => {
+    const fetchHighlights = async () => {
+      const { data } = await supabase
+        .from("event_highlights")
+        .select("*")
+        .order("display_order", { ascending: true });
+      if (data && data.length > 0) {
+        setGalleryItems(data.map((h) => ({ image: h.image_url, text: h.label })));
+      }
+    };
+    fetchHighlights();
+  }, []);
 
   const headingWords = ["Our", "milestones"];
 
