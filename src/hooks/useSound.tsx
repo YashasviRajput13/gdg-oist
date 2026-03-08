@@ -11,13 +11,13 @@ interface SoundContextType {
 const SoundContext = createContext<SoundContextType | undefined>(undefined);
 
 const SOUND_URLS = {
-    hover: 'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3', // Soft blip
-    click: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3', // Light tap
-    success: 'https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3', // Subtle chime
-    transition: 'https://assets.mixkit.co/active_storage/sfx/2561/2561-preview.mp3', // Soft whoosh
+    hover: 'https://cdn.pixabay.com/audio/2022/03/24/audio_805cb7e4c8.mp3', // Soft blip
+    click: 'https://cdn.pixabay.com/audio/2022/03/10/audio_d8dbe06c94.mp3', // Light tap
+    success: 'https://cdn.pixabay.com/audio/2021/08/04/audio_c507e0c80a.mp3', // Subtle chime
+    transition: 'https://cdn.pixabay.com/audio/2022/03/15/audio_4d85046c0a.mp3', // Soft whoosh
 };
 
-const MUSIC_URL = 'https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3'; // Serene ambient loop
+const MUSIC_URL = 'https://cdn.pixabay.com/audio/2022/02/22/audio_d1718ab41b.mp3'; // Calm ambient loop
 
 export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isMuted, setIsMuted] = useState(() => {
