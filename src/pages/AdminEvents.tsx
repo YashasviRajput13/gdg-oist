@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, Save, X, Calendar, Star, Link, Check } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface EventItem {
   id: string;
@@ -50,6 +51,7 @@ const AdminEvents = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [editingLinkId, setEditingLinkId] = useState<string | null>(null);
   const [linkValue, setLinkValue] = useState("");
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
   useEffect(() => {
@@ -63,6 +65,47 @@ const AdminEvents = () => {
       .order("event_date", { ascending: false });
     if (data) setItems(data);
     setLoading(false);
+  };
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === items.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(items.map((i) => i.id)));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.size === 0) return;
+    const { error } = await supabase.from("events").delete().in("id", Array.from(selectedIds));
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: `${selectedIds.size} event(s) deleted` });
+    setSelectedIds(new Set());
+    fetchItems();
+  };
+
+  const handleBulkToggleFeatured = async (featured: boolean) => {
+    if (selectedIds.size === 0) return;
+    const { error } = await supabase.from("events").update({ is_featured: featured }).in("id", Array.from(selectedIds));
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: `${selectedIds.size} event(s) ${featured ? "featured" : "unfeatured"}` });
+    setSelectedIds(new Set());
+    fetchItems();
   };
 
   const handleAdd = async () => {
@@ -182,6 +225,23 @@ const AdminEvents = () => {
         </Button>
       </div>
 
+      {selectedIds.size > 0 && (
+        <div className="flex items-center gap-2 mb-4 p-3 rounded-lg bg-muted/50 border border-border">
+          <span className="text-sm font-medium text-foreground">{selectedIds.size} selected</span>
+          <div className="flex gap-2 ml-auto">
+            <Button size="sm" variant="outline" onClick={() => handleBulkToggleFeatured(true)}>
+              <Star className="h-3.5 w-3.5 mr-1 fill-yellow-500 text-yellow-500" /> Feature
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => handleBulkToggleFeatured(false)}>
+              <Star className="h-3.5 w-3.5 mr-1" /> Unfeature
+            </Button>
+            <Button size="sm" variant="destructive" onClick={handleBulkDelete}>
+              <Trash2 className="h-3.5 w-3.5 mr-1" /> Delete
+            </Button>
+          </div>
+        </div>
+      )}
+
       {isAdding && (
         <Card className="mb-6 border-primary/30">
           <CardHeader className="pb-3">
@@ -204,6 +264,12 @@ const AdminEvents = () => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-10">
+                  <Checkbox
+                    checked={items.length > 0 && selectedIds.size === items.length}
+                    onCheckedChange={toggleSelectAll}
+                  />
+                </TableHead>
                 <TableHead>Title</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Date</TableHead>
@@ -214,9 +280,9 @@ const AdminEvents = () => {
             </TableHeader>
             <TableBody>
               {items.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow key={item.id} data-state={selectedIds.has(item.id) ? "selected" : undefined}>
                   {editingId === item.id ? (
-                    <TableCell colSpan={6}>
+                    <TableCell colSpan={7}>
                       <EventFormFields />
                       <div className="flex gap-2 mt-4">
                         <Button size="sm" onClick={() => handleUpdate(item.id)}><Save className="h-4 w-4 mr-1" /> Save</Button>
@@ -225,6 +291,12 @@ const AdminEvents = () => {
                     </TableCell>
                   ) : (
                     <>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedIds.has(item.id)}
+                          onCheckedChange={() => toggleSelect(item.id)}
+                        />
+                      </TableCell>
                       <TableCell className="font-medium text-foreground">{item.title}</TableCell>
                       <TableCell className="text-muted-foreground capitalize">{item.event_type || "—"}</TableCell>
                       <TableCell className="text-muted-foreground">
