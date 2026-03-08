@@ -108,7 +108,7 @@ const Gallery = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={lightboxItem.src}
+                src={toDirectImageUrl(lightboxItem.src)}
                 alt={lightboxItem.alt}
                 className="w-full h-full object-contain"
               />
