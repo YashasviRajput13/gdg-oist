@@ -204,7 +204,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
             shell.classList.add('active');
             shell.classList.add('entering');
-            playSound('hover');
+            
             if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
             enterTimerRef.current = window.setTimeout(() => {
                 shell.classList.remove('entering');
