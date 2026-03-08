@@ -15,7 +15,7 @@ const queryClient = new QueryClient();
 import { SoundProvider } from "@/hooks/useSound";
 
 const App = () => (
-  <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+  <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
     <QueryClientProvider client={queryClient}>
       <SoundProvider>
         <TooltipProvider>
