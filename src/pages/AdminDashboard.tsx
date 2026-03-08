@@ -2,13 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, ArrowLeft, Image, Calendar, Users, MessageSquareQuote, Loader2, UserPlus, Sparkles } from "lucide-react";
+import { LogOut, ArrowLeft, Image, Calendar, Users, MessageSquareQuote, Loader2, UserPlus, Sparkles, History } from "lucide-react";
 import AdminGalleryTab from "./AdminGalleryTab";
 import AdminEvents from "./AdminEvents";
 import AdminTeamTab from "./AdminTeamTab";
 import AdminTestimonialsTab from "./AdminTestimonialsTab";
 import AdminInvite from "@/components/AdminInvite";
 import AdminHighlightsTab from "./AdminHighlightsTab";
+import AdminLoginHistoryTab from "./AdminLoginHistoryTab";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 const AdminDashboard = () => {
@@ -67,6 +68,9 @@ const AdminDashboard = () => {
             <TabsTrigger value="invite" className="gap-2">
               <UserPlus className="h-4 w-4" /> Invite Admin
             </TabsTrigger>
+            <TabsTrigger value="login-history" className="gap-2">
+              <History className="h-4 w-4" /> Login History
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="gallery">
             <AdminGalleryTab />
@@ -85,6 +89,9 @@ const AdminDashboard = () => {
           </TabsContent>
           <TabsContent value="invite">
             <AdminInvite />
+          </TabsContent>
+          <TabsContent value="login-history">
+            <AdminLoginHistoryTab />
           </TabsContent>
         </Tabs>
       </main>
