@@ -82,46 +82,49 @@ const Gallery = () => {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {lightboxItem && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-md p-4"
-            onClick={() => setLightboxItem(null)}
-          >
-            <motion.button
-              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors z-10"
-              onClick={() => setLightboxItem(null)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <X size={20} />
-            </motion.button>
+      {/* Lightbox Modal - rendered via portal to avoid overflow clipping */}
+      {createPortal(
+        <AnimatePresence>
+          {lightboxItem && (
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="relative max-w-4xl max-h-[85vh] rounded-2xl shadow-2xl flex items-center justify-center"
-              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/80 backdrop-blur-md p-4"
+              onClick={() => setLightboxItem(null)}
             >
-              <img
-                src={toDirectImageUrl(lightboxItem.src)}
-                alt={lightboxItem.alt}
-                className="max-w-full max-h-[85vh] object-contain rounded-2xl"
-              />
-              {(lightboxItem.caption || lightboxItem.alt) && (
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-transparent">
-                  <p className="text-foreground font-semibold text-sm">{lightboxItem.caption || lightboxItem.alt}</p>
-                </div>
-              )}
+              <motion.button
+                className="absolute top-6 right-6 w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors z-10"
+                onClick={() => setLightboxItem(null)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <X size={20} />
+              </motion.button>
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                className="relative flex items-center justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={toDirectImageUrl(lightboxItem.src)}
+                  alt={lightboxItem.alt}
+                  className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+                />
+                {(lightboxItem.caption || lightboxItem.alt) && (
+                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-transparent rounded-b-2xl">
+                    <p className="text-foreground font-semibold text-sm">{lightboxItem.caption || lightboxItem.alt}</p>
+                  </div>
+                )}
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </section>
   );
 };
