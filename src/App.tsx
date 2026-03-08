@@ -9,6 +9,8 @@ import NotFound from "./pages/NotFound";
 import DocsPage from "./pages/DocsPage";
 import AdminLogin from "./pages/AdminLogin";
 import AdminSignup from "./pages/AdminSignup";
+import AdminForgotPassword from "./pages/AdminForgotPassword";
+import AdminResetPassword from "./pages/AdminResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
