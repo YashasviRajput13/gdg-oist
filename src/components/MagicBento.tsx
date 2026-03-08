@@ -533,7 +533,7 @@ const MagicBento = ({
     const gridRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobileDetection();
     const shouldDisableAnimations = disableAnimations || isMobile;
-    const { playSound } = useSound();
+    
 
     return (
         <>
