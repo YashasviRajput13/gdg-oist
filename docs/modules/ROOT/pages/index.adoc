@@ -45,3 +45,11 @@ Use the sidebar to explore:
 * xref:design-system.adoc[Design System] — Colors, typography, theming
 * xref:animations.adoc[Animations & Effects] — Visual effects and transitions
 * xref:utilities.adoc[Utilities & Helpers] — Validation, rate limiting, etc.
+
+== Source Code
+
+GitHub: https://github.com/YashasviRajput13/gdg-oist[YashasviRajput13/gdg-oist]
+
+== Author
+
+Built by *Yashasvi Singh Rajput* — https://github.com/YashasviRajput13[@YashasviRajput13]
