@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { TrendingUp, BookOpen, Network, Trophy } from "lucide-react";
+import { Users, CalendarDays, Wrench, Code2 } from "lucide-react";
 import FlowingMenu from "./FlowingMenu";
 import CircularGallery from "./CircularGallery";
 import milestoneIo from "@/assets/milestone-io.jpg";
@@ -8,11 +8,13 @@ import milestoneSolution from "@/assets/milestone-solution.jpg";
 import milestoneDevfest from "@/assets/milestone-devfest.jpg";
 import milestoneCommunity from "@/assets/milestone-community.jpg";
 
+const googleColors = ["bg-google-blue", "bg-google-red", "bg-google-yellow", "bg-google-green"];
+
 const numbers = [
-  { icon: TrendingUp, value: "Growing", label: "Community", color: "text-google-blue" },
-  { icon: BookOpen, value: "Learning", label: "Sessions", color: "text-google-red" },
-  { icon: Network, value: "Developer", label: "Networking", color: "text-google-yellow" },
-  { icon: Trophy, value: "Hackathon", label: "Culture", color: "text-google-green" },
+  { icon: Users, label: "Growing Community", color: "text-google-blue", bar: googleColors[0] },
+  { icon: CalendarDays, label: "Events Hosted", color: "text-google-red", bar: googleColors[1] },
+  { icon: Wrench, label: "Hands-on Workshops", color: "text-google-yellow", bar: googleColors[2] },
+  { icon: Code2, label: "Hackathons Organized", color: "text-google-green", bar: googleColors[3] },
 ];
 
 // Milestone items for FlowingMenu
