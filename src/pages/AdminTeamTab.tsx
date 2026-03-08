@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
+import { toDirectImageUrl } from "@/lib/driveUrl";
 import { Plus, Pencil, Trash2, Save, X } from "lucide-react";
 
 interface TeamMember {
