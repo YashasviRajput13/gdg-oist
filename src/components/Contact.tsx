@@ -1,8 +1,10 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { contactSchema } from "@/lib/validation";
+import { checkRateLimit, formatRetryTime } from "@/lib/rateLimit";
 
 const Contact = () => {
   const ref = useRef(null);
@@ -10,15 +12,46 @@ const Contact = () => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
+    setErrors({});
+
+    // Rate limiting: 3 submissions per 60 seconds
+    const { allowed, retryAfterMs } = checkRateLimit("contact_form", 3, 60_000);
+    if (!allowed) {
+      toast({
+        title: "Too many submissions",
+        description: `Please wait ${formatRetryTime(retryAfterMs)} before submitting again.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     const formData = new FormData(e.currentTarget);
+    const raw = {
+      name: (formData.get("name") as string) || "",
+      email: (formData.get("email") as string) || "",
+      message: (formData.get("message") as string) || "",
+    };
+
+    // Validate with zod
+    const result = contactSchema.safeParse(raw);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach((err) => {
+        if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setLoading(true);
     const { error } = await supabase.from("contact_submissions").insert({
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      message: formData.get("message") as string,
+      name: result.data.name,
+      email: result.data.email,
+      message: result.data.message,
     });
     setLoading(false);
     if (error) {
@@ -94,11 +127,11 @@ const Contact = () => {
             </motion.div>
           ) : (
             <div className="bg-card rounded-3xl border border-border p-8 md:p-12 shadow-sm">
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6" noValidate>
                 <div className="grid md:grid-cols-2 gap-6">
                   {[
-                    { name: "name", label: "Name", placeholder: "John Doe", type: "text" },
-                    { name: "email", label: "Email", placeholder: "john@example.com", type: "email" },
+                    { name: "name", label: "Name", placeholder: "John Doe", type: "text", maxLength: 100 },
+                    { name: "email", label: "Email", placeholder: "john@example.com", type: "email", maxLength: 255 },
                   ].map((field, i) => (
                     <motion.div
                       key={field.name}
@@ -110,10 +143,16 @@ const Contact = () => {
                       <input
                         name={field.name}
                         type={field.type}
-                        required
+                        maxLength={field.maxLength}
                         placeholder={field.placeholder}
-                        className="w-full px-5 py-4 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent font-body transition-all"
+                        className={`w-full px-5 py-4 rounded-xl bg-background border ${errors[field.name] ? 'border-destructive' : 'border-border'} text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent font-body transition-all`}
                       />
+                      {errors[field.name] && (
+                        <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+                          <AlertCircle size={12} />
+                          {errors[field.name]}
+                        </p>
+                      )}
                     </motion.div>
                   ))}
                 </div>
@@ -125,11 +164,17 @@ const Contact = () => {
                   <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 block">Message</label>
                   <textarea
                     name="message"
-                    required
                     rows={5}
+                    maxLength={2000}
                     placeholder="Tell us what's on your mind..."
-                    className="w-full px-5 py-4 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent font-body resize-none transition-all"
+                    className={`w-full px-5 py-4 rounded-xl bg-background border ${errors.message ? 'border-destructive' : 'border-border'} text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent font-body resize-none transition-all`}
                   />
+                  {errors.message && (
+                    <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+                      <AlertCircle size={12} />
+                      {errors.message}
+                    </p>
+                  )}
                 </motion.div>
                 <motion.button
                   type="submit"

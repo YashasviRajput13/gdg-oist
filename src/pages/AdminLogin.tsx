@@ -5,31 +5,62 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { LogIn, Mail, Lock, ArrowLeft } from "lucide-react";
+import { LogIn, Mail, Lock, ArrowLeft, AlertCircle } from "lucide-react";
+import { loginSchema } from "@/lib/validation";
+import { checkRateLimit, formatRetryTime } from "@/lib/rateLimit";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
+
+    // Rate limiting: 5 attempts per 5 minutes
+    const { allowed, retryAfterMs } = checkRateLimit("admin_login", 5, 300_000);
+    if (!allowed) {
+      toast({
+        title: "Too many login attempts",
+        description: `Please wait ${formatRetryTime(retryAfterMs)} before trying again.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate inputs
+    const result = loginSchema.safeParse({ email, password });
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach((err) => {
+        if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: result.data.email,
+      password: result.data.password,
+    });
 
     if (error) {
-      toast({ title: "Login failed", description: error.message, variant: "destructive" });
+      // Generic error message to avoid user enumeration
+      toast({ title: "Login failed", description: "Invalid email or password.", variant: "destructive" });
       setLoading(false);
       return;
     }
 
-    // Check admin role
+    // Check admin role via server-validated getUser
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
-      toast({ title: "Error", description: "Could not get user", variant: "destructive" });
+      toast({ title: "Error", description: "Authentication failed.", variant: "destructive" });
       setLoading(false);
       return;
     }
@@ -70,28 +101,44 @@ const AdminLogin = () => {
           <CardDescription>Sign in to manage gallery content</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10"
-                required
-              />
+          <form onSubmit={handleLogin} className="space-y-4" noValidate>
+            <div>
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={`pl-10 ${errors.email ? 'border-destructive' : ''}`}
+                  maxLength={255}
+                  autoComplete="email"
+                />
+              </div>
+              {errors.email && (
+                <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+                  <AlertCircle size={12} /> {errors.email}
+                </p>
+              )}
             </div>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-10"
-                required
-              />
+            <div>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={`pl-10 ${errors.password ? 'border-destructive' : ''}`}
+                  maxLength={128}
+                  autoComplete="current-password"
+                />
+              </div>
+              {errors.password && (
+                <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+                  <AlertCircle size={12} /> {errors.password}
+                </p>
+              )}
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Signing in..." : "Sign In"}

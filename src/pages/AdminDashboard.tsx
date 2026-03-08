@@ -1,39 +1,32 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, ArrowLeft, Image, Calendar, Users, MessageSquareQuote } from "lucide-react";
+import { LogOut, ArrowLeft, Image, Calendar, Users, MessageSquareQuote, Loader2 } from "lucide-react";
 import AdminGalleryTab from "./AdminGalleryTab";
 import AdminEvents from "./AdminEvents";
 import AdminTeamTab from "./AdminTeamTab";
 import AdminTestimonialsTab from "./AdminTestimonialsTab";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [authed, setAuthed] = useState(false);
-
-  useEffect(() => {
-    const check = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { navigate("/admin/login"); return; }
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id)
-        .eq("role", "admin");
-      if (!roles || roles.length === 0) { navigate("/admin/login"); return; }
-      setAuthed(true);
-    };
-    check();
-  }, [navigate]);
+  const { isAuthenticated, isLoading } = useAdminAuth();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/admin/login");
   };
 
-  if (!authed) return null;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) return null;
 
   return (
     <div className="min-h-screen bg-background">
