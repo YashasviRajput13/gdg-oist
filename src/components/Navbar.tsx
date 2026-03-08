@@ -24,7 +24,7 @@ const Navbar = () => {
   }, [activeSection]);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const { isMuted, toggleMute, playSound } = useSound();
+  
 
   useEffect(() => {
     setMounted(true);
