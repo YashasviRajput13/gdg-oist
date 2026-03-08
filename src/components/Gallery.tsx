@@ -104,13 +104,13 @@ const Gallery = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="relative max-w-4xl max-h-[85vh] rounded-2xl overflow-hidden shadow-2xl"
+              className="relative max-w-4xl max-h-[85vh] rounded-2xl shadow-2xl flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={toDirectImageUrl(lightboxItem.src)}
                 alt={lightboxItem.alt}
-                className="w-full h-full object-contain"
+                className="max-w-full max-h-[85vh] object-contain rounded-2xl"
               />
               {(lightboxItem.caption || lightboxItem.alt) && (
                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-transparent">
