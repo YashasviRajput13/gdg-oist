@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
+import { toDirectImageUrl } from "@/lib/driveUrl";
 import { Plus, Pencil, Trash2, Save, X } from "lucide-react";
 
 interface TeamMember {
@@ -143,7 +144,7 @@ const AdminTeamTab = () => {
                 <TableCell className="font-medium">{m.name}</TableCell>
                 <TableCell>{m.role}</TableCell>
                 <TableCell><span className="text-xs px-2 py-1 rounded-full bg-muted">{m.category || "Tech"}</span></TableCell>
-                <TableCell>{m.avatar_url ? <img src={m.avatar_url} alt={m.name} className="h-8 w-8 rounded-full object-cover" /> : "—"}</TableCell>
+                <TableCell>{m.avatar_url ? <img src={toDirectImageUrl(m.avatar_url)} alt={m.name} className="h-8 w-8 rounded-full object-cover" /> : "—"}</TableCell>
                 <TableCell className="text-right space-x-1">
                   <Button variant="ghost" size="icon" onClick={() => startEdit(m)}><Pencil className="h-4 w-4" /></Button>
                   <Button variant="ghost" size="icon" onClick={() => handleDelete(m.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>

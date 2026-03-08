@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
+import { toDirectImageUrl } from "@/lib/driveUrl";
 import { Plus, Pencil, Trash2, Save, X } from "lucide-react";
 
 interface GalleryItem {
@@ -107,7 +108,7 @@ const AdminGalleryTab = () => {
                     </TableCell>
                   ) : (
                     <>
-                      <TableCell><img src={item.src} alt={item.alt} className="w-12 h-12 rounded-lg object-cover" /></TableCell>
+                      <TableCell><img src={toDirectImageUrl(item.src)} alt={item.alt} className="w-12 h-12 rounded-lg object-cover" /></TableCell>
                       <TableCell className="font-medium text-foreground">{item.alt}</TableCell>
                       <TableCell className="text-muted-foreground">{item.caption || "—"}</TableCell>
                       <TableCell className="text-right">
