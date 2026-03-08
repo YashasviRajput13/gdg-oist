@@ -65,7 +65,7 @@ const Achievements = () => {
         .select("*")
         .order("display_order", { ascending: true });
       if (data && data.length > 0) {
-        setGalleryItems(data.map((h) => ({ image: h.image_url, text: h.label })));
+        setGalleryItems(data.map((h) => ({ image: toDirectImageUrl(h.image_url), text: h.label })));
       }
     };
     fetchHighlights();
