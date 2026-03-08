@@ -32,7 +32,7 @@ const App = () => (
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
-      </SoundProvider>
+      
     </QueryClientProvider>
   </ThemeProvider>
 );

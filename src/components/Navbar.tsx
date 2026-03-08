@@ -180,7 +180,6 @@ const Navbar = () => {
               <a
                 href="#contact"
                 onClick={() => {
-                  playSound('click');
                   setIsOpen(false);
                 }}
                 className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold"
