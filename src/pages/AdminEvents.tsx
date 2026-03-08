@@ -146,6 +146,17 @@ const AdminEvents = () => {
     setForm(emptyForm);
   };
 
+  const handleQuickLinkSave = async (id: string) => {
+    const { error } = await supabase.from("events").update({ registration_link: linkValue.trim() || null }).eq("id", id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Registration link updated!" });
+    setEditingLinkId(null);
+    fetchItems();
+  };
+
   const EventFormFields = () => (
     <div className="space-y-3">
       <Input placeholder="Title *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
