@@ -89,9 +89,27 @@ const AdminTeamTab = () => {
         <Input placeholder="GitHub URL" value={form.github_url || ""} onChange={(e) => set("github_url", e.target.value)} />
         <Input placeholder="Twitter URL" value={form.twitter_url || ""} onChange={(e) => set("twitter_url", e.target.value)} />
         <Input type="number" placeholder="Display Order" value={form.display_order ?? 0} onChange={(e) => set("display_order", parseInt(e.target.value) || 0)} />
-        <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" value={form.category || "Tech"} onChange={(e) => set("category", e.target.value)}>
-          {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
+        <div className="flex gap-2">
+          <select
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            value={CATEGORIES.includes(form.category || "") ? form.category || "Tech" : "__custom__"}
+            onChange={(e) => {
+              if (e.target.value === "__custom__") set("category", "");
+              else set("category", e.target.value);
+            }}
+          >
+            {CATEGORIES.filter(c => c !== "Other").map(c => <option key={c} value={c}>{c}</option>)}
+            <option value="__custom__">Other (custom)...</option>
+          </select>
+          {!CATEGORIES.includes(form.category || "") || form.category === "" ? (
+            <Input
+              placeholder="Type custom category"
+              value={form.category || ""}
+              onChange={(e) => set("category", e.target.value)}
+              className="flex-1"
+            />
+          ) : null}
+        </div>
         <div className="md:col-span-2 flex gap-2">
           <Button onClick={editing ? handleUpdate : handleAdd}><Save className="h-4 w-4 mr-1" />{editing ? "Update" : "Save"}</Button>
           <Button variant="outline" onClick={cancel}><X className="h-4 w-4 mr-1" />Cancel</Button>
