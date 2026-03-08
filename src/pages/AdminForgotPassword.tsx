@@ -47,14 +47,23 @@ const AdminForgotPassword = () => {
 
     setLoading(true);
 
-    await supabase.functions.invoke("admin-reset-password", {
+    const { data, error } = await supabase.functions.invoke("admin-reset-password", {
       body: {
         email: result.data.email,
         redirectTo: `${window.location.origin}/admin/reset-password`,
       },
     });
 
-    // Always show success to prevent user enumeration
+    if (error || (data && !data.success)) {
+      toast({
+        title: "Access denied",
+        description: "No admin account found with this email address.",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+
     setSent(true);
     setLoading(false);
   };

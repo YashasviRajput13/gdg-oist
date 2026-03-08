@@ -32,10 +32,10 @@ Deno.serve(async (req) => {
     });
 
     if (!isAdmin) {
-      // Return success anyway to prevent user enumeration
-      return new Response(JSON.stringify({ success: true }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ success: false, reason: "not_admin" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     // Only send reset link for verified admins
