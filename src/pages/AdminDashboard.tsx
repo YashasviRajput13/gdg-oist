@@ -68,6 +68,9 @@ const AdminDashboard = () => {
             <TabsTrigger value="invite" className="gap-2">
               <UserPlus className="h-4 w-4" /> Invite Admin
             </TabsTrigger>
+            <TabsTrigger value="login-history" className="gap-2">
+              <History className="h-4 w-4" /> Login History
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="gallery">
             <AdminGalleryTab />
