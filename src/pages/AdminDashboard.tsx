@@ -90,6 +90,9 @@ const AdminDashboard = () => {
           <TabsContent value="invite">
             <AdminInvite />
           </TabsContent>
+          <TabsContent value="login-history">
+            <AdminLoginHistoryTab />
+          </TabsContent>
         </Tabs>
       </main>
     </div>
