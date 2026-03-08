@@ -47,19 +47,7 @@ const Navbar = () => {
   }, []);
 
   const toggleTheme = () => {
-    playSound('click');
     setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  const handleToggleMute = () => {
-    toggleMute();
-    // Use timeout to play sound after state update if unmuting
-    setTimeout(() => {
-      // If was muted, it's now unmuted (check localstorage or just trust the toggle)
-      if (localStorage.getItem('gdg_sound_muted') === 'false') {
-        playSound('click');
-      }
-    }, 50);
   };
 
   return (
