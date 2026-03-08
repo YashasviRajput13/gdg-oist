@@ -213,7 +213,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
             const { x, y } = getOffsets(event, shell);
             tiltEngine.setTarget(x, y);
         },
-        [tiltEngine, playSound]
+        [tiltEngine]
     );
 
     const handlePointerLeave = useCallback(() => {
