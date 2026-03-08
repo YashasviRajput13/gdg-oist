@@ -649,7 +649,7 @@ const MagicBento = ({
                                 };
 
                                 const handleClick = (e: MouseEvent) => {
-                                    playSound('click');
+                                    
                                     if (!clickEffect || shouldDisableAnimations) return;
 
                                     const rect = el.getBoundingClientRect();

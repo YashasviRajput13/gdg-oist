@@ -331,9 +331,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
     const handleContactClick = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
-        playSound('click');
         onContactClick?.();
-    }, [onContactClick, playSound]);
+    }, [onContactClick]);
 
     return (
         <div ref={wrapRef} className={`pc-card-wrapper ${className}`.trim()} style={cardStyle}>

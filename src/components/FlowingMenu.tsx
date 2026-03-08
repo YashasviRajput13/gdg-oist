@@ -161,7 +161,7 @@ function MenuItem({
                 href={link ?? '#'}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => playSound('click')}
+                onClick={() => {}}
                 style={{ color: textColor }}
             >
                 {text}
