@@ -47,6 +47,12 @@ const sidebarGroups: SidebarGroup[] = [
       { id: "utilities", title: "Utilities & Helpers", icon: Wrench },
     ],
   },
+  {
+    label: "About",
+    items: [
+      { id: "author", title: "About Author", icon: User },
+    ],
+  },
 ];
 
 const CodeBlock = ({ children, lang = "bash" }: { children: string; lang?: string }) => (
