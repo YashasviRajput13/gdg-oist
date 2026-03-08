@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Save, X, Calendar, Star } from "lucide-react";
+import { Plus, Pencil, Trash2, Save, X, Calendar, Star, Link, Check } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 interface EventItem {
