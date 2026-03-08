@@ -231,6 +231,37 @@ const AdminEvents = () => {
                         {item.event_date ? new Date(item.event_date).toLocaleDateString() : "—"}
                       </TableCell>
                       <TableCell>
+                        {editingLinkId === item.id ? (
+                          <div className="flex items-center gap-1">
+                            <Input
+                              value={linkValue}
+                              onChange={(e) => setLinkValue(e.target.value)}
+                              placeholder="https://..."
+                              className="h-8 text-xs"
+                            />
+                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleQuickLinkSave(item.id)}>
+                              <Check className="h-3.5 w-3.5 text-green-500" />
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditingLinkId(null)}>
+                              <X className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1">
+                            {item.registration_link ? (
+                              <a href={item.registration_link} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline truncate max-w-[150px]">
+                                {item.registration_link}
+                              </a>
+                            ) : (
+                              <span className="text-xs text-muted-foreground">—</span>
+                            )}
+                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => { setEditingLinkId(item.id); setLinkValue(item.registration_link || ""); }}>
+                              <Link className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        )}
+                      </TableCell>
+                      <TableCell>
                         {item.is_featured && <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />}
                       </TableCell>
                       <TableCell className="text-right">
