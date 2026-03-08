@@ -47,7 +47,7 @@ const AdminDashboard = () => {
 
       <main className="max-w-6xl mx-auto px-4 py-8">
         <Tabs defaultValue="gallery">
-          <TabsList className="mb-6">
+          <TabsList className="mb-6 flex-wrap">
             <TabsTrigger value="gallery" className="gap-2">
               <Image className="h-4 w-4" /> Gallery
             </TabsTrigger>
@@ -59,6 +59,9 @@ const AdminDashboard = () => {
             </TabsTrigger>
             <TabsTrigger value="testimonials" className="gap-2">
               <MessageSquareQuote className="h-4 w-4" /> Testimonials
+            </TabsTrigger>
+            <TabsTrigger value="invite" className="gap-2">
+              <UserPlus className="h-4 w-4" /> Invite Admin
             </TabsTrigger>
           </TabsList>
           <TabsContent value="gallery">
@@ -72,6 +75,9 @@ const AdminDashboard = () => {
           </TabsContent>
           <TabsContent value="testimonials">
             <AdminTestimonialsTab />
+          </TabsContent>
+          <TabsContent value="invite">
+            <AdminInvite />
           </TabsContent>
         </Tabs>
       </main>
