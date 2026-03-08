@@ -1,7 +1,7 @@
 import { useRef, useEffect, useCallback, useState, ReactNode, CSSProperties } from 'react';
 import { gsap } from 'gsap';
 import './MagicBento.css';
-import { useSound } from '@/hooks/useSound';
+
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
