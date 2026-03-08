@@ -1,0 +1,144 @@
+= Database Schema
+:navtitle: Database Schema
+
+The project uses 7 PostgreSQL tables managed through Supabase.
+
+== Tables
+
+=== `events`
+Stores GDG events (upcoming and past).
+
+[cols="1,1,2"]
+|===
+|Column |Type |Description
+
+|`id` |uuid (PK) |Auto-generated
+|`title` |text |Event name (required)
+|`description` |text |Event description
+|`event_date` |timestamptz |When the event takes place (required)
+|`event_type` |text |Category (e.g., "Workshop", "Hackathon")
+|`location` |text |Venue or online link
+|`image_url` |text |Event banner image URL
+|`registration_link` |text |External registration URL
+|`is_featured` |boolean |Whether to highlight on the landing page
+|`created_at` |timestamptz |Auto-generated timestamp
+|===
+
+=== `gallery_items`
+Stores photo gallery images.
+
+[cols="1,1,2"]
+|===
+|Column |Type |Description
+
+|`id` |uuid (PK) |Auto-generated
+|`src` |text |Image URL (required)
+|`alt` |text |Alt text for accessibility (required)
+|`caption` |text |Optional caption
+|`created_at` |timestamptz |Auto-generated timestamp
+|===
+
+=== `team_members`
+Stores GDG chapter members and organizers.
+
+[cols="1,1,2"]
+|===
+|Column |Type |Description
+
+|`id` |uuid (PK) |Auto-generated
+|`name` |text |Full name (required)
+|`role` |text |Title/position (required)
+|`bio` |text |Short biography
+|`avatar_url` |text |Profile image URL
+|`linkedin_url` |text |LinkedIn profile URL
+|`github_url` |text |GitHub profile URL
+|`twitter_url` |text |Twitter/X profile URL
+|`display_order` |integer |Sort order
+|`category` |text |Grouping category
+|`created_at` |timestamptz |Auto-generated timestamp
+|===
+
+=== `testimonials`
+Stores community testimonials.
+
+[cols="1,1,2"]
+|===
+|Column |Type |Description
+
+|`id` |uuid (PK) |Auto-generated
+|`name` |text |Person's name (required)
+|`role` |text |Person's title (required)
+|`quote` |text |Testimonial text (required)
+|`rating` |integer |Star rating (1-5, default 5)
+|`avatar_initials` |text |Two-letter initials for avatar
+|`color_index` |integer |Index for Google-themed gradient selection
+|`is_visible` |boolean |Whether to display on the site (default true)
+|`display_order` |integer |Sort order
+|`created_at` |timestamptz |Auto-generated timestamp
+|===
+
+=== `contact_submissions`
+Stores messages from the contact form.
+
+[cols="1,1,2"]
+|===
+|Column |Type |Description
+
+|`id` |uuid (PK) |Auto-generated
+|`name` |text |Sender's name (required)
+|`email` |text |Sender's email (required)
+|`message` |text |Message content (required)
+|`created_at` |timestamptz |Auto-generated timestamp
+|===
+
+=== `user_roles`
+Maps users to their application roles. Separate from auth.users for security.
+
+[cols="1,1,2"]
+|===
+|Column |Type |Description
+
+|`id` |uuid (PK) |Auto-generated
+|`user_id` |uuid (FK) |References `auth.users(id)` with cascade delete
+|`role` |app_role |Enum: `admin` or `user`
+|===
+
+IMPORTANT: The `(user_id, role)` pair has a unique constraint to prevent duplicate role assignments.
+
+=== `admin_invites`
+Manages invite tokens for new admin onboarding.
+
+[cols="1,1,2"]
+|===
+|Column |Type |Description
+
+|`id` |uuid (PK) |Auto-generated
+|`email` |text |Invited person's email (required)
+|`token` |text |Unique invite token (auto-generated)
+|`invited_by` |text |User ID of the admin who created the invite
+|`used` |boolean |Whether the token has been consumed (default false)
+|`expires_at` |timestamptz |Token expiration (default: 7 days from creation)
+|`created_at` |timestamptz |Auto-generated timestamp
+|===
+
+== Enums
+
+=== `app_role`
+[source,sql]
+----
+CREATE TYPE public.app_role AS ENUM ('admin', 'user');
+----
+
+== Database Functions
+
+=== `has_role(_user_id uuid, _role app_role) → boolean`
+Security definer function to check user roles without triggering recursive RLS policies.
+
+=== `assign_admin_role(_user_id uuid)`
+Assigns the `admin` role to a user. Used during the invite signup flow.
+
+=== `validate_invite_token(_token text) → table`
+Returns invite details (email, expires_at, id, used) for a given token. Used to validate tokens before signup.
+
+=== `use_invite_token(_token text, _user_id uuid) → boolean`
+Marks an invite token as used and assigns the admin role to the user. Atomic operation ensuring the token can only be used once.

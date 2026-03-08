@@ -1,0 +1,91 @@
+= Authentication & Security
+:navtitle: Authentication & Security
+
+The project implements a secure, role-based authentication system for admin access.
+
+== Authentication Flow
+
+=== Admin Login (`/admin/login`)
+. User enters email and password
+. Credentials validated via `zod` schema (`loginSchema`)
+. Supabase `signInWithPassword()` authenticates the user
+. `useAdminAuth` hook verifies the user has the `admin` role
+. Redirects to `/admin` dashboard on success
+
+=== Admin Signup (`/admin/signup?token=...`)
+. New admin opens invite link with token parameter
+. Token is validated via `validate_invite_token()` database function
+. User creates account with email and password
+. On signup, `use_invite_token()` marks token as used and assigns `admin` role
+. User is redirected to the admin dashboard
+
+== `useAdminAuth` Hook
+Located at `src/hooks/useAdminAuth.ts`, this hook provides secure admin route protection:
+
+[source,typescript]
+----
+const { isAuthenticated, isLoading, userId } = useAdminAuth();
+----
+
+Key security features:
+* Uses `getUser()` instead of `getSession()` for *server-side* token validation
+* Verifies admin role from `user_roles` table (not client-side storage)
+* Listens for auth state changes (`SIGNED_OUT`, `TOKEN_REFRESHED`)
+* Automatically redirects unauthorized users to `/admin/login`
+* Returns loading state to prevent flash of unauthorized content
+
+== Role-Based Access Control (RBAC)
+
+=== Roles
+Roles are stored in a dedicated `user_roles` table with an `app_role` enum:
+
+* `admin` — Full access to the admin dashboard
+* `user` — Default role (no admin access)
+
+IMPORTANT: Roles are *never* stored on the user profile table. This prevents privilege escalation attacks.
+
+=== `has_role()` Database Function
+A `SECURITY DEFINER` function that checks roles without triggering recursive RLS:
+
+[source,sql]
+----
+CREATE FUNCTION public.has_role(_user_id uuid, _role app_role)
+RETURNS boolean
+LANGUAGE sql STABLE SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.user_roles
+    WHERE user_id = _user_id AND role = _role
+  )
+$$;
+----
+
+== Security Measures
+
+=== Input Validation
+All forms use `zod` schemas for strict validation (see xref:utilities.adoc[Utilities]):
+
+* *Contact form*: Name regex, email format, message length limits
+* *Login form*: Email format, password length constraints
+* *Team member form*: URL validation, character limits
+
+=== XSS Prevention
+The `sanitize()` function in `src/lib/validation.ts` escapes HTML entities:
+`&`, `<`, `>`, `"`, `'`
+
+=== Rate Limiting
+Client-side rate limiting via `src/lib/rateLimit.ts`:
+
+* Sliding window approach
+* Configurable max attempts and time window
+* Default: 3 attempts per 60 seconds
+* Applied to contact form submissions and admin login
+
+=== Row Level Security (RLS)
+All database tables have RLS enabled with appropriate policies:
+
+* Public tables (events, gallery, team, testimonials) — `SELECT` allowed for all
+* Admin-only tables — `INSERT`, `UPDATE`, `DELETE` restricted to users with `admin` role
+* Contact submissions — `INSERT` for anonymous users, `SELECT` for admins only
+* User roles — Protected by `has_role()` security definer function

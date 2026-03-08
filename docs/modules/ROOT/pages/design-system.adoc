@@ -1,0 +1,79 @@
+= Design System
+:navtitle: Design System
+
+The project uses a comprehensive design token system built on Tailwind CSS with full dark/light mode support.
+
+== Theme Provider
+Theming is managed by `next-themes` with:
+
+* Default theme: `dark`
+* Theme attribute: `class` (applied to `<html>`)
+* System detection: disabled
+* Toggle: Pill-style switch in the navbar with Sun/Moon icons
+
+== Google Brand Colors
+Four primary brand colors are used throughout:
+
+[cols="1,1,1"]
+|===
+|Name |Tailwind Class |HSL Value
+
+|Google Blue |`text-google-blue` / `bg-google-blue` |`hsl(217, 89%, 61%)`
+|Google Red |`text-google-red` / `bg-google-red` |`hsl(7, 81%, 56%)`
+|Google Yellow |`text-google-yellow` / `bg-google-yellow` |`hsl(43, 96%, 50%)`
+|Google Green |`text-google-green` / `bg-google-green` |`hsl(142, 53%, 43%)`
+|===
+
+== Semantic Tokens
+All components use semantic CSS custom properties (never hardcoded colors):
+
+* `--background` / `--foreground` — Page background and text
+* `--card` / `--card-foreground` — Card surfaces
+* `--primary` / `--primary-foreground` — Primary actions (Google Blue)
+* `--secondary` / `--secondary-foreground` — Secondary elements
+* `--muted` / `--muted-foreground` — Subdued text and backgrounds
+* `--accent` / `--accent-foreground` — Accent highlights
+* `--border` — Border colors
+* `--destructive` — Error/danger states
+
+== Typography
+Two font families defined via CSS custom properties:
+
+* `font-display` — Display/heading font for bold titles
+* `font-body` — Body text font for paragraphs and UI elements
+
+== Gradient Utilities
+Custom gradient classes for Google-branded text:
+
+* `.text-gradient-google` — Multi-stop gradient text using all four brand colors
+* `.google-dot-blue`, `.google-dot-red` — Individual color text classes
+
+== Visual Effects
+
+=== Grain Overlay
+A `.grain-overlay` class adds subtle film grain texture to the page background for depth.
+
+=== Animations
+Custom Tailwind animations defined in `tailwind.config.ts`:
+
+* `animate-blob` — Slow organic blob movement
+* `animate-blob-reverse` — Reverse blob movement
+
+== Component Variants
+shadcn/ui components are customized via `class-variance-authority` (CVA):
+
+* Buttons: Default, outline, ghost, destructive variants
+* Cards: Consistent border, background, and shadow tokens
+* Inputs: Focus ring using primary color
+
+== Responsive Breakpoints
+Standard Tailwind breakpoints:
+
+* `sm` — 640px
+* `md` — 768px
+* `lg` — 1024px
+* `xl` — 1280px
+* `2xl` — 1536px
+
+== Mobile Detection
+The `use-mobile.tsx` hook detects mobile viewports (< 768px) for disabling heavy animations.

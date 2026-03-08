@@ -1,15 +1,14 @@
 = Local Development Setup
 :navtitle: Local Setup
 
-This guide will explain how to get the GDG OIST project running locally on your computer.
+This guide explains how to get the GDG OIST project running locally.
 
 == Prerequisites
-You will need the following installed:
 * Node.js (v18+)
-* npm (v9+)
+* npm (v9+) or bun
 
 == 1. Installation
-First, clone the project and install all top-level runtime dependencies and development tools.
+Clone the project and install dependencies:
 
 [source,bash]
 ----
@@ -18,30 +17,111 @@ npm install
 ----
 
 == 2. Environment Configuration
-The project requires environment variables to connect to Supabase.
+The project requires environment variables to connect to the backend. Create a `.env` file in the project root:
 
-Create a `.env` file in the root of the project folder:
 ----
 VITE_SUPABASE_URL=https://<your-project>.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsIn...
+VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIsIn...
+VITE_SUPABASE_PROJECT_ID=<your-project-id>
 ----
 
 WARNING: Do not commit your `.env` file! It should remain ignored by Git.
 
-== 3. Running the Development Server
-This project uses Vite, which provides incredibly fast Hot Module Replacement (HMR).
+NOTE: When using Lovable Cloud, these variables are automatically configured.
 
+== 3. Running the Development Server
 [source,bash]
 ----
 npm run dev
 ----
-The development server will boot up and usually host the website at `http://localhost:5173/` or `http://localhost:8080/`. Changes to the React or Tailwind code will reflect instantly in the browser.
+
+The development server (Vite) will boot with Hot Module Replacement (HMR) at `http://localhost:5173/` or `http://localhost:8080/`.
 
 == 4. Building for Production
-When it's time to deploy the site (e.g., to Vercel, Netlify, or Github Pages), run:
-
 [source,bash]
 ----
 npm run build
 ----
-This produces an optimized build directory containing minified HTML, CSS, and JS.
+
+Produces an optimized build directory with minified HTML, CSS, and JS.
+
+== 5. Running Tests
+[source,bash]
+----
+npm test
+----
+
+Tests are configured with Vitest (`vitest.config.ts`).
+
+== 6. Linting
+[source,bash]
+----
+npm run lint
+----
+
+ESLint is configured via `eslint.config.js`.
+
+== 7. Generating Documentation
+The project uses Antora for documentation. To build the docs site:
+
+[source,bash]
+----
+npx antora antora-playbook.yml
+----
+
+This generates a static documentation site from the AsciiDoc files in the `docs/` directory.
+
+== Project Structure
+----
+src/
+├── assets/          # Static images and video
+├── components/      # React components
+│   ├── ui/          # shadcn/ui primitives
+│   ├── Hero.tsx     # Landing page hero
+│   ├── About.tsx    # About section with stats
+│   ├── Events.tsx   # Events grid (DB-connected)
+│   ├── Gallery.tsx  # Photo gallery (DB-connected)
+│   ├── Team.tsx     # Team members (DB-connected)
+│   ├── Testimonials.tsx  # Testimonials (DB-connected)
+│   ├── Contact.tsx  # Contact form (DB-connected)
+│   ├── Achievements.tsx  # Milestones section
+│   ├── FAQ.tsx      # FAQ accordion
+│   ├── Navbar.tsx   # Navigation bar
+│   ├── Footer.tsx   # Site footer
+│   ├── Aurora.tsx   # WebGL background
+│   ├── AdminInvite.tsx   # Admin invite component
+│   └── ...          # Other UI effect components
+├── hooks/           # Custom React hooks
+├── integrations/    # Supabase client & types (auto-generated)
+├── lib/             # Utilities (validation, rate limiting)
+├── pages/           # Route pages
+│   ├── Index.tsx    # Landing page
+│   ├── AdminLogin.tsx
+│   ├── AdminSignup.tsx
+│   ├── AdminDashboard.tsx
+│   └── Admin*Tab.tsx  # Dashboard tab components
+├── App.tsx          # Root component with routing
+└── main.tsx         # Entry point
+
+supabase/
+├── config.toml      # Supabase project config
+└── functions/       # Edge functions
+    └── send-admin-invite/
+        └── index.ts
+
+docs/                # Antora documentation
+├── antora.yml
+└── modules/ROOT/
+    ├── nav.adoc
+    └── pages/*.adoc
+----
+
+== Deployment
+The project can be deployed to:
+
+* *Lovable* — Click "Publish" in the Lovable editor
+* *Vercel* — Connect GitHub repo, auto-deploys on push
+* *Netlify* — Similar to Vercel
+* *GitHub Pages* — Using the build output
+
+NOTE: Backend (edge functions, database) deploys automatically regardless of frontend deployment method.

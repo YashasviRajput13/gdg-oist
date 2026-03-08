@@ -1,0 +1,75 @@
+= Admin Panel
+:navtitle: Admin Panel
+
+The admin panel provides a protected content management dashboard for managing all dynamic content on the site.
+
+== Accessing the Admin Panel
+Navigate to `/admin/login` and sign in with admin credentials. Only users with the `admin` role in the `user_roles` table can access the dashboard.
+
+== Dashboard Layout
+The admin dashboard (`/admin`) uses a tabbed interface with the following sections:
+
+=== Gallery Tab (`AdminGalleryTab.tsx`)
+Manage the photo gallery displayed on the landing page.
+
+* *Add* new gallery items with image URL, alt text, and caption
+* *Edit* existing items inline
+* *Delete* items with confirmation
+* Data is stored in the `gallery_items` table
+
+=== Events Tab (`AdminEvents.tsx`)
+Manage GDG events.
+
+* *Add/Edit/Delete* events with title, description, date, location, type, image, and registration link
+* *Featured toggle* — Mark events as featured for prominent display
+* *Bulk actions* — Select multiple events for batch feature/unfeature
+* *Quick edit* — Inline editing for registration links
+* Data is stored in the `events` table
+
+=== Team Tab (`AdminTeamTab.tsx`)
+Manage team members displayed on the site.
+
+* *Add/Edit/Delete* members with name, role, bio, avatar URL, social links
+* *Display order* — Control the order members appear
+* *Categories* — Group members by category
+* Data is stored in the `team_members` table
+
+=== Testimonials Tab (`AdminTestimonialsTab.tsx`)
+Manage community testimonials.
+
+* *Add/Edit/Delete* testimonials with name, role, quote, rating
+* *Visibility toggle* — Show/hide individual testimonials
+* *Display order* — Control the order testimonials appear
+* *Avatar initials* and *color index* for avatar customization
+* Data is stored in the `testimonials` table
+
+=== Invite Tab (`AdminInvite.tsx`)
+Invite new admins to the platform.
+
+* Enter an email address to generate a unique invite link
+* Invite link contains a one-time token valid for 7 days
+* Share the link with the new admin who can then sign up at `/admin/signup?token=...`
+* The invite link uses the current domain's origin (works on Lovable preview, Vercel, or custom domains)
+* Existing unused invites for the same email are reused (not duplicated)
+
+== Admin Invite Flow
+. Existing admin clicks "Invite" tab in the dashboard
+. Enters the new admin's email and submits
+. The `send-admin-invite` edge function:
+  .. Verifies the requesting user is an authenticated admin
+  .. Creates (or reuses) an invite token in `admin_invites` table
+  .. Returns an invite link using the request's origin header
+. Existing admin copies and shares the invite link
+. New admin opens the link → lands on `/admin/signup?token=...`
+. New admin creates an account (email + password)
+. On successful signup, the `use_invite_token` database function:
+  .. Validates the token (not expired, not used)
+  .. Marks the token as used
+  .. Assigns the `admin` role to the new user
+
+== Security
+* All admin routes are protected by the `useAdminAuth` hook
+* Authentication uses `getUser()` (server-side validation, not just local token)
+* Admin role is verified via the `user_roles` table
+* Auth state changes (logout, token refresh) trigger re-validation
+* Unauthorized users are redirected to `/admin/login`

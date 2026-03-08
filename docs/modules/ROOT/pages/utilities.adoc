@@ -1,0 +1,105 @@
+= Utilities & Helpers
+:navtitle: Utilities & Helpers
+
+Supporting utilities for validation, security, and common operations.
+
+== Validation (`src/lib/validation.ts`)
+
+Zod-based schema validation for all user input forms.
+
+=== Contact Form Schema
+[source,typescript]
+----
+contactSchema = z.object({
+  name: z.string().trim().min(1).max(100)
+    .regex(/^[a-zA-Z\s\-'.]+$/),  // Letters, spaces, hyphens, apostrophes
+  email: z.string().trim().min(1).email().max(255),
+  message: z.string().trim().min(10).max(2000),
+});
+----
+
+=== Login Schema
+[source,typescript]
+----
+loginSchema = z.object({
+  email: z.string().trim().min(1).email().max(255),
+  password: z.string().min(6).max(128),
+});
+----
+
+=== Team Member Schema
+[source,typescript]
+----
+teamMemberSchema = z.object({
+  name: z.string().trim().min(1).max(100),
+  role: z.string().trim().min(1).max(100),
+  bio: z.string().max(500).nullable().optional(),
+  avatar_url: z.string().url().max(500).nullable().optional(),
+  linkedin_url: z.string().url().max(500).nullable().optional(),
+  github_url: z.string().url().max(500).nullable().optional(),
+  twitter_url: z.string().url().max(500).nullable().optional(),
+  display_order: z.number().int().min(0).max(9999).nullable().optional(),
+  category: z.string().max(50).nullable().optional(),
+});
+----
+
+=== `sanitize(input: string): string`
+Escapes HTML entities to prevent XSS injection:
+
+* `&` → `&amp;`
+* `<` → `&lt;`
+* `>` → `&gt;`
+* `"` → `&quot;`
+* `'` → `&#x27;`
+
+== Rate Limiting (`src/lib/rateLimit.ts`)
+
+Client-side sliding window rate limiter to prevent abuse.
+
+=== `checkRateLimit(key, maxAttempts, windowMs)`
+[source,typescript]
+----
+const result = checkRateLimit("contact_form", 3, 60_000);
+// result: { allowed: boolean, retryAfterMs: number }
+----
+
+* `key` — Unique identifier (e.g., `"contact_form"`, `"admin_login"`)
+* `maxAttempts` — Max allowed in window (default: 3)
+* `windowMs` — Window duration in ms (default: 60 seconds)
+* Uses in-memory `Map` store (resets on page reload)
+
+=== `formatRetryTime(ms): string`
+Formats remaining wait time for display:
+
+* `< 60s` → "X seconds"
+* `≥ 60s` → "X minutes"
+
+== General Utilities (`src/lib/utils.ts`)
+
+=== `cn(...inputs)`
+Tailwind class merge utility combining `clsx` and `tailwind-merge`:
+
+[source,typescript]
+----
+import { cn } from "@/lib/utils";
+cn("px-4 py-2", condition && "bg-primary", "px-6");
+// Resolves conflicts: "px-6 py-2 bg-primary"
+----
+
+== Hooks
+
+=== `use-mobile.tsx`
+Detects mobile viewport (width < 768px).
+
+[source,typescript]
+----
+const isMobile = useMobile();
+----
+
+Used to disable heavy animations (GSAP, WebGL) on mobile devices.
+
+=== `useAdminAuth.ts`
+Secure admin authentication hook (see xref:authentication.adoc[Authentication & Security]).
+
+=== `use-toast.ts`
+Toast notification hook from shadcn/ui for displaying success/error messages.

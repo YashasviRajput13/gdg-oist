@@ -1,0 +1,69 @@
+= Edge Functions
+:navtitle: Edge Functions
+
+The project uses Supabase Edge Functions (Deno-based serverless functions) for backend logic that requires elevated privileges.
+
+== `send-admin-invite`
+Located at `supabase/functions/send-admin-invite/index.ts`
+
+=== Purpose
+Generates invite tokens for new admins. This runs server-side with the service role key to bypass RLS policies.
+
+=== Endpoint
+`POST /functions/v1/send-admin-invite`
+
+=== Authentication
+Requires a valid Bearer token in the `Authorization` header. The function:
+
+. Extracts the JWT from the header
+. Validates the user via `adminClient.auth.getUser(token)`
+. Verifies the user has the `admin` role in `user_roles`
+
+=== Request Body
+[source,json]
+----
+{
+  "email": "newadmin@example.com"
+}
+----
+
+=== Response (Success)
+[source,json]
+----
+{
+  "success": true,
+  "inviteLink": "https://yourdomain.com/admin/signup?token=abc123...",
+  "message": "Invite created for newadmin@example.com. Share this link with them."
+}
+----
+
+=== Logic Flow
+. Validate authorization header
+. Create Supabase admin client with service role key
+. Verify requesting user is authenticated and has admin role
+. Check for existing unused invite for the same email
+  * If found: reuse existing token
+  * If not: create new invite in `admin_invites` table
+. Build invite link using request's `origin` header (auto-adapts to any deployment domain)
+. Return the invite link
+
+=== Error Responses
+[cols="1,2"]
+|===
+|Status |Reason
+
+|401 |Missing or invalid authorization header
+|401 |Invalid session / expired token
+|403 |User does not have admin role
+|400 |Email not provided or invalid
+|500 |Failed to create invite or internal error
+|===
+
+=== CORS
+The function includes CORS headers allowing all origins and handles `OPTIONS` preflight requests.
+
+=== Domain Handling
+The invite link automatically uses the correct domain based on where the request originates:
+* Lovable preview → Lovable URL
+* Vercel deployment → Vercel URL
+* Custom domain → Custom domain URL

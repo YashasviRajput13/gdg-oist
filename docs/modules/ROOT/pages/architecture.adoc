@@ -4,28 +4,84 @@
 Our website sits on top of a highly optimized and developer-friendly stack designed for high velocity and scalability.
 
 == Frontend Tools
+
 === React & Vite
 The project uses *React (v18)* for its component-driven View layer, bundled by *Vite*. Vite provides out-of-the-box support for TypeScript and JSX, and is significantly faster than Webpack or Create-React-App.
 
+=== TypeScript
+All source code is written in *TypeScript* for type safety, better IDE support, and reduced runtime errors.
+
 === Tailwind CSS & shadcn/ui
-All layout and design is composed using *Tailwind CSS* utility classes. This removes the need for large, unmaintainable global CSS files. We also leverage reusable component primitives sourced from `shadcn/ui`, such as accordions, buttons, and text inputs.
+All layout and design is composed using *Tailwind CSS* utility classes with a custom design token system (see xref:design-system.adoc[Design System]). We leverage reusable component primitives sourced from `shadcn/ui`, including accordions, buttons, cards, tabs, dialogs, inputs, and more.
 
 === Framer Motion
-For micro-animations and smooth scroll-triggered animations (like the Hero and Gallery staggering), the project heavily relies on *Framer Motion*.
+For micro-animations and smooth scroll-triggered animations (Hero word reveals, staggered card entries, parallax effects), the project relies on *Framer Motion*.
 
-== Backend CMS (Supabase)
-Instead of hardcoding text or embedding images into the GitHub repository, we treat *Supabase* as our Headless Content Management System.
+=== GSAP
+*GSAP* (GreenSock Animation Platform) is used for advanced animations in components like `FlowingMenu`, `MagicBento`, and `ProfileCard` where fine-grained control over timelines and transforms is required.
 
-Supabase is an open-source Firebase alternative built natively on PostgreSQL.
+=== Three.js & OGL
+*Three.js* powers the `CircularGallery` 3D carousel. *OGL* is used for the `SplashCursor` WebGL effect. The `Aurora` component uses raw WebGL shaders for the animated background.
 
-Data Flow Architecture:
-. Component Mounts (`useEffect`).
-. Client queries Supabase using `@supabase/supabase-js`.
-. Data is returned via REST and deserialized.
-. Component updates React local state, triggering a re-render.
+=== React Router
+Client-side routing via *React Router v6* manages navigation between the landing page and admin routes:
+* `/` — Landing page
+* `/admin/login` — Admin login
+* `/admin/signup` — Invite-based admin signup
+* `/admin` — Protected admin dashboard
+* `*` — 404 Not Found
 
-Our Supabase Database instances requires 4 primary tables to function:
-* `events`: Stores upcoming and past GDG events.
-* `gallery_items`: Stores the rotating masonry gallery image details.
-* `team_members`: Holds developer/organizer information and social URLs.
-* `contact_submissions`: The sink for Contact form incoming requests.
+=== React Query
+*TanStack React Query* manages server state caching and data fetching patterns throughout the application.
+
+== Backend (Supabase / Lovable Cloud)
+Instead of hardcoding content, we use *Supabase* (via Lovable Cloud) as our headless CMS and authentication provider.
+
+=== Data Flow
+. Component mounts (React lifecycle)
+. Client queries Supabase using `@supabase/supabase-js`
+. Data is returned via REST and deserialized
+. Component updates React local state, triggering a re-render
+
+=== Key Services Used
+* *PostgreSQL Database* — 7 tables for content, auth, and admin management
+* *Row Level Security (RLS)* — Fine-grained access control on all tables
+* *Authentication* — Email/password auth with role-based access
+* *Edge Functions* — Serverless functions for admin invite flow
+* *Database Functions* — `has_role()`, `assign_admin_role()`, `validate_invite_token()`, `use_invite_token()`
+
+== State Management
+* *React Query* for server state (data fetching/caching)
+* *React local state* (`useState`) for UI state
+* *next-themes* for theme (dark/light mode) persistence
+* *sessionStorage* for loading screen cache (`gdg_loaded`)
+
+== Key Libraries
+[cols="1,2"]
+|===
+|Library |Purpose
+
+|`react-hook-form` + `zod`
+|Form validation with schema-based rules
+
+|`lucide-react`
+|Icon library (Google-colored icons for stats, nav, etc.)
+
+|`date-fns`
+|Date formatting for event dates
+
+|`sonner` + `@radix-ui/react-toast`
+|Toast notification system
+
+|`embla-carousel-react`
+|Carousel/slider functionality
+
+|`next-themes`
+|Dark/light theme toggle with system detection
+
+|`class-variance-authority`
+|Component variant management (shadcn/ui)
+
+|`tailwind-merge`
+|Tailwind class conflict resolution
+|===

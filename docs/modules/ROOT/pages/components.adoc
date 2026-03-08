@@ -1,37 +1,168 @@
 = Connected Components
 :navtitle: Components
 
-This site uses React components connected to a Supabase Content Management System.
+This site uses React components connected to the Supabase backend for dynamic content management.
 
-== `Events.tsx`
-Handles displaying a grid of the upcoming Google Developer Group events.
-It fetches data from the `events` table. 
+== Database-Connected Components
 
-Key details:
-* Uses the `Calendar` and `date-fns` `format()` helper to show dates.
-* Orders events by the `event_date` ascending, ensuring the soonest events appear at the top.
-* Limits results to the top 4 upcoming elements.
+=== `Events.tsx`
+Displays a grid of upcoming Google Developer Group events.
 
-== `Gallery.tsx`
-Handles the masonry / rotating image gallery for the site.
-It fetches data from the `gallery_items` table.
+* Fetches from the `events` table
+* Uses `date-fns` `format()` for readable date display
+* Orders events by `event_date` ascending (soonest first)
+* Supports featured event highlighting via `is_featured` flag
+* Shows event type badges, location, and registration links
 
-Key details:
-* The Gallery has a set of `fallbackGalleryItems` built-in. If the query to Supabase fails or returns 0 records, the gallery will gently fall back to the placeholder 10 images.
-* Each item from Supabase can configure `rotate`, `grid_column`, and `grid_row` integers to dictate how the masonry layout works dynamically.
+=== `Gallery.tsx`
+Masonry / rotating image gallery for the site.
 
-== `Team.tsx`
-Renders out the members, organizers, or developers of the GDG chapter.
-It fetches data from the `team_members` table.
+* Fetches from the `gallery_items` table
+* Has built-in `fallbackGalleryItems` — if Supabase returns 0 records, placeholder images are used
+* Each item includes `src`, `alt`, and optional `caption`
 
-Key details:
-* Orders individuals based on their `display_order` ascending.
-* Uses `lucide-react` icons (Github, Linkedin, Twitter) based on which social URLs are supplied in the database.
-* Fallback avatar feature: If `avatar_url` is null, the component splits the name string and creates an initial avatar (e.g. "John Doe" becomes "JD").
+=== `Team.tsx`
+Renders the members, organizers, and developers of the GDG chapter.
 
-== `Contact.tsx`
-Handles input validation and POSTs information to the `contact_submissions` table.
+* Fetches from the `team_members` table
+* Orders by `display_order` ascending
+* Uses `ProfileCard` component with 3D tilt effects
+* Social links (GitHub, LinkedIn, Twitter) shown based on available URLs
+* Fallback avatar: if `avatar_url` is null, creates initials from name (e.g., "John Doe" → "JD")
+* Supports categories for grouping members
 
-Key details:
-* Powered by `react-hook-form` and `zod` schema to ensure valid email strings and required fields.
-* Posts an `alert` via the `sonner` toast system on a successful submission or failure.
+=== `Testimonials.tsx`
+Rotating testimonial carousel from community members.
+
+* Fetches from the `testimonials` table
+* Filters by `is_visible = true`
+* Orders by `display_order`
+* Shows star ratings, avatar initials with Google-themed gradient backgrounds
+* Auto-rotating carousel with manual navigation
+
+=== `Contact.tsx`
+Validated contact form that POSTs to the `contact_submissions` table.
+
+* Powered by `react-hook-form` + `zod` schema validation
+* Input sanitization via `sanitize()` function to prevent XSS
+* Client-side rate limiting (3 submissions per 60 seconds)
+* Success/error feedback via `sonner` toast notifications
+
+== Static Components
+
+=== `Hero.tsx`
+Full-screen hero section with video background.
+
+* Video background with poster image fallback
+* Parallax scrolling via `useScroll` / `useTransform`
+* 3D word reveal animation for heading ("Build. Learn. Grow.")
+* Floating blobs with Google brand colors
+* Scroll indicator at bottom
+
+=== `About.tsx`
+Community information with stats and pillar cards.
+
+* Stats bar: Icon + label cards with Google-colored top accents (Members shows "25+")
+* Four pillars grid: Learning, Community, Innovation, Open Source
+* Each pillar card has gradient background, image, and "Learn more" navigation
+* 3D hover tilt effect on stat cards
+
+=== `Achievements.tsx`
+Milestones showcase using interactive components.
+
+* Stats bar with Google-colored icon + label cards
+* `FlowingMenu` — Horizontal list with hover-reveal background images for milestones (Google I/O Extended, Solution Challenge, DevFest, Community Impact)
+* `CircularGallery` — 3D circular carousel for event highlight photos
+
+=== `FAQ.tsx`
+Expandable accordion with common questions about GDG OIST.
+
+* Custom accordion with `ChevronDown` rotation animation
+* Questions cover: what GDG is, membership, events, technologies, getting involved
+
+=== `CTABanner.tsx`
+Call-to-action section with gradient background.
+
+* Gradient background (blue → teal → green)
+* Animated floating particles
+* Stats badges ("500+ Members", "50+ Events", etc.)
+* CTA buttons for joining and exploring events
+
+=== `TechMarquee.tsx`
+Auto-scrolling horizontal marquee of technology logos/names.
+
+=== `Footer.tsx`
+Site footer with navigation links, social media, and branding.
+
+== UI Effect Components
+
+=== `Aurora.tsx`
+WebGL shader-based animated gradient background.
+
+* Fixed position behind all content
+* Configurable color stops, amplitude, blend, and speed
+* Uses raw WebGL (no Three.js dependency)
+
+=== `FloatingBlobs.tsx`
+Animated floating blob decorations.
+
+* Configurable colors, sizes, positions, delays, and durations
+* Used in Hero and other sections for organic visual depth
+
+=== `OrganicDivider.tsx`
+SVG-based section dividers with three variants:
+
+* `wave` — Smooth wave transition
+* `curve` — Gentle curve
+* `blob` — Organic blob shape
+* Supports `flip` prop for direction
+
+=== `SectionTransition.tsx`
+Scroll-triggered fade-in wrapper for sections.
+
+* Uses `useInView` for intersection-based animation trigger
+* Configurable delay
+
+=== `CursorGlow.tsx`
+Subtle glow effect that follows the mouse cursor.
+
+=== `LoadingScreen.tsx`
+Google-branded loading animation on first visit.
+
+* Four colored dots bounce and form into the GDG logo
+* Session-cached via `sessionStorage` (only shows once per session)
+* Three phases: bounce → form → exit
+
+=== `GooeyNav.tsx`
+Interactive navigation with SVG-filtered gooey pill effect.
+
+* Pill background follows active section
+* Google-colored particle burst on click
+* Scroll-spy integration
+
+=== `FlowingMenu.tsx`
+Horizontal menu with GSAP-powered hover effects.
+
+* Marquee text animation on hover
+* Background image reveal on hover
+* Configurable speed, colors
+
+=== `CircularGallery.tsx`
+3D circular image carousel using Three.js.
+
+* Drag/scroll interaction
+* Configurable bend, border radius, text overlay
+
+=== `ProfileCard.tsx`
+3D-tilting team member card.
+
+* GSAP-powered tilt engine based on mouse position
+* Shine overlay effect
+* Contact button with click handler
+
+=== `MagicBento.tsx`
+Particle-effect cards with tilt and magnetism.
+
+* GSAP particle animations on hover
+* Click ripple effects
+* Configurable glow colors

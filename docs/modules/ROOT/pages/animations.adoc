@@ -1,0 +1,87 @@
+= Animations & Effects
+:navtitle: Animations & Effects
+
+The project features a rich set of animations and visual effects to create an engaging user experience.
+
+== Framer Motion Animations
+
+=== Hero Section
+* *3D Word Reveal* — Each word ("Build.", "Learn.", "Grow.") rotates in from below with `rotateX: 90` → `0`
+* *Parallax Scrolling* — Video background scales and content fades as user scrolls (`useScroll` + `useTransform`)
+* *Staggered Fade-in* — Badge, heading, subtitle, and CTA buttons appear sequentially with increasing delays
+* *Spring Animations* — Google-colored dots in the badge use spring physics (`stiffness: 500`)
+
+=== Section Transitions (`SectionTransition.tsx`)
+* Wraps each section with `useInView`-triggered opacity and Y-axis animation
+* Configurable delay for staggered section reveals
+
+=== Card Animations
+* *3D Tilt on Hover* — Stat cards use `rotateY` transforms with `perspective`
+* *Scale on Hover* — Cards scale up (`1.03`) and shift up (`y: -8`) on mouse enter
+* *Blur Reveal* — Heading words animate from `blur(8px)` to `blur(0px)`
+
+=== Scroll Indicator
+* Infinite `y` bounce animation at the bottom of the Hero section
+
+== GSAP Animations
+
+=== FlowingMenu
+* Marquee text scrolls on hover using GSAP timeline
+* Background image clips in from the mouse enter direction
+* Text color transitions between default and marquee states
+
+=== ProfileCard (Team)
+* Custom tilt engine calculates rotation based on mouse position relative to card center
+* Smooth interpolation with configurable acceleration
+* Shine/glare overlay follows the tilt angle
+* Enter/leave transitions with class-based state management
+
+=== MagicBento
+* Particle burst animations on hover (configurable count, size, spread)
+* Click ripple effect with expanding circle
+* Magnetic cursor attraction
+* GSAP-powered tilt following mouse position
+
+== WebGL Effects
+
+=== Aurora Background (`Aurora.tsx`)
+* Full-screen WebGL shader rendering animated gradient waves
+* Fixed behind all content (`position: fixed, z-index: 0`)
+* Configurable: color stops, amplitude, blend factor, speed
+* Custom vertex and fragment shaders
+
+=== CircularGallery (`CircularGallery.tsx`)
+* Three.js-based 3D carousel
+* Images placed on a curved cylindrical surface
+* Drag/scroll interaction for rotation
+* Text overlays rendered as canvas textures
+
+=== SplashCursor (`SplashCursor.tsx`)
+* OGL-based fluid simulation cursor effect
+* Renders colorful splash trails following mouse movement
+
+== CSS Animations
+
+=== Blob Animations
+* `animate-blob` — Keyframe animation for organic floating movement
+* `animate-blob-reverse` — Same animation in reverse
+* Applied to decorative background blobs in multiple sections
+
+=== Grain Overlay
+* Pseudo-element with noise texture for film grain effect
+* Applied via `.grain-overlay` class on the page container
+
+== Loading Screen (`LoadingScreen.tsx`)
+Three-phase animation sequence:
+
+. *Bounce Phase* — Four Google-colored dots bounce independently
+. *Form Phase* — Dots converge and arrange into the GDG pattern
+. *Exit Phase* — Entire screen fades out with scale reduction
+
+Uses Framer Motion `AnimatePresence` for smooth exit transitions. Cached in `sessionStorage` to only play once per browser session.
+
+== Performance Considerations
+* Mobile detection (`use-mobile.tsx`) disables heavy animations on small screens
+* `useInView` with `once: true` ensures animations only trigger once
+* GSAP animations are cleaned up on component unmount to prevent memory leaks
+* WebGL contexts are properly disposed on unmount
