@@ -207,6 +207,7 @@ const AdminEvents = () => {
                 <TableHead>Title</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead>Registration Link</TableHead>
                 <TableHead>Featured</TableHead>
                 <TableHead className="w-24 text-right">Actions</TableHead>
               </TableRow>
