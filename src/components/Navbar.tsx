@@ -120,17 +120,7 @@ const Navbar = () => {
             </motion.a>
           </div>
 
-          {/* Mobile: sound + dark mode + hamburger */}
           <div className="md:hidden flex items-center gap-3">
-            {mounted && (
-              <button
-                onClick={handleToggleMute}
-                className="p-1.5 rounded-full border border-border bg-muted/60"
-                aria-label={isMuted ? "Unmute sounds" : "Mute sounds"}
-              >
-                {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-              </button>
-            )}
             {mounted && (
               <button
                 onClick={toggleTheme}
