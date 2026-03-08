@@ -9,6 +9,7 @@ import AdminTeamTab from "./AdminTeamTab";
 import AdminTestimonialsTab from "./AdminTestimonialsTab";
 import AdminInvite from "@/components/AdminInvite";
 import AdminHighlightsTab from "./AdminHighlightsTab";
+import AdminLoginHistoryTab from "./AdminLoginHistoryTab";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 const AdminDashboard = () => {
