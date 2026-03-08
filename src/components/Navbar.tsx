@@ -111,6 +111,13 @@ const Navbar = () => {
               )}
             </div>
 
+            <Link
+              to="/docs"
+              className="px-4 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Docs
+            </Link>
+
             <motion.a
               href="#contact"
               whileHover={{ scale: 1.05 }}
