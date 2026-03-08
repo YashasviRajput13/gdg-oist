@@ -171,7 +171,7 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: I
             }}
           >
             <img
-              src={item.src}
+              src={toDirectImageUrl(item.src)}
               alt={item.alt}
               loading="lazy"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

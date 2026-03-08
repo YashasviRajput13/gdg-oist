@@ -123,7 +123,7 @@ const AdminHighlightsTab = () => {
         {highlights.map((h) => (
           <div key={h.id} className="flex items-center gap-3 p-3 rounded-lg border border-border bg-background hover:bg-muted/20 transition-colors">
             <GripVertical className="h-4 w-4 text-muted-foreground shrink-0" />
-            <img src={h.image_url} alt={h.label} className="w-16 h-12 object-cover rounded-md shrink-0" />
+            <img src={toDirectImageUrl(h.image_url)} alt={h.label} className="w-16 h-12 object-cover rounded-md shrink-0" />
             {editingId === h.id ? (
               <>
                 <Input
