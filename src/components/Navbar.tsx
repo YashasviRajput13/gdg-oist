@@ -66,7 +66,6 @@ const Navbar = () => {
           <a
             href="#home"
             className="flex items-center gap-2 group"
-            onMouseEnter={() => playSound('hover')}
           >
             <div className="flex gap-1">
               {["bg-google-blue", "bg-google-red", "bg-google-yellow", "bg-google-green"].map((c) => (
