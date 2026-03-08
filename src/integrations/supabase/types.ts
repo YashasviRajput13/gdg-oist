@@ -267,6 +267,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin_email: { Args: { _email: string }; Returns: boolean }
       use_invite_token: {
         Args: { _token: string; _user_id: string }
         Returns: boolean

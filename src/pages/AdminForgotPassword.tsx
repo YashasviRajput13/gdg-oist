@@ -47,8 +47,11 @@ const AdminForgotPassword = () => {
 
     setLoading(true);
 
-    await supabase.auth.resetPasswordForEmail(result.data.email, {
-      redirectTo: `${window.location.origin}/admin/reset-password`,
+    await supabase.functions.invoke("admin-reset-password", {
+      body: {
+        email: result.data.email,
+        redirectTo: `${window.location.origin}/admin/reset-password`,
+      },
     });
 
     // Always show success to prevent user enumeration
