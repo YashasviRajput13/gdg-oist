@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronDown, ArrowLeft, BookOpen, Server, Layers, Shield, Database, Zap, Palette, Sparkles, Wrench, Layout, Menu, X } from "lucide-react";
+import { ChevronDown, ArrowLeft, BookOpen, Server, Layers, Shield, Database, Zap, Palette, Sparkles, Wrench, Layout, Menu, X, User } from "lucide-react";
 
 interface DocSection {
   id: string;
