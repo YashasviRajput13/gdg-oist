@@ -2,11 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, ArrowLeft, Image, Calendar, Users, MessageSquareQuote, Loader2 } from "lucide-react";
+import { LogOut, ArrowLeft, Image, Calendar, Users, MessageSquareQuote, Loader2, UserPlus } from "lucide-react";
 import AdminGalleryTab from "./AdminGalleryTab";
 import AdminEvents from "./AdminEvents";
 import AdminTeamTab from "./AdminTeamTab";
 import AdminTestimonialsTab from "./AdminTestimonialsTab";
+import AdminInvite from "@/components/AdminInvite";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 const AdminDashboard = () => {
