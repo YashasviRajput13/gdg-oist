@@ -267,7 +267,6 @@ const ParticleCard = ({
         };
 
         const handleClick = (e: MouseEvent) => {
-            playSound('click');
             if (!clickEffect) return;
 
             const rect = element.getBoundingClientRect();
