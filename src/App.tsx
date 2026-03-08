@@ -12,12 +12,12 @@ import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
-import { SoundProvider } from "@/hooks/useSound";
+
 
 const App = () => (
   <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
     <QueryClientProvider client={queryClient}>
-      <SoundProvider>
+      
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -32,7 +32,7 @@ const App = () => (
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
-      </SoundProvider>
+      
     </QueryClientProvider>
   </ThemeProvider>
 );

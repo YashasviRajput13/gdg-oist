@@ -38,7 +38,7 @@ const round = (v: number, precision = 3) => parseFloat(v.toFixed(precision));
 const adjust = (v: number, fMin: number, fMax: number, tMin: number, tMax: number) =>
     round(tMin + ((tMax - tMin) * (v - fMin)) / (fMax - fMin));
 
-import { useSound } from '@/hooks/useSound';
+
 
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     avatarUrl = '',
@@ -63,7 +63,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 }) => {
     const wrapRef = useRef<HTMLDivElement>(null);
     const shellRef = useRef<HTMLDivElement>(null);
-    const { playSound } = useSound();
+    
 
     const enterTimerRef = useRef<number | null>(null);
     const leaveRafRef = useRef<number | null>(null);
@@ -204,7 +204,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
             shell.classList.add('active');
             shell.classList.add('entering');
-            playSound('hover');
+            
             if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
             enterTimerRef.current = window.setTimeout(() => {
                 shell.classList.remove('entering');
@@ -213,7 +213,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
             const { x, y } = getOffsets(event, shell);
             tiltEngine.setTarget(x, y);
         },
-        [tiltEngine, playSound]
+        [tiltEngine]
     );
 
     const handlePointerLeave = useCallback(() => {
@@ -331,9 +331,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
     const handleContactClick = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
-        playSound('click');
         onContactClick?.();
-    }, [onContactClick, playSound]);
+    }, [onContactClick]);
 
     return (
         <div ref={wrapRef} className={`pc-card-wrapper ${className}`.trim()} style={cardStyle}>

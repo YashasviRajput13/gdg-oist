@@ -20,37 +20,16 @@ import CursorGlow from "@/components/CursorGlow";
 import Aurora from "@/components/Aurora";
 import MagicBento from "@/components/MagicBento";
 
-import { useSound } from "@/hooks/useSound";
 
 const SESSION_KEY = "gdg_loaded";
 
 const Index = () => {
-  const { startMusic } = useSound();
   const [loading, setLoading] = useState(() => {
     return !sessionStorage.getItem(SESSION_KEY);
   });
   const [contentVisible, setContentVisible] = useState(
     () => !!sessionStorage.getItem(SESSION_KEY)
   );
-
-  useEffect(() => {
-    const handleFirstInteraction = () => {
-      startMusic();
-      window.removeEventListener("mousedown", handleFirstInteraction);
-      window.removeEventListener("keydown", handleFirstInteraction);
-      window.removeEventListener("touchstart", handleFirstInteraction);
-    };
-
-    window.addEventListener("mousedown", handleFirstInteraction);
-    window.addEventListener("keydown", handleFirstInteraction);
-    window.addEventListener("touchstart", handleFirstInteraction);
-
-    return () => {
-      window.removeEventListener("mousedown", handleFirstInteraction);
-      window.removeEventListener("keydown", handleFirstInteraction);
-      window.removeEventListener("touchstart", handleFirstInteraction);
-    };
-  }, [startMusic]);
 
   const handleLoadComplete = () => {
     sessionStorage.setItem(SESSION_KEY, "1");

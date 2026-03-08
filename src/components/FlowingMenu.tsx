@@ -52,7 +52,7 @@ function FlowingMenu({
     );
 }
 
-import { useSound } from '@/hooks/useSound';
+
 
 function MenuItem({
     link,
@@ -69,7 +69,7 @@ function MenuItem({
     const marqueeInnerRef = useRef<HTMLDivElement>(null);
     const animationRef = useRef<gsap.core.Tween | null>(null);
     const [repetitions, setRepetitions] = useState(4);
-    const { playSound } = useSound();
+    
 
     const animationDefaults = { duration: 0.6, ease: 'expo' };
 
@@ -127,7 +127,7 @@ function MenuItem({
     }, [text, image, repetitions, speed]);
 
     const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
-        playSound('hover');
+        
         if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
         const rect = itemRef.current.getBoundingClientRect();
         const x = ev.clientX - rect.left;
@@ -161,7 +161,7 @@ function MenuItem({
                 href={link ?? '#'}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => playSound('click')}
+                onClick={() => {}}
                 style={{ color: textColor }}
             >
                 {text}

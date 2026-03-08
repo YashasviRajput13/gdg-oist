@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, Volume2, VolumeX } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import GooeyNav from "@/components/GooeyNav";
-import { useSound } from "@/hooks/useSound";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -25,7 +24,7 @@ const Navbar = () => {
   }, [activeSection]);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const { isMuted, toggleMute, playSound } = useSound();
+  
 
   useEffect(() => {
     setMounted(true);
@@ -48,19 +47,7 @@ const Navbar = () => {
   }, []);
 
   const toggleTheme = () => {
-    playSound('click');
     setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  const handleToggleMute = () => {
-    toggleMute();
-    // Use timeout to play sound after state update if unmuting
-    setTimeout(() => {
-      // If was muted, it's now unmuted (check localstorage or just trust the toggle)
-      if (localStorage.getItem('gdg_sound_muted') === 'false') {
-        playSound('click');
-      }
-    }, 50);
   };
 
   return (
@@ -79,7 +66,6 @@ const Navbar = () => {
           <a
             href="#home"
             className="flex items-center gap-2 group"
-            onMouseEnter={() => playSound('hover')}
           >
             <div className="flex gap-1">
               {["bg-google-blue", "bg-google-red", "bg-google-yellow", "bg-google-green"].map((c) => (
@@ -105,23 +91,11 @@ const Navbar = () => {
             />
 
             <div className="flex items-center gap-2">
-              {/* Sound Toggle */}
-              {mounted && (
-                <button
-                  onClick={handleToggleMute}
-                  className="p-2 rounded-full border border-border bg-muted/60 backdrop-blur-sm hover:bg-muted transition-colors"
-                  aria-label={isMuted ? "Unmute sounds" : "Mute sounds"}
-                  onMouseEnter={() => playSound('hover')}
-                >
-                  {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                </button>
-              )}
 
               {/* Dark mode toggle - pill switch */}
               {mounted && (
                 <button
                   onClick={toggleTheme}
-                  onMouseEnter={() => playSound('hover')}
                   className="relative w-16 h-8 rounded-full border border-border bg-muted/60 backdrop-blur-sm transition-colors duration-300 focus:outline-none"
                   aria-label="Toggle dark mode"
                 >
@@ -138,8 +112,6 @@ const Navbar = () => {
 
             <motion.a
               href="#contact"
-              onMouseEnter={() => playSound('hover')}
-              onClick={() => playSound('click')}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:shadow-lg hover:shadow-primary/25 transition-all"
@@ -148,17 +120,7 @@ const Navbar = () => {
             </motion.a>
           </div>
 
-          {/* Mobile: sound + dark mode + hamburger */}
           <div className="md:hidden flex items-center gap-3">
-            {mounted && (
-              <button
-                onClick={handleToggleMute}
-                className="p-1.5 rounded-full border border-border bg-muted/60"
-                aria-label={isMuted ? "Unmute sounds" : "Mute sounds"}
-              >
-                {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-              </button>
-            )}
             {mounted && (
               <button
                 onClick={toggleTheme}
@@ -177,7 +139,6 @@ const Navbar = () => {
             )}
             <button
               onClick={() => {
-                playSound('click');
                 setIsOpen(!isOpen);
               }}
               className="text-foreground"
@@ -204,7 +165,7 @@ const Navbar = () => {
                   key={link.label}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  onMouseEnter={() => playSound('hover')}
+                  
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
@@ -219,7 +180,6 @@ const Navbar = () => {
               <a
                 href="#contact"
                 onClick={() => {
-                  playSound('click');
                   setIsOpen(false);
                 }}
                 className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold"

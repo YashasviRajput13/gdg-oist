@@ -1,7 +1,7 @@
 import { useRef, useEffect, useCallback, useState, ReactNode, CSSProperties } from 'react';
 import { gsap } from 'gsap';
 import './MagicBento.css';
-import { useSound } from '@/hooks/useSound';
+
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
@@ -112,7 +112,6 @@ const ParticleCard = ({
     enableMagnetism = false
 }: ParticleCardProps) => {
     const cardRef = useRef<HTMLDivElement>(null);
-    const { playSound } = useSound();
     const particlesRef = useRef<HTMLElement[]>([]);
     const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
     const isHoveredRef = useRef(false);
@@ -196,7 +195,6 @@ const ParticleCard = ({
 
         const handleMouseEnter = () => {
             isHoveredRef.current = true;
-            playSound('hover');
             animateParticles();
 
             if (enableTilt) {
@@ -269,7 +267,6 @@ const ParticleCard = ({
         };
 
         const handleClick = (e: MouseEvent) => {
-            playSound('click');
             if (!clickEffect) return;
 
             const rect = element.getBoundingClientRect();
@@ -327,7 +324,7 @@ const ParticleCard = ({
             element.removeEventListener('click', handleClick);
             clearAllParticles();
         };
-    }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor, playSound]);
+    }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor]);
 
     return (
         <div
@@ -536,7 +533,7 @@ const MagicBento = ({
     const gridRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobileDetection();
     const shouldDisableAnimations = disableAnimations || isMobile;
-    const { playSound } = useSound();
+    
 
     return (
         <>
@@ -648,11 +645,11 @@ const MagicBento = ({
 
                                 const handleMouseEnter = () => {
                                     if (shouldDisableAnimations) return;
-                                    playSound('hover');
+                                    
                                 };
 
                                 const handleClick = (e: MouseEvent) => {
-                                    playSound('click');
+                                    
                                     if (!clickEffect || shouldDisableAnimations) return;
 
                                     const rect = el.getBoundingClientRect();
