@@ -42,7 +42,7 @@ const milestoneItems = [
   },
 ];
 
-const galleryItems = [
+const fallbackGalleryItems = [
   { image: "https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?q=80&w=2070&auto=format&fit=crop", text: "DevFest '24" },
   { image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop", text: "Tech Talk" },
   { image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=2070&auto=format&fit=crop", text: "Hackathon" },
