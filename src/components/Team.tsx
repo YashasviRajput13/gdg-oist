@@ -50,9 +50,7 @@ const Team = () => {
   const headingWords = ["The", "people", "behind", "GDG"];
   const subtitle = "MEET OUR HUB";
 
-  const availableCategories = categoryOrder.filter(cat =>
-    members.some(m => (m.category || "Other") === cat)
-  );
+  const availableCategories = categoryOrder;
   const filteredMembers = activeCategory === "All"
     ? members
     : members.filter(m => (m.category || "Other") === activeCategory);
