@@ -48,6 +48,8 @@ const AdminEvents = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<EventForm>(emptyForm);
   const [isAdding, setIsAdding] = useState(false);
+  const [editingLinkId, setEditingLinkId] = useState<string | null>(null);
+  const [linkValue, setLinkValue] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
