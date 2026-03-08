@@ -6,6 +6,7 @@ interface FlowingMenuItemProps {
     link?: string;
     text: string;
     image?: string;
+    marqueeBgImage?: string;
     speed?: number;
     textColor?: string;
     marqueeBgColor?: string;
