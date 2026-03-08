@@ -1,6 +1,6 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Users, CalendarDays, Wrench, Code2 } from "lucide-react";
 import FloatingBlobs from "@/components/FloatingBlobs";
 import pillarLearning from "@/assets/pillar-learning.png";
 import pillarCommunity from "@/assets/pillar-community.png";
@@ -8,10 +8,10 @@ import pillarInnovation from "@/assets/pillar-innovation.png";
 import pillarOpensource from "@/assets/pillar-opensource.png";
 
 const stats = [
-  { value: "500+", label: "Members", color: "bg-google-blue" },
-  { value: "50+", label: "Events Hosted", color: "bg-google-red" },
-  { value: "20+", label: "Workshops", color: "bg-google-yellow" },
-  { value: "10+", label: "Hackathons", color: "bg-google-green" },
+  { icon: Users, label: "Growing Community", color: "bg-google-blue", textColor: "text-google-blue" },
+  { icon: CalendarDays, label: "Events Hosted", color: "bg-google-red", textColor: "text-google-red" },
+  { icon: Wrench, label: "Hands-on Workshops", color: "bg-google-yellow", textColor: "text-google-yellow" },
+  { icon: Code2, label: "Hackathons", color: "bg-google-green", textColor: "text-google-green" },
 ];
 
 const pillars = [
