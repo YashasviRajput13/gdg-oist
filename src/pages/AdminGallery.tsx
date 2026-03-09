@@ -24,6 +24,7 @@ const AdminGallery = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     checkAuth();
     fetchItems();

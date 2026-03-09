@@ -1,4 +1,4 @@
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, Users, CalendarDays, Wrench, Code2 } from "lucide-react";
 import FloatingBlobs from "@/components/FloatingBlobs";
@@ -47,11 +47,6 @@ const About = () => {
   const ref = useRef(null);
   const sectionRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, -80]);
 
   return (
     <section id="about" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>

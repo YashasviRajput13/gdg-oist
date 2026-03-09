@@ -151,19 +151,18 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: I
       <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none" />
 
-      <motion.div
+      <style>{`
+        @keyframes scrollX {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(var(--scroll-width)); }
+        }
+      `}</style>
+      <div
         className="flex gap-5 w-max"
-        animate={{
-          x: direction === "left" ? [0, -totalWidth] : [-totalWidth, 0],
-        }}
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: speed,
-            ease: "linear",
-          },
-        }}
+        style={{
+          '--scroll-width': `-${totalWidth}px`,
+          animation: `scrollX ${speed}s linear infinite ${direction === "left" ? "normal" : "reverse"}`
+        } as React.CSSProperties}
       >
         {duplicated.map((item, i) => (
           <div
@@ -190,7 +189,7 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: I
             )}
           </div>
         ))}
-      </motion.div>
+      </div>
     </motion.div>
   );
 };

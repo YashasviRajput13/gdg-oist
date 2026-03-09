@@ -19,6 +19,7 @@ import OrganicDivider from "@/components/OrganicDivider";
 import CursorGlow from "@/components/CursorGlow";
 import Aurora from "@/components/Aurora";
 import MagicBento from "@/components/MagicBento";
+import { WebGLErrorBoundary } from "@/components/WebGLErrorBoundary";
 
 
 const SESSION_KEY = "gdg_loaded";
@@ -41,12 +42,14 @@ const Index = () => {
     <div className="min-h-screen bg-background grain-overlay">
       {/* Fixed Aurora WebGL background */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-        <Aurora
-          colorStops={['#4285F4', '#34A853', '#EA4335']}
-          amplitude={1.2}
-          blend={0.6}
-          speed={0.5}
-        />
+        <WebGLErrorBoundary>
+          <Aurora
+            colorStops={['#4285F4', '#34A853', '#EA4335']}
+            amplitude={1.2}
+            blend={0.6}
+            speed={0.5}
+          />
+        </WebGLErrorBoundary>
       </div>
       <CursorGlow />
       {loading && <LoadingScreen onComplete={handleLoadComplete} />}

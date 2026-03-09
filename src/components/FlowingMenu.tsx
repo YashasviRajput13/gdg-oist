@@ -138,7 +138,7 @@ function MenuItem({
             clearTimeout(timer);
             if (animationRef.current) animationRef.current.kill();
         };
-    }, [text, image, repetitions, speed]);
+    }, [text, image, repetitions, speed, itemInView]);
 
     const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
 

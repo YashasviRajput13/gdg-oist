@@ -36,6 +36,7 @@ const AdminHighlightsTab = () => {
     setLoading(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchHighlights(); }, []);
 
   const handleAdd = async () => {

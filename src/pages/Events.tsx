@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Events() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

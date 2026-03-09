@@ -27,6 +27,7 @@ const AdminMessagesTab = () => {
     const [loading, setLoading] = useState(true);
     const { toast } = useToast();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         fetchSubmissions();
     }, []);
@@ -41,6 +42,7 @@ const AdminMessagesTab = () => {
 
             if (error) throw error;
             setSubmissions(data || []);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast({
                 title: "Error fetching messages",
@@ -68,6 +70,7 @@ const AdminMessagesTab = () => {
                 title: "Deleted",
                 description: "Message has been removed.",
             });
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast({
                 title: "Error deleting message",

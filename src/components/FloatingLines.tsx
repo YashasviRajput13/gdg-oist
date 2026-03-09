@@ -174,7 +174,7 @@ void main() {
 const MAX_GRADIENT_STOPS = 8;
 
 function hexToVec3(hex: string): Vector3 {
-  let value = hex.trim().replace(/^#/, '');
+  const value = hex.trim().replace(/^#/, '');
   let r = 255, g = 255, b = 255;
   if (value.length === 3) {
     r = parseInt(value[0] + value[0], 16);
@@ -254,6 +254,9 @@ export default function FloatingLines({
 
   useEffect(() => {
     if (!containerRef.current) return;
+
+    // Skip heavy WebGL on touch/mobile devices to prevent GPU overload
+    if (window.matchMedia?.("(pointer: coarse)").matches) return;
 
     const scene = new Scene();
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -378,10 +381,12 @@ export default function FloatingLines({
       raf = requestAnimationFrame(renderLoop);
     };
 
+    const el = containerRef.current;
+
     return () => {
       if (raf !== 0) cancelAnimationFrame(raf);
-      if (containerRef.current) observer.unobserve(containerRef.current);
-      if (ro && containerRef.current) ro.disconnect();
+      if (el) observer.unobserve(el);
+      if (ro && el) ro.disconnect();
       if (interactive) {
         renderer.domElement.removeEventListener('pointermove', handlePointerMove);
         renderer.domElement.removeEventListener('pointerleave', handlePointerLeave);
