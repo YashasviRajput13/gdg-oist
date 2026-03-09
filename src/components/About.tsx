@@ -136,7 +136,17 @@ const About = () => {
                 transition={{ type: "spring", stiffness: 300 }}
                 className={`w-14 h-14 rounded-xl bg-gradient-to-br ${pillar.gradient} flex items-center justify-center mb-5 shadow-lg p-2.5`}
               >
-                <img src={pillar.image} alt={pillar.title} className="w-full h-full object-contain" loading="lazy" />
+                <img
+                  src={pillar.image}
+                  alt={pillar.title}
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.onerror = null;
+                    target.src = "/placeholder.svg";
+                  }}
+                />
               </motion.div>
               <h3 className="font-display text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                 {pillar.title}

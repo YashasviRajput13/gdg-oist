@@ -103,6 +103,10 @@ const Hero = () => {
             alt=""
             className="w-full h-full object-cover"
             loading="eager"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            }}
           />
         ) : (
           <video

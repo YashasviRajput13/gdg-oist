@@ -27,9 +27,9 @@ const AdminMessagesTab = () => {
     const [loading, setLoading] = useState(true);
     const { toast } = useToast();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         fetchSubmissions();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchSubmissions = async () => {

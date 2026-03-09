@@ -48,10 +48,13 @@ function createTextTexture(gl: OGLRenderingContext, text: string, font = 'bold 3
     context.font = font;
     const metrics = context.measureText(text);
     const textWidth = Math.ceil(metrics.width);
-    const textHeight = Math.ceil(parseInt(font, 10) * 1.2);
+    // Safely extract numeric font size (e.g. "bold 30px ..." → 30)
+    const fontSizeMatch = font.match(/(\d+)px/);
+    const fontSize = fontSizeMatch ? parseInt(fontSizeMatch[1], 10) : 30;
+    const textHeight = Math.ceil(fontSize * 1.2);
 
-    canvas.width = textWidth + 40; // Add padding
-    canvas.height = textHeight + 20;
+    canvas.width = Math.max(textWidth + 40, 1); // Ensure minimum 1px to avoid WebGL errors
+    canvas.height = Math.max(textHeight + 20, 1);
 
     context.font = font;
     context.fillStyle = color;
@@ -262,6 +265,13 @@ class Media {
         img.onload = () => {
             texture.image = img;
             this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
+        };
+        img.onerror = () => {
+            // Create a 1x1 fallback so WebGL doesn't error out
+            const fallback = document.createElement('canvas');
+            fallback.width = 1;
+            fallback.height = 1;
+            texture.image = fallback;
         };
     }
 

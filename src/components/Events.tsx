@@ -33,14 +33,18 @@ const Events = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const { data, error } = await supabase
-        .from("events")
-        .select("*")
-        .order("event_date", { ascending: true })
-        .limit(4);
+      try {
+        const { data, error } = await supabase
+          .from("events")
+          .select("*")
+          .order("event_date", { ascending: true })
+          .limit(4);
 
-      if (!error && data) {
-        setEvents(data as Event[]);
+        if (!error && data) {
+          setEvents(data as Event[]);
+        }
+      } catch {
+        // Silently fail — show empty events section
       }
     };
 
@@ -113,6 +117,11 @@ const Events = () => {
                     alt={event.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.onerror = null;
+                      target.src = "/placeholder.svg";
+                    }}
                   />
                 </div>
               )}

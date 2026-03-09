@@ -38,7 +38,7 @@ const SectionTransition = ({
         delay,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className={className}
+      className={`relative ${className}`}
     >
       {children}
     </motion.div>

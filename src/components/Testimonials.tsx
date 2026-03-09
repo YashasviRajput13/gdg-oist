@@ -86,15 +86,19 @@ const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase
-        .from("testimonials")
-        .select("id, name, role, avatar_initials, quote, rating, color_index")
-        .eq("is_visible", true)
-        .order("display_order", { ascending: true });
-      if (data) setTestimonials(data);
+    const fetchTestimonials = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("testimonials")
+          .select("id, name, role, avatar_initials, quote, rating, color_index")
+          .eq("is_visible", true)
+          .order("display_order", { ascending: true });
+        if (!error && data) setTestimonials(data);
+      } catch {
+        // Silently fail — section will not render if empty
+      }
     };
-    fetch();
+    fetchTestimonials();
   }, []);
 
   useEffect(() => {
@@ -115,7 +119,7 @@ const Testimonials = () => {
   if (testimonials.length === 0) return null;
 
   return (
-    <section ref={sectionRef} id="testimonials" className="relative py-24 md:py-32 px-6 overflow-hidden">
+    <section ref={sectionRef} id="testimonials" className="relative py-24 md:py-32 px-6 overflow-hidden" style={{ position: "relative" }}>
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}

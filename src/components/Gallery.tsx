@@ -33,12 +33,16 @@ const Gallery = () => {
 
   useEffect(() => {
     const fetchGallery = async () => {
-      const { data } = await supabase
-        .from("gallery_items")
-        .select("id, src, alt, caption")
-        .order("created_at", { ascending: true });
-      if (data && data.length > 0) {
-        setGalleryItems(data);
+      try {
+        const { data, error } = await supabase
+          .from("gallery_items")
+          .select("id, src, alt, caption")
+          .order("created_at", { ascending: true });
+        if (!error && data && data.length > 0) {
+          setGalleryItems(data);
+        }
+      } catch {
+        // Keep fallback gallery items on failure
       }
     };
     fetchGallery();
@@ -113,6 +117,11 @@ const Gallery = () => {
                   src={toDirectImageUrl(lightboxItem.src)}
                   alt={lightboxItem.alt}
                   className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.onerror = null;
+                    target.src = "/placeholder.svg";
+                  }}
                 />
                 {(lightboxItem.caption || lightboxItem.alt) && (
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-transparent rounded-b-2xl">
@@ -178,6 +187,11 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: I
               alt={item.alt}
               loading="lazy"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.onerror = null;
+                target.src = "/placeholder.svg";
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             {item.caption && (

@@ -39,11 +39,15 @@ const Team = () => {
 
   useEffect(() => {
     const fetchTeam = async () => {
-      const { data } = await supabase
-        .from("team_members")
-        .select("*")
-        .order("display_order", { ascending: true });
-      if (data) setMembers(data);
+      try {
+        const { data, error } = await supabase
+          .from("team_members")
+          .select("*")
+          .order("display_order", { ascending: true });
+        if (!error && data) setMembers(data);
+      } catch {
+        // Silently fail — show empty team section
+      }
     };
     fetchTeam();
   }, []);
