@@ -53,6 +53,18 @@ const Contact = () => {
       email: result.data.email,
       message: result.data.message,
     });
+
+    // Trigger email notification via Edge Function
+    if (!error) {
+      supabase.functions.invoke("contact-email", {
+        body: {
+          name: result.data.name,
+          email: result.data.email,
+          message: result.data.message,
+        },
+      }).catch(console.error); // Non-blocking
+    }
+
     setLoading(false);
     if (error) {
       toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
