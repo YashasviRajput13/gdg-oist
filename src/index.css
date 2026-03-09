@@ -91,10 +91,15 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground antialiased;
+  body, #root {
+    @apply bg-background text-foreground antialiased relative w-full h-full;
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  html {
+    @apply relative w-full h-full;
+    scroll-behavior: smooth;
   }
 
   h1, h2, h3, h4, h5, h6 {

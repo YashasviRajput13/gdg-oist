@@ -54,7 +54,7 @@ const Contact = () => {
       message: result.data.message,
     });
 
-    // Trigger email notification via Edge Function
+    // Trigger email notification via Edge Function (fire and forget)
     if (!error) {
       supabase.functions.invoke("contact-email", {
         body: {
@@ -62,15 +62,13 @@ const Contact = () => {
           email: result.data.email,
           message: result.data.message,
         },
-      }).catch(console.error); // Non-blocking
-    }
-
-    setLoading(false);
-    if (error) {
-      toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
-    } else {
+      }).catch((e) => console.log("Silent error from email function:", e));
+      
       setSubmitted(true);
+    } else {
+      toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
     }
+    setLoading(false);
   };
 
   const headingWords = ["Let's", "connect"];
