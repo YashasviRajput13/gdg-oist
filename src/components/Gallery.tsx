@@ -18,7 +18,7 @@ const fallbackGalleryItems: GalleryItem[] = [
   { id: "3", src: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=600&h=400&fit=crop", alt: "Panel discussion", caption: "Industry Leaders ⚡" },
   { id: "4", src: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&h=400&fit=crop", alt: "Networking event", caption: null },
   { id: "5", src: "https://images.unsplash.com/photo-1559223607-a43c990c692c?w=600&h=400&fit=crop", alt: "Hackathon coding", caption: null },
-  { id: "6", src: "https://images.unsplash.com/photo-1591115765373-5f9cf1da241d?w=600&h=400&fit=crop", alt: "Hands-on workshop", caption: "Hands-on Learning 🎯" },
+  { id: "6", src: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=600&h=400&fit=crop", alt: "Hands-on workshop", caption: "Hands-on Learning 🎯" },
   { id: "7", src: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&h=400&fit=crop", alt: "Group photo", caption: null },
   { id: "8", src: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=600&h=400&fit=crop", alt: "Award ceremony", caption: null },
   { id: "9", src: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&h=400&fit=crop", alt: "Tech showcase", caption: "Unlock Your Potential ⚡" },
@@ -185,7 +185,7 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: I
             <img
               src={toDirectImageUrl(item.src)}
               alt={item.alt}
-              loading="lazy"
+              crossOrigin="anonymous"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               onError={(e) => {
                 const target = e.currentTarget;

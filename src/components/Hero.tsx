@@ -103,22 +103,31 @@ const Hero = () => {
             alt=""
             className="w-full h-full object-cover"
             loading="eager"
+            crossOrigin="anonymous"
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
             }}
           />
         ) : (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={heroBg}
-            className="w-full h-full object-cover"
-          >
-            <source src={heroVideo} type="video/mp4" />
-          </video>
+          <>
+            <img 
+              src={heroBg} 
+              alt="" 
+              crossOrigin="anonymous" 
+              className="absolute inset-0 w-full h-full object-cover" 
+            />
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="relative w-full h-full object-cover"
+              crossOrigin="anonymous"
+            >
+              <source src={heroVideo} type="video/mp4" />
+            </video>
+          </>
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/30 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />

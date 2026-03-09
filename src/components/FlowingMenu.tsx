@@ -182,18 +182,29 @@ function MenuItem({
             </a>
             <div className="marquee" ref={marqueeRef} style={{
                 backgroundColor: marqueeBgColor,
-                ...(image && {
-                    backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }),
             }}>
-                <div className="marquee__inner-wrap">
+                {image && (
+                    <img 
+                        src={image} 
+                        crossOrigin="anonymous" 
+                        alt="" 
+                        style={{
+                            position: 'absolute',
+                            inset: 0,
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            opacity: 0.5,
+                            zIndex: 0,
+                        }}
+                    />
+                )}
+                <div className="marquee__inner-wrap" style={{ position: 'relative', zIndex: 1 }}>
                     <div className="marquee__inner" ref={marqueeInnerRef} aria-hidden="true">
                         {[...Array(repetitions)].map((_, idx) => (
                             <div className="marquee__part" key={idx} style={{ color: marqueeTextColor }}>
                                 <span>{text}</span>
-                                {image && <div className="marquee__img" style={{ backgroundImage: `url(${image})` }} />}
+                                {image && <img className="marquee__img" src={image} crossOrigin="anonymous" alt="" style={{ objectFit: 'cover' }} />}
                             </div>
                         ))}
                     </div>

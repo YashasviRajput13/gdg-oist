@@ -63,7 +63,7 @@ const AdminLogin = () => {
 
     if (error) {
       logAttempt(false);
-      toast({ title: "Login failed", description: "Invalid email or password.", variant: "destructive" });
+      toast({ title: "Login failed", description: error.message, variant: "destructive" });
       setLoading(false);
       return;
     }

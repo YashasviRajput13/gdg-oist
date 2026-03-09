@@ -140,7 +140,7 @@ const About = () => {
                   src={pillar.image}
                   alt={pillar.title}
                   className="w-full h-full object-contain"
-                  loading="lazy"
+                  crossOrigin="anonymous"
                   onError={(e) => {
                     const target = e.currentTarget;
                     target.onerror = null;

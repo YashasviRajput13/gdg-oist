@@ -116,7 +116,7 @@ const Events = () => {
                     src={toDirectImageUrl(event.image_url)}
                     alt={event.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
+                    crossOrigin="anonymous"
                     onError={(e) => {
                       const target = e.currentTarget;
                       target.onerror = null;
