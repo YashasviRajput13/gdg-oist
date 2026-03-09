@@ -2,10 +2,10 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, Users, CalendarDays, Wrench, Code2 } from "lucide-react";
 import FloatingBlobs from "@/components/FloatingBlobs";
-import pillarLearning from "@/assets/pillar-learning.png";
-import pillarCommunity from "@/assets/pillar-community.png";
-import pillarInnovation from "@/assets/pillar-innovation.png";
-import pillarOpensource from "@/assets/pillar-opensource.png";
+const pillarLearning = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035950/pillar-learning_k6ukqk.png";
+const pillarCommunity = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035950/pillar-community_h10slv.png";
+const pillarInnovation = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035950/pillar-innovation_mknywx.png";
+const pillarOpensource = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035951/pillar-opensource_nc13bh.png";
 
 const stats = [
   { icon: Users, value: "25+", label: "Members", color: "bg-google-blue", textColor: "text-google-blue" },
@@ -141,7 +141,7 @@ const About = () => {
                 transition={{ type: "spring", stiffness: 300 }}
                 className={`w-14 h-14 rounded-xl bg-gradient-to-br ${pillar.gradient} flex items-center justify-center mb-5 shadow-lg p-2.5`}
               >
-                <img src={pillar.image} alt={pillar.title} className="w-full h-full object-contain" />
+                <img src={pillar.image} alt={pillar.title} className="w-full h-full object-contain" loading="lazy" />
               </motion.div>
               <h3 className="font-display text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                 {pillar.title}

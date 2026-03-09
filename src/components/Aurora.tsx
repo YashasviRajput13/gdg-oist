@@ -175,7 +175,26 @@ export default function Aurora(props: AuroraProps) {
         ctn.appendChild(gl.canvas as HTMLCanvasElement);
 
         let animateId = 0;
+        let isVisible = true;
+
+        const observer = new IntersectionObserver(([entry]) => {
+            isVisible = entry.isIntersecting;
+            if (!isVisible) {
+                if (animateId !== 0) {
+                    cancelAnimationFrame(animateId);
+                    animateId = 0;
+                }
+            } else {
+                if (animateId === 0) {
+                    animateId = requestAnimationFrame(update);
+                }
+            }
+        });
+
+        if (ctn) observer.observe(ctn);
+
         const update = (t: number) => {
+            if (!isVisible) return;
             animateId = requestAnimationFrame(update);
             const { time = t * 0.01, speed = 1.0 } = propsRef.current;
             const uniforms = program.uniforms as Record<string, { value: unknown }>;
@@ -189,12 +208,12 @@ export default function Aurora(props: AuroraProps) {
             });
             renderer.render({ scene: mesh });
         };
-        animateId = requestAnimationFrame(update);
         resize();
 
         return () => {
-            cancelAnimationFrame(animateId);
+            if (animateId !== 0) cancelAnimationFrame(animateId);
             window.removeEventListener('resize', resize);
+            if (ctn) observer.unobserve(ctn);
             const canvas = gl.canvas as HTMLCanvasElement;
             if (ctn && canvas.parentNode === ctn) ctn.removeChild(canvas);
             gl.getExtension('WEBGL_lose_context')?.loseContext();

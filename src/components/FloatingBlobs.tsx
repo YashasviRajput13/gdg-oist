@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 interface BlobConfig {
   color: string;
@@ -21,9 +22,12 @@ const defaultBlobs: BlobConfig[] = [
 ];
 
 const FloatingBlobs = ({ blobs = defaultBlobs, className = "" }: FloatingBlobsProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { margin: "200px" });
+
   return (
-    <div className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}>
-      {blobs.map((blob, i) => (
+    <div ref={ref} className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}>
+      {isInView && blobs.map((blob, i) => (
         <motion.div
           key={i}
           animate={{

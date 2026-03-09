@@ -1,8 +1,8 @@
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring, animate } from "framer-motion";
 import { ArrowDown, ChevronRight, Users, Calendar, Code, Trophy } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
-import heroVideo from "@/assets/hero-video.mp4";
-import heroBg from "@/assets/hero-bg.jpg";
+const heroVideo = "https://res.cloudinary.com/drzgyob2v/video/upload/v1773035972/hero-video_qojhwf.mp4";
+const heroBg = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035949/hero-bg_kqkoej.jpg";
 import FloatingBlobs from "@/components/FloatingBlobs";
 
 const AnimatedCounter = ({ value, suffix = "", label, icon: Icon, delay = 0 }: { value: number; suffix?: string; label: string; icon: React.ElementType; delay?: number }) => {

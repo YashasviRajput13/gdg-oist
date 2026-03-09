@@ -356,6 +356,8 @@ class AppInstance {
     isDown = false;
     start = 0;
     raf = 0;
+    isVisible = true;
+    observer!: IntersectionObserver;
 
     boundOnResize!: any;
     boundOnWheel!: any;
@@ -497,6 +499,10 @@ class AppInstance {
     }
 
     update() {
+        if (!this.isVisible) {
+            this.raf = 0;
+            return;
+        }
         this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
         const direction = this.scroll.current > this.scroll.last ? 'right' : 'left';
         if (this.medias) {
@@ -521,10 +527,30 @@ class AppInstance {
         window.addEventListener('touchstart', this.boundOnTouchDown);
         window.addEventListener('touchmove', this.boundOnTouchMove);
         window.addEventListener('touchend', this.boundOnTouchUp);
+
+        this.observer = new IntersectionObserver(([entry]) => {
+            this.isVisible = entry.isIntersecting;
+            if (this.isVisible) {
+                if (!this.raf) {
+                    this.update();
+                }
+            } else {
+                if (this.raf) {
+                    cancelAnimationFrame(this.raf);
+                    this.raf = 0;
+                }
+            }
+        });
+        if (this.container) {
+            this.observer.observe(this.container);
+        }
     }
 
     destroy() {
         window.cancelAnimationFrame(this.raf);
+        if (this.observer && this.container) {
+            this.observer.unobserve(this.container);
+        }
         window.removeEventListener('resize', this.boundOnResize);
         window.removeEventListener('wheel', this.boundOnWheel);
         window.removeEventListener('mousedown', this.boundOnTouchDown);

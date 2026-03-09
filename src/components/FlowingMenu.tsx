@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
+import { useInView } from 'framer-motion';
 import './FlowingMenu.css';
 
 interface FlowingMenuItemProps {
@@ -69,7 +70,17 @@ function MenuItem({
     const marqueeInnerRef = useRef<HTMLDivElement>(null);
     const animationRef = useRef<gsap.core.Tween | null>(null);
     const [repetitions, setRepetitions] = useState(4);
-    
+    const itemInView = useInView(itemRef, { margin: "50px" });
+
+    useEffect(() => {
+        if (animationRef.current) {
+            if (itemInView) {
+                animationRef.current.play();
+            } else {
+                animationRef.current.pause();
+            }
+        }
+    }, [itemInView]);
 
     const animationDefaults = { duration: 0.6, ease: 'expo' };
 
@@ -117,6 +128,9 @@ function MenuItem({
                 ease: 'none',
                 repeat: -1,
             });
+            if (!itemInView) {
+                animationRef.current.pause();
+            }
         };
 
         const timer = setTimeout(setupMarquee, 50);
@@ -127,7 +141,7 @@ function MenuItem({
     }, [text, image, repetitions, speed]);
 
     const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
-        
+
         if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
         const rect = itemRef.current.getBoundingClientRect();
         const x = ev.clientX - rect.left;
@@ -161,7 +175,7 @@ function MenuItem({
                 href={link ?? '#'}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => {}}
+                onClick={() => { }}
                 style={{ color: textColor }}
             >
                 {text}

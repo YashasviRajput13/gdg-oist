@@ -74,6 +74,10 @@ export default function SplashCursor({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
+      return; // Do not initialize the heavy fluid simulation on touch/mobile devices
+    }
+
     let pointers: Pointer[] = [pointerPrototype()];
 
     let config = {

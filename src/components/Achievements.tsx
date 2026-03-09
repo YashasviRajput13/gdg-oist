@@ -5,10 +5,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toDirectImageUrl } from "@/lib/driveUrl";
 import FlowingMenu from "./FlowingMenu";
 import CircularGallery from "./CircularGallery";
-import milestoneIo from "@/assets/milestone-io.jpg";
-import milestoneSolution from "@/assets/milestone-solution.jpg";
-import milestoneDevfest from "@/assets/milestone-devfest.jpg";
-import milestoneCommunity from "@/assets/milestone-community.jpg";
+const milestoneIo = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035949/milestone-io_rep8xf.jpg";
+const milestoneSolution = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035950/milestone-solution_grcbst.jpg";
+const milestoneDevfest = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035950/milestone-devfest_r1pbdj.jpg";
+const milestoneCommunity = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035949/milestone-community_gok6sh.jpg";
 
 const googleColors = ["bg-google-blue", "bg-google-red", "bg-google-yellow", "bg-google-green"];
 

@@ -117,7 +117,7 @@ const ChromaGrid = ({
         >
           <div className="chroma-card-avatar-wrap">
             {c.image ? (
-              <img src={c.image} alt={c.title} className="chroma-card-avatar" />
+              <img src={c.image} alt={c.title} className="chroma-card-avatar" loading="lazy" />
             ) : (
               <div className="chroma-card-initials">
                 {c.title.split(' ').map(n => n[0]).join('')}
