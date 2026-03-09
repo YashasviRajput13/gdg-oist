@@ -174,7 +174,7 @@ void main() {
 const MAX_GRADIENT_STOPS = 8;
 
 function hexToVec3(hex: string): Vector3 {
-  let value = hex.trim().replace(/^#/, '');
+  const value = hex.trim().replace(/^#/, '');
   let r = 255, g = 255, b = 255;
   if (value.length === 3) {
     r = parseInt(value[0] + value[0], 16);
