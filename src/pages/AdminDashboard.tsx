@@ -49,33 +49,35 @@ const AdminDashboard = () => {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-8">
-        <Tabs defaultValue="gallery">
-          <TabsList className="mb-6 flex-wrap">
-            <TabsTrigger value="gallery" className="gap-2">
-              <Image className="h-4 w-4" /> Gallery
-            </TabsTrigger>
-            <TabsTrigger value="events" className="gap-2">
-              <Calendar className="h-4 w-4" /> Events
-            </TabsTrigger>
-            <TabsTrigger value="team" className="gap-2">
-              <Users className="h-4 w-4" /> Team
-            </TabsTrigger>
-            <TabsTrigger value="testimonials" className="gap-2">
-              <MessageSquareQuote className="h-4 w-4" /> Testimonials
-            </TabsTrigger>
-            <TabsTrigger value="highlights" className="gap-2">
-              <Sparkles className="h-4 w-4" /> Highlights
-            </TabsTrigger>
-            <TabsTrigger value="messages" className="gap-2">
-              <Mail className="h-4 w-4" /> Messages
-            </TabsTrigger>
-            <TabsTrigger value="invite" className="gap-2">
-              <UserPlus className="h-4 w-4" /> Invite Admin
-            </TabsTrigger>
-            <TabsTrigger value="login-history" className="gap-2">
-              <History className="h-4 w-4" /> Login History
-            </TabsTrigger>
-          </TabsList>
+        <Tabs defaultValue="gallery" className="w-full">
+          <div className="w-full overflow-x-auto pb-2 mb-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <TabsList className="inline-flex min-w-max w-full sm:w-auto h-auto p-1 bg-muted/50 rounded-lg">
+              <TabsTrigger value="gallery" className="gap-2 shrink-0">
+                <Image className="h-4 w-4" /> Gallery
+              </TabsTrigger>
+              <TabsTrigger value="events" className="gap-2 shrink-0">
+                <Calendar className="h-4 w-4" /> Events
+              </TabsTrigger>
+              <TabsTrigger value="team" className="gap-2 shrink-0">
+                <Users className="h-4 w-4" /> Team
+              </TabsTrigger>
+              <TabsTrigger value="testimonials" className="gap-2 shrink-0">
+                <MessageSquareQuote className="h-4 w-4" /> Testimonials
+              </TabsTrigger>
+              <TabsTrigger value="highlights" className="gap-2 shrink-0">
+                <Sparkles className="h-4 w-4" /> Highlights
+              </TabsTrigger>
+              <TabsTrigger value="messages" className="gap-2 shrink-0">
+                <Mail className="h-4 w-4" /> Messages
+              </TabsTrigger>
+              <TabsTrigger value="invite" className="gap-2 shrink-0">
+                <UserPlus className="h-4 w-4" /> Invite Admin
+              </TabsTrigger>
+              <TabsTrigger value="login-history" className="gap-2 shrink-0">
+                <History className="h-4 w-4" /> Login History
+              </TabsTrigger>
+            </TabsList>
+          </div>
           <TabsContent value="gallery">
             <AdminGalleryTab />
           </TabsContent>

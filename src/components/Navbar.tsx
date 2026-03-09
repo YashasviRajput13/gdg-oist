@@ -25,25 +25,31 @@ const Navbar = () => {
   }, [activeSection]);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  
+
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      const sections = navLinks.map((l) => l.href.replace("#", ""));
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.getBoundingClientRect().top <= 150) {
-          setActiveSection(sections[i]);
-          break;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 20);
+        const sections = navLinks.map((l) => l.href.replace("#", ""));
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const el = document.getElementById(sections[i]);
+          if (el && el.getBoundingClientRect().top <= 150) {
+            setActiveSection(sections[i]);
+            break;
+          }
         }
-      }
+        ticking = false;
+      });
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -57,8 +63,8 @@ const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-          ? "bg-card/90 backdrop-blur-xl shadow-sm border-b border-border"
-          : "bg-transparent"
+        ? "bg-card/90 backdrop-blur-xl shadow-sm border-b border-border"
+        : "bg-transparent"
         }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
@@ -173,13 +179,13 @@ const Navbar = () => {
                   key={link.label}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  
+
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
                   className={`block text-base font-medium transition-colors ${activeSection === link.href.replace("#", "")
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
                     }`}
                 >
                   {link.label}

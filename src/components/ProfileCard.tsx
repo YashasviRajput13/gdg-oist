@@ -63,7 +63,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 }) => {
     const wrapRef = useRef<HTMLDivElement>(null);
     const shellRef = useRef<HTMLDivElement>(null);
-    
+
 
     const enterTimerRef = useRef<number | null>(null);
     const leaveRafRef = useRef<number | null>(null);
@@ -204,7 +204,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
             shell.classList.add('active');
             shell.classList.add('entering');
-            
+
             if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
             enterTimerRef.current = window.setTimeout(() => {
                 shell.classList.remove('entering');
@@ -275,6 +275,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
         const handleClick = () => {
             if (!enableMobileTilt || window.location.protocol !== 'https:') return;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const anyMotion = (window as any).DeviceMotionEvent;
             if (anyMotion && typeof anyMotion.requestPermission === 'function') {
                 anyMotion

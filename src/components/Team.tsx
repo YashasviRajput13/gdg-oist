@@ -39,11 +39,15 @@ const Team = () => {
 
   useEffect(() => {
     const fetchTeam = async () => {
-      const { data } = await supabase
-        .from("team_members")
-        .select("*")
-        .order("display_order", { ascending: true });
-      if (data) setMembers(data);
+      try {
+        const { data, error } = await supabase
+          .from("team_members")
+          .select("*")
+          .order("display_order", { ascending: true });
+        if (!error && data) setMembers(data);
+      } catch {
+        // Silently fail — show empty team section
+      }
     };
     fetchTeam();
   }, []);
@@ -100,11 +104,10 @@ const Team = () => {
                 onClick={() => setActiveCategory(cat)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
-                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
-                  isActive
+                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${isActive
                     ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30'
                     : 'bg-card text-foreground/70 border-border hover:border-primary/50 hover:text-foreground'
-                }`}
+                  }`}
               >
                 {cat}
               </motion.button>
@@ -133,7 +136,7 @@ const Team = () => {
                 behindGlowColor={color.glow}
                 onContactClick={() => {
                   const url = m.linkedin_url || m.github_url || m.twitter_url;
-                  if (url) window.open(url, '_blank');
+                  if (url) window.open(url, '_blank', 'noopener,noreferrer');
                 }}
               />
             );

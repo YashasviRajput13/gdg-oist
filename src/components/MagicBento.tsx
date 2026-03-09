@@ -1,5 +1,7 @@
 import { useRef, useEffect, useCallback, useState, ReactNode, CSSProperties } from 'react';
+import { createPortal } from 'react-dom';
 import { gsap } from 'gsap';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 import './MagicBento.css';
 
 
@@ -352,35 +354,11 @@ const GlobalSpotlight = ({
     spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
     glowColor = DEFAULT_GLOW_COLOR
 }: GlobalSpotlightProps) => {
-    const spotlightRef = useRef<HTMLElement | null>(null);
+    const spotlightRef = useRef<HTMLDivElement>(null);
     const isInsideSection = useRef(false);
 
     useEffect(() => {
         if (disableAnimations || !gridRef?.current || !enabled) return;
-
-        const spotlight = document.createElement('div');
-        spotlight.className = 'global-spotlight';
-        spotlight.style.cssText = `
-      position: fixed;
-      width: 800px;
-      height: 800px;
-      border-radius: 50%;
-      pointer-events: none;
-      background: radial-gradient(circle,
-        rgba(${glowColor}, 0.15) 0%,
-        rgba(${glowColor}, 0.08) 15%,
-        rgba(${glowColor}, 0.04) 25%,
-        rgba(${glowColor}, 0.02) 40%,
-        rgba(${glowColor}, 0.01) 65%,
-        transparent 70%
-      );
-      z-index: 200;
-      opacity: 0;
-      transform: translate(-50%, -50%);
-      mix-blend-mode: screen;
-    `;
-        document.body.appendChild(spotlight);
-        spotlightRef.current = spotlight;
 
         const handleMouseMove = (e: MouseEvent) => {
             if (!spotlightRef.current || !gridRef.current) return;
@@ -470,11 +448,37 @@ const GlobalSpotlight = ({
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseleave', handleMouseLeave);
-            spotlightRef.current?.parentNode?.removeChild(spotlightRef.current);
         };
     }, [gridRef, disableAnimations, enabled, spotlightRadius, glowColor]);
 
-    return null;
+    if (disableAnimations || !enabled) return null;
+
+    return createPortal(
+        <div
+            ref={spotlightRef}
+            className="global-spotlight"
+            style={{
+                position: 'fixed',
+                width: 800,
+                height: 800,
+                borderRadius: '50%',
+                pointerEvents: 'none',
+                background: `radial-gradient(circle,
+                    rgba(${glowColor}, 0.15) 0%,
+                    rgba(${glowColor}, 0.08) 15%,
+                    rgba(${glowColor}, 0.04) 25%,
+                    rgba(${glowColor}, 0.02) 40%,
+                    rgba(${glowColor}, 0.01) 65%,
+                    transparent 70%
+                )`,
+                zIndex: 200,
+                opacity: 0,
+                transform: 'translate(-50%, -50%)',
+                mixBlendMode: 'screen',
+            }}
+        />,
+        document.body
+    );
 };
 
 interface BentoCardGridProps {
@@ -488,20 +492,7 @@ const BentoCardGrid = ({ children, gridRef }: BentoCardGridProps) => (
     </div>
 );
 
-const useMobileDetection = () => {
-    const [isMobile, setIsMobile] = useState(false);
 
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
-
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
-
-    return isMobile;
-};
 
 interface MagicBentoProps {
     textAutoHide?: boolean;
@@ -531,9 +522,9 @@ const MagicBento = ({
     enableMagnetism = true
 }: MagicBentoProps) => {
     const gridRef = useRef<HTMLDivElement>(null);
-    const isMobile = useMobileDetection();
+    const isMobile = useIsMobile();
     const shouldDisableAnimations = disableAnimations || isMobile;
-    
+
 
     return (
         <>
@@ -550,155 +541,22 @@ const MagicBento = ({
             <BentoCardGrid gridRef={gridRef}>
                 {cardData.map((card, index) => {
                     const baseClassName = `magic-bento-card ${textAutoHide ? 'magic-bento-card--text-autohide' : ''} ${enableBorderGlow ? 'magic-bento-card--border-glow' : ''}`;
-                    // Define custom CSS properties with proper casting for TypeScript
                     const cardStyle = {
                         backgroundColor: card.color,
                         '--glow-color': glowColor
                     } as CSSProperties;
 
-                    if (enableStars) {
-                        return (
-                            <ParticleCard
-                                key={index}
-                                className={baseClassName}
-                                style={cardStyle}
-                                disableAnimations={shouldDisableAnimations}
-                                particleCount={particleCount}
-                                glowColor={glowColor}
-                                enableTilt={enableTilt}
-                                clickEffect={clickEffect}
-                                enableMagnetism={enableMagnetism}
-                            >
-                                <div className="magic-bento-card__header">
-                                    <div className="magic-bento-card__label">{card.label}</div>
-                                </div>
-                                <div className="magic-bento-card__content">
-                                    <h2 className="magic-bento-card__title">{card.title}</h2>
-                                    <p className="magic-bento-card__description">{card.description}</p>
-                                </div>
-                            </ParticleCard>
-                        );
-                    }
-
                     return (
-                        <div
+                        <ParticleCard
                             key={index}
                             className={baseClassName}
                             style={cardStyle}
-                            ref={el => {
-                                if (!el) return;
-
-                                const handleMouseMove = (e: MouseEvent) => {
-                                    if (shouldDisableAnimations) return;
-
-                                    const rect = el.getBoundingClientRect();
-                                    const x = e.clientX - rect.left;
-                                    const y = e.clientY - rect.top;
-                                    const centerX = rect.width / 2;
-                                    const centerY = rect.height / 2;
-
-                                    if (enableTilt) {
-                                        const rotateX = ((y - centerY) / centerY) * -10;
-                                        const rotateY = ((x - centerX) / centerX) * 10;
-                                        gsap.to(el, {
-                                            rotateX,
-                                            rotateY,
-                                            duration: 0.1,
-                                            ease: 'power2.out',
-                                            transformPerspective: 1000
-                                        });
-                                    }
-
-                                    if (enableMagnetism) {
-                                        const magnetX = (x - centerX) * 0.05;
-                                        const magnetY = (y - centerY) * 0.05;
-                                        gsap.to(el, {
-                                            x: magnetX,
-                                            y: magnetY,
-                                            duration: 0.3,
-                                            ease: 'power2.out'
-                                        });
-                                    }
-                                };
-
-                                const handleMouseLeave = () => {
-                                    if (shouldDisableAnimations) return;
-
-                                    if (enableTilt) {
-                                        gsap.to(el, {
-                                            rotateX: 0,
-                                            rotateY: 0,
-                                            duration: 0.3,
-                                            ease: 'power2.out'
-                                        });
-                                    }
-
-                                    if (enableMagnetism) {
-                                        gsap.to(el, {
-                                            x: 0,
-                                            y: 0,
-                                            duration: 0.3,
-                                            ease: 'power2.out'
-                                        });
-                                    }
-                                };
-
-                                const handleMouseEnter = () => {
-                                    if (shouldDisableAnimations) return;
-                                    
-                                };
-
-                                const handleClick = (e: MouseEvent) => {
-                                    
-                                    if (!clickEffect || shouldDisableAnimations) return;
-
-                                    const rect = el.getBoundingClientRect();
-                                    const x = e.clientX - rect.left;
-                                    const y = e.clientY - rect.top;
-
-                                    const maxDistance = Math.max(
-                                        Math.hypot(x, y),
-                                        Math.hypot(x - rect.width, y),
-                                        Math.hypot(x, y - rect.height),
-                                        Math.hypot(x - rect.width, y - rect.height)
-                                    );
-
-                                    const ripple = document.createElement('div');
-                                    ripple.style.cssText = `
-                    position: absolute;
-                    width: ${maxDistance * 2}px;
-                    height: ${maxDistance * 2}px;
-                    border-radius: 50%;
-                    background: radial-gradient(circle, rgba(${glowColor}, 0.4) 0%, rgba(${glowColor}, 0.2) 30%, transparent 70%);
-                    left: ${x - maxDistance}px;
-                    top: ${y - maxDistance}px;
-                    pointer-events: none;
-                    z-index: 1000;
-                  `;
-
-                                    el.appendChild(ripple);
-
-                                    gsap.fromTo(
-                                        ripple,
-                                        {
-                                            scale: 0,
-                                            opacity: 1
-                                        },
-                                        {
-                                            scale: 1,
-                                            opacity: 0,
-                                            duration: 0.8,
-                                            ease: 'power2.out',
-                                            onComplete: () => ripple.remove()
-                                        }
-                                    );
-                                };
-
-                                el.addEventListener('mouseenter', handleMouseEnter);
-                                el.addEventListener('mousemove', handleMouseMove);
-                                el.addEventListener('mouseleave', handleMouseLeave);
-                                el.addEventListener('click', handleClick as EventListener);
-                            }}
+                            disableAnimations={shouldDisableAnimations}
+                            particleCount={particleCount}
+                            glowColor={glowColor}
+                            enableTilt={enableTilt}
+                            clickEffect={clickEffect}
+                            enableMagnetism={enableMagnetism}
                         >
                             <div className="magic-bento-card__header">
                                 <div className="magic-bento-card__label">{card.label}</div>
@@ -707,7 +565,7 @@ const MagicBento = ({
                                 <h2 className="magic-bento-card__title">{card.title}</h2>
                                 <p className="magic-bento-card__description">{card.description}</p>
                             </div>
-                        </div>
+                        </ParticleCard>
                     );
                 })}
             </BentoCardGrid>

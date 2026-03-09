@@ -61,12 +61,16 @@ const Achievements = () => {
 
   useEffect(() => {
     const fetchHighlights = async () => {
-      const { data } = await supabase
-        .from("event_highlights")
-        .select("*")
-        .order("display_order", { ascending: true });
-      if (data && data.length > 0) {
-        setGalleryItems(data.map((h) => ({ image: toDirectImageUrl(h.image_url), text: h.label })));
+      try {
+        const { data, error } = await supabase
+          .from("event_highlights")
+          .select("*")
+          .order("display_order", { ascending: true });
+        if (!error && data && data.length > 0) {
+          setGalleryItems(data.map((h) => ({ image: toDirectImageUrl(h.image_url), text: h.label })));
+        }
+      } catch {
+        // Keep fallback gallery items on failure
       }
     };
     fetchHighlights();

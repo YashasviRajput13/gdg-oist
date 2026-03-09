@@ -1,7 +1,7 @@
-import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring, animate } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, animate } from "framer-motion";
 import { ArrowDown, ChevronRight, Users, Calendar, Code, Trophy } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
-const heroVideo = "https://res.cloudinary.com/drzgyob2v/video/upload/v1773035972/hero-video_qojhwf.mp4";
+const heroVideo = "https://res.cloudinary.com/drzgyob2v/video/upload/f_auto,q_auto,w_1280/v1773035972/hero-video_qojhwf.mp4";
 const heroBg = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035949/hero-bg_kqkoej.jpg";
 import FloatingBlobs from "@/components/FloatingBlobs";
 
@@ -67,6 +67,8 @@ const letterVariants = {
   }),
 };
 
+const isTouchDevice = window.matchMedia?.("(pointer: coarse)").matches;
+
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -95,16 +97,29 @@ const Hero = () => {
     >
       {/* Background video with parallax */}
       <motion.div className="absolute inset-0" style={{ scale: videoScale }}>
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster={heroBg}
-          className="w-full h-full object-cover"
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
+        {isTouchDevice ? (
+          <img
+            src={heroBg}
+            alt=""
+            className="w-full h-full object-cover"
+            loading="eager"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            }}
+          />
+        ) : (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={heroBg}
+            className="w-full h-full object-cover"
+          >
+            <source src={heroVideo} type="video/mp4" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/30 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
       </motion.div>

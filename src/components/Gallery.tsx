@@ -33,12 +33,16 @@ const Gallery = () => {
 
   useEffect(() => {
     const fetchGallery = async () => {
-      const { data } = await supabase
-        .from("gallery_items")
-        .select("id, src, alt, caption")
-        .order("created_at", { ascending: true });
-      if (data && data.length > 0) {
-        setGalleryItems(data);
+      try {
+        const { data, error } = await supabase
+          .from("gallery_items")
+          .select("id, src, alt, caption")
+          .order("created_at", { ascending: true });
+        if (!error && data && data.length > 0) {
+          setGalleryItems(data);
+        }
+      } catch {
+        // Keep fallback gallery items on failure
       }
     };
     fetchGallery();
@@ -113,6 +117,11 @@ const Gallery = () => {
                   src={toDirectImageUrl(lightboxItem.src)}
                   alt={lightboxItem.alt}
                   className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.onerror = null;
+                    target.src = "/placeholder.svg";
+                  }}
                 />
                 {(lightboxItem.caption || lightboxItem.alt) && (
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-transparent rounded-b-2xl">
@@ -151,19 +160,18 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: I
       <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-background to-transparent pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-background to-transparent pointer-events-none" />
 
-      <motion.div
+      <style>{`
+        @keyframes scrollX {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(var(--scroll-width)); }
+        }
+      `}</style>
+      <div
         className="flex gap-5 w-max"
-        animate={{
-          x: direction === "left" ? [0, -totalWidth] : [-totalWidth, 0],
-        }}
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: speed,
-            ease: "linear",
-          },
-        }}
+        style={{
+          '--scroll-width': `-${totalWidth}px`,
+          animation: `scrollX ${speed}s linear infinite ${direction === "left" ? "normal" : "reverse"}`
+        } as React.CSSProperties}
       >
         {duplicated.map((item, i) => (
           <div
@@ -179,6 +187,11 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: I
               alt={item.alt}
               loading="lazy"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.onerror = null;
+                target.src = "/placeholder.svg";
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             {item.caption && (
@@ -190,7 +203,7 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: I
             )}
           </div>
         ))}
-      </motion.div>
+      </div>
     </motion.div>
   );
 };

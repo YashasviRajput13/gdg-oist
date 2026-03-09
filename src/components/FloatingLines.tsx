@@ -255,6 +255,9 @@ export default function FloatingLines({
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Skip heavy WebGL on touch/mobile devices to prevent GPU overload
+    if (window.matchMedia?.("(pointer: coarse)").matches) return;
+
     const scene = new Scene();
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
@@ -378,10 +381,12 @@ export default function FloatingLines({
       raf = requestAnimationFrame(renderLoop);
     };
 
+    const el = containerRef.current;
+
     return () => {
       if (raf !== 0) cancelAnimationFrame(raf);
-      if (containerRef.current) observer.unobserve(containerRef.current);
-      if (ro && containerRef.current) ro.disconnect();
+      if (el) observer.unobserve(el);
+      if (ro && el) ro.disconnect();
       if (interactive) {
         renderer.domElement.removeEventListener('pointermove', handlePointerMove);
         renderer.domElement.removeEventListener('pointerleave', handlePointerLeave);

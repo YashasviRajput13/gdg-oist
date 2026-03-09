@@ -127,6 +127,9 @@ export default function Aurora(props: AuroraProps) {
         const ctn = ctnDom.current;
         if (!ctn) return;
 
+        // Skip heavy WebGL on touch/mobile devices to prevent GPU overload
+        if (window.matchMedia?.("(pointer: coarse)").matches) return;
+
         const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true });
         const gl = renderer.gl;
         gl.clearColor(0, 0, 0, 0);
