@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion, useInView } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toDirectImageUrl } from "@/lib/driveUrl";
@@ -51,7 +51,7 @@ const Events = () => {
     fetchEvents();
   }, []);
 
-  const headingWords = ["What's", "happening", "next"];
+  const headingWords = useMemo(() => ["What's", "happening", "next"], []);
 
   return (
     <section id="events" className="section-padding relative overflow-hidden" ref={ref}>

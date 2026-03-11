@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, useMemo } from "react";
 import { ChevronDown, MessageCircle, Mail } from "lucide-react";
 
 const faqs = [
@@ -34,7 +34,11 @@ const FAQ = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const headingWords = ["Frequently", "asked", "questions"];
+  const headingWords = useMemo(() => ["Frequently", "asked", "questions"], []);
+  
+  const handleToggleFAQ = useCallback((index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  }, [openIndex]);
 
   return (
     <section id="faq" className="section-padding bg-card relative overflow-hidden" ref={ref}>
@@ -68,7 +72,7 @@ const FAQ = () => {
         </motion.div>
 
         <div className="space-y-3">
-          {faqs.map((faq, i) => (
+          {useMemo(() => faqs.map((faq, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
@@ -76,7 +80,7 @@ const FAQ = () => {
               transition={{ duration: 0.5, delay: 0.4 + i * 0.07, ease: [0.16, 1, 0.3, 1] as const }}
             >
               <button
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                onClick={() => handleToggleFAQ(i)}
                 className={`w-full flex items-center justify-between p-6 rounded-2xl border text-left transition-all duration-300 group ${
                   openIndex === i
                     ? "bg-primary/5 border-primary/15 shadow-md"
@@ -108,7 +112,7 @@ const FAQ = () => {
                 </p>
               </motion.div>
             </motion.div>
-          ))}
+          )), [isInView, openIndex, handleToggleFAQ])}
         </div>
 
         {/* Still Have Questions card */}

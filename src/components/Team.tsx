@@ -1,5 +1,5 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo, memo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toDirectImageUrl } from "@/lib/driveUrl";
 import ProfileCard from "./ProfileCard";
@@ -52,13 +52,20 @@ const Team = () => {
     fetchTeam();
   }, []);
 
-  const headingWords = ["The", "people", "behind", "GDG"];
+  const headingWords = useMemo(() => ["The", "people", "behind", "GDG"], []);
   const subtitle = "MEET OUR HUB";
 
-  const availableCategories = categoryOrder;
-  const filteredMembers = activeCategory === "All"
-    ? members
-    : members.filter(m => (m.category || "Other") === activeCategory);
+  const availableCategories = useMemo(() => categoryOrder, []);
+  const filteredMembers = useMemo(() => 
+    activeCategory === "All"
+      ? members
+      : members.filter(m => (m.category || "Other") === activeCategory),
+    [activeCategory, members]
+  );
+  
+  const handleCategoryChange = useCallback((cat: string) => {
+    setActiveCategory(cat);
+  }, []);
 
   return (
     <section id="team" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
@@ -123,8 +130,12 @@ const Team = () => {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
         >
-          {filteredMembers.map((m, i) => {
+          {useMemo(() => filteredMembers.map((m, i) => {
             const color = googleColors[i % googleColors.length];
+            const handleMemberClick = () => {
+              const url = m.linkedin_url || m.github_url || m.twitter_url;
+              if (url) window.open(url, '_blank', 'noopener,noreferrer');
+            };
             return (
               <ProfileCard
                 key={m.id}
@@ -134,13 +145,10 @@ const Team = () => {
                 handle={m.name.toLowerCase().replace(/\s+/g, '')}
                 innerGradient={color.gradient}
                 behindGlowColor={color.glow}
-                onContactClick={() => {
-                  const url = m.linkedin_url || m.github_url || m.twitter_url;
-                  if (url) window.open(url, '_blank', 'noopener,noreferrer');
-                }}
+                onContactClick={handleMemberClick}
               />
             );
-          })}
+          }), [filteredMembers])}
         </motion.div>
       </div>
     </section>

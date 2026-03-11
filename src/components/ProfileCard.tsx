@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useMemo, ReactNode } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo, ReactNode, memo } from 'react';
 import './ProfileCard.css';
 
 interface ProfileCardProps {
@@ -40,7 +40,7 @@ const adjust = (v: number, fMin: number, fMax: number, tMin: number, tMax: numbe
 
 
 
-const ProfileCardComponent: React.FC<ProfileCardProps> = ({
+const ProfileCardComponent: React.FC<ProfileCardProps> = memo(({
     avatarUrl = '',
     iconUrl = '',
     grainUrl = '',
@@ -394,7 +394,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
             </div>
         </div>
     );
-};
+});
 
-const ProfileCard = React.memo(ProfileCardComponent);
-export default ProfileCard;
+ProfileCardComponent.displayName = 'ProfileCard';
+
+export default ProfileCardComponent;

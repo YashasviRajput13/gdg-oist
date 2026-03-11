@@ -1,23 +1,23 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useMemo, memo } from "react";
 
-const technologies = [
-  "Android", "Firebase", "TensorFlow", "Flutter", "Google Cloud",
-  "Kotlin", "Angular", "Dart", "Gemini AI", "Chrome", "Go", "Kubernetes",
-  "Android", "Firebase", "TensorFlow", "Flutter", "Google Cloud",
-  "Kotlin", "Angular", "Dart", "Gemini AI", "Chrome", "Go", "Kubernetes",
-];
-
-const googleColors = [
-  "text-google-blue",
-  "text-google-red",
-  "text-google-yellow",
-  "text-google-green",
-];
-
-const TechMarquee = () => {
+const TechMarquee = memo(() => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+
+  const technologies = useMemo(() => [
+    "Android", "Firebase", "TensorFlow", "Flutter", "Google Cloud",
+    "Kotlin", "Angular", "Dart", "Gemini AI", "Chrome", "Go", "Kubernetes",
+    "Android", "Firebase", "TensorFlow", "Flutter", "Google Cloud",
+    "Kotlin", "Angular", "Dart", "Gemini AI", "Chrome", "Go", "Kubernetes",
+  ], []);
+
+  const googleColors = useMemo(() => [
+    "text-google-blue",
+    "text-google-red",
+    "text-google-yellow",
+    "text-google-green",
+  ], []);
 
   return (
     <section className="py-20 overflow-hidden bg-card border-y border-border relative" ref={ref}>
@@ -65,6 +65,8 @@ const TechMarquee = () => {
       </div>
     </section>
   );
-};
+});
+
+TechMarquee.displayName = 'TechMarquee';
 
 export default TechMarquee;

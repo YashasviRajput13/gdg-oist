@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, useMemo } from "react";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -14,7 +14,7 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
 
@@ -69,9 +69,9 @@ const Contact = () => {
       toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
     }
     setLoading(false);
-  };
+  }, [toast]);
 
-  const headingWords = ["Let's", "connect"];
+  const headingWords = useMemo(() => ["Let's", "connect"], []);
 
   return (
     <section id="contact" className="section-padding relative overflow-hidden" ref={ref}>

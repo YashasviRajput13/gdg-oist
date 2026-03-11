@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { Users, CalendarDays, Wrench, Code2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toDirectImageUrl } from "@/lib/driveUrl";
@@ -20,7 +20,7 @@ const numbers = [
 ];
 
 // Milestone items for FlowingMenu
-const milestoneItems = [
+const milestoneItemsData = [
   {
     text: "Google I/O Extended",
     link: "#events",
@@ -58,6 +58,7 @@ const Achievements = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const statsInView = useInView(statsRef, { once: true, margin: "-80px" });
   const [galleryItems, setGalleryItems] = useState(fallbackGalleryItems);
+  const milestoneItems = useMemo(() => milestoneItemsData, []);
 
   useEffect(() => {
     const fetchHighlights = async () => {
@@ -96,7 +97,7 @@ const Achievements = () => {
             Achievements
           </motion.p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            {headingWords.map((word, i) => (
+            {useMemo(() => headingWords.map((word, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 50, filter: "blur(8px)" }}
@@ -106,7 +107,7 @@ const Achievements = () => {
               >
                 {word}
               </motion.span>
-            ))}
+            )), [isInView, headingWords])}
           </h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}

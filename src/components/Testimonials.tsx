@@ -1,5 +1,5 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, memo, useCallback, useMemo } from "react";
 import { Quote, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -21,7 +21,7 @@ const colorOptions = [
   "from-[hsl(var(--google-blue))] to-[hsl(var(--google-green))]",
 ];
 
-const TestimonialCard = ({
+const TestimonialCard = memo(({
   testimonial,
   direction,
 }: {
@@ -75,7 +75,7 @@ const TestimonialCard = ({
       </div>
     </motion.div>
   );
-};
+});
 
 const Testimonials = () => {
   const sectionRef = useRef<HTMLElement>(null);
