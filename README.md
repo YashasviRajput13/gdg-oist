@@ -8,6 +8,8 @@
 
 
 
+<img width="1918" height="853" alt="Screenshot 2026-03-12 001034" src="https://github.com/user-attachments/assets/81af6454-275c-4c61-9326-4365713b1939" />
+
 </p>
 ✨ About the Community
 
@@ -96,4 +98,4 @@ GDG OIST Bhopal is a place for developers who love to learn, share, and build to
 
 If you believe in learning by building, you're already part of the journey.
 
-<p align="center"> <img src="https://capsule-render.vercel.app/api?type=waving&color=4285F4&height=120&section=footer"/> </p>
+<p align="center"> <img src="[https://capsule-render.vercel.app/api?type=waving&color=4285F4&height=120&section=footer](https://capsule-render.vercel.app/api?type=waving&color=4285F4&height=200&section=header&text=GDG%20OIST%20Bhopal&fontSize=40)"/> </p>
