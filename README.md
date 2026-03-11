@@ -11,7 +11,9 @@
 <img width="1918" height="853" alt="Screenshot 2026-03-12 001034" src="https://github.com/user-attachments/assets/81af6454-275c-4c61-9326-4365713b1939" />
 
 </p>
+
 ✨ About the Community
+
 
 Google Developer Groups (GDG) are communities supported by Google where developers come together to learn, build, and innovate with modern technologies.
 
@@ -26,7 +28,9 @@ Our goal is simple:
 
 Whether you are a beginner writing your first program or an experienced builder, this community is for you.
 
+
 🌟 What This Website Offers
+
 
 The website is the digital hub of our community, where you can explore everything related to GDG OIST.
 
@@ -70,7 +74,11 @@ npm run dev
 Open in browser
 
 http://localhost:8080
+
+
 📂 Project Structure
+
+
 src
  ├── components
  ├── pages
@@ -81,7 +89,9 @@ src
 
 This structure keeps the project clean, scalable, and easy to maintain.
 
+
 🤝 Contributing
+
 
 We welcome contributions from the community.
 
@@ -92,10 +102,12 @@ We welcome contributions from the community.
 
 Before submitting, please ensure the project runs locally.
 
+
 🌍 Join the Community
+
 
 GDG OIST Bhopal is a place for developers who love to learn, share, and build together.
 
 If you believe in learning by building, you're already part of the journey.
 
-<p align="center"> <img src="[https://capsule-render.vercel.app/api?type=waving&color=4285F4&height=120&section=footer](https://capsule-render.vercel.app/api?type=waving&color=4285F4&height=200&section=header&text=GDG%20OIST%20Bhopal&fontSize=40)"/> </p>
+<p align="center"> <img src="https://capsule-render.vercel.app/api?type=waving&color=4285F4&height=200&section=header&text=GDG%20OIST%20Bhopal&fontSize=40"/> </p>
