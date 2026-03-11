@@ -1,88 +1,74 @@
-# GDG OIST Bhopal 🌐
+🌐 GDG OIST Bhopal
+<p align="center"> <img src="https://readme-typing-svg.herokuapp.com?font=Poppins&size=28&duration=3000&color=4285F4&center=true&vCenter=true&width=600&lines=Welcome+to+GDG+OIST+Bhopal;Learn+Build+Grow+Together;Powered+by+Student+Developers" /> </p> <p align="center">
 
-Welcome to the official repository of the **Google Developer Groups (GDG) OIST Bhopal** website.
 
-GDG OIST Bhopal is a student-led community focused on learning, building, and sharing knowledge around modern technologies. This website serves as the digital hub for our community where members can explore events, connect with the team, and stay updated with everything happening in the GDG ecosystem.
 
----
 
-## About the Community
 
-Google Developer Groups are communities supported by Google where developers come together to learn and grow.
 
-At **GDG OIST Bhopal**, we aim to:
 
-• Encourage students to explore modern technologies
-• Organize workshops, hackathons, and technical events
-• Create opportunities for collaboration and learning
-• Promote innovation and real-world problem solving
 
----
+</p>
+✨ About the Community
 
-## What This Website Includes
+Google Developer Groups (GDG) are communities supported by Google where developers come together to learn, build, and innovate with modern technologies.
 
-The website highlights everything related to our community, including:
+At GDG OIST Bhopal, we are a group of curious students passionate about technology, creativity, and collaboration.
 
-* Community overview and mission
-* Upcoming and past events
-* Team members and organizers
-* Event highlights and gallery
-* Contact and community engagement
+Our goal is simple:
 
-The goal is to provide a **simple, modern, and engaging experience** for developers visiting the platform.
+🚀 Explore modern technologies
+🤝 Build projects together
+🎯 Solve real-world problems
+🌱 Grow as developers
 
----
+Whether you are a beginner writing your first program or an experienced builder, this community is for you.
 
-## Tech Stack
+🌟 What This Website Offers
 
-This project is built using modern web technologies:
+The website is the digital hub of our community, where you can explore everything related to GDG OIST.
 
-* **React**
-* **Vite**
-* **TypeScript**
-* **Tailwind CSS**
-* **Framer Motion**
-* **Supabase**
+✨ Community overview
+📅 Upcoming and past events
+👥 Team members and organizers
+📸 Event highlights and gallery
+📬 Contact and collaboration opportunities
 
----
+Our goal was to create a simple, modern, and engaging platform for developers.
 
-## Running the Project Locally
+🛠 Tech Stack
+
+This project is built using modern technologies:
+
+• React
+• Vite
+• TypeScript
+• Tailwind CSS
+• Framer Motion
+• Supabase
+
+🚀 Run Locally
 
 Clone the repository
 
-```bash
 git clone https://github.com/YashasviRajput13/gdg-oist.git
-```
 
-Move into the project directory
+Move into the directory
 
-```bash
 cd gdg-oist
-```
 
 Install dependencies
 
-```bash
 npm install
-```
 
-Start the development server
+Run development server
 
-```bash
 npm run dev
-```
 
-The application will run at:
+Open in browser
 
-```
 http://localhost:8080
-```
-
----
-
-## Project Structure
-
-```
+📂 Project Structure
 src
  ├── components
  ├── pages
@@ -90,31 +76,24 @@ src
  ├── utils
  ├── assets
  └── styles
-```
 
-The structure is designed to keep the codebase modular, maintainable, and easy to scale.
+This structure keeps the project clean, scalable, and easy to maintain.
 
----
+🤝 Contributing
 
-## Contributing
+We welcome contributions from the community.
 
-Contributions are welcome.
+1️⃣ Fork the repository
+2️⃣ Create a branch
+3️⃣ Make improvements
+4️⃣ Submit a Pull Request
 
-If you would like to improve the project:
+Before submitting, please ensure the project runs locally.
 
-1. Fork the repository
-2. Create a new branch
-3. Make your changes
-4. Open a pull request
+🌍 Join the Community
 
-Please make sure the project runs locally before submitting a PR.
+GDG OIST Bhopal is a place for developers who love to learn, share, and build together.
 
----
+If you believe in learning by building, you're already part of the journey.
 
-## Community
-
-GDG OIST Bhopal is a space for developers who love to learn, share, and build together. Whether you're a beginner or an experienced developer, you are always welcome in the community.
-
----
-
-Built with dedication by the **GDG OIST Bhopal Team**.
+<p align="center"> <img src="https://capsule-render.vercel.app/api?type=waving&color=4285F4&height=120&section=footer"/> </p>
