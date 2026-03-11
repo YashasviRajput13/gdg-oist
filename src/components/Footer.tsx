@@ -1,6 +1,47 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
+
 const Footer = () => {
+  const quickLinks = useMemo(() => ["About", "Events", "Gallery", "Team", "Contact"], []);
+  const connectLinks = useMemo(() => [
+    { label: "GDG Community Portal", href: "https://gdg.community.dev" },
+    { label: "Google Developers", href: "https://developers.google.com" },
+  ], []);
+  const googleColors = useMemo(() => ["bg-google-blue", "bg-google-red", "bg-google-yellow", "bg-google-green"], []);
+
+  const quickLinkElements = useMemo(() => quickLinks.map((link, i) => (
+    <motion.a
+      key={link}
+      href={`#${link.toLowerCase()}`}
+      initial={{ opacity: 0, x: -15 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: 0.3 + i * 0.06 }}
+      whileHover={{ x: 6 }}
+      className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+    >
+      {link}
+    </motion.a>
+  )), [quickLinks]);
+
+  const connectLinkElements = useMemo(() => connectLinks.map((link, i) => (
+    <motion.a
+      key={link.label}
+      href={link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, x: -15 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: 0.4 + i * 0.06 }}
+      whileHover={{ x: 6 }}
+      className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
+    >
+      {link.label}
+    </motion.a>
+  )), [connectLinks]);
+
   return (
     <footer className="border-t border-border bg-card relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-[hsl(217,89%,61%)] via-[hsl(7,81%,56%)] to-[hsl(142,53%,43%)]" />
@@ -15,7 +56,7 @@ const Footer = () => {
           >
             <div className="flex items-center gap-2 mb-4">
               <div className="flex gap-1">
-                {["bg-google-blue", "bg-google-red", "bg-google-yellow", "bg-google-green"].map((c, i) => (
+                {googleColors.map((c, i) => (
                   <motion.span
                     key={c}
                     initial={{ scale: 0 }}
@@ -41,20 +82,7 @@ const Footer = () => {
           >
             <h4 className="font-display font-semibold text-foreground mb-4">Quick Links</h4>
             <div className="space-y-3">
-              {["About", "Events", "Gallery", "Team", "Contact"].map((link, i) => (
-                <motion.a
-                  key={link}
-                  href={`#${link.toLowerCase()}`}
-                  initial={{ opacity: 0, x: -15 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.3 + i * 0.06 }}
-                  whileHover={{ x: 6 }}
-                  className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {link}
-                </motion.a>
-              ))}
+              {quickLinkElements}
               <motion.div
                 initial={{ opacity: 0, x: -15 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -79,25 +107,7 @@ const Footer = () => {
           >
             <h4 className="font-display font-semibold text-foreground mb-4">Connect</h4>
             <div className="space-y-3">
-              {[
-                { label: "GDG Community Portal", href: "https://gdg.community.dev" },
-                { label: "Google Developers", href: "https://developers.google.com" },
-              ].map((link, i) => (
-                <motion.a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, x: -15 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.4 + i * 0.06 }}
-                  whileHover={{ x: 6 }}
-                  className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {link.label}
-                </motion.a>
-              ))}
+              {connectLinkElements}
             </div>
           </motion.div>
         </div>

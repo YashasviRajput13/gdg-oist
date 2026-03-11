@@ -1,9 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+
+type Event = {
+  id: string;
+  title: string;
+  description: string;
+  event_date: string;
+};
+
 export default function Events() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -12,9 +19,6 @@ export default function Events() {
       const { data, error } = await supabase
         .from("events")
         .select("*");
-
-      console.log("Fetched events:", data);
-      console.log("Error:", error);
 
       if (error) {
         setErrorMessage("Failed to load events.");
@@ -28,6 +32,24 @@ export default function Events() {
     fetchEvents();
   }, []);
 
+  const eventList = useMemo(() => {
+    return events.map((event) => (
+      <div
+        key={event.id}
+        style={{
+          marginTop: "20px",
+          padding: "20px",
+          backgroundColor: "#1e293b",
+          borderRadius: "10px",
+        }}
+      >
+        <h2>{event.title}</h2>
+        <p>{event.description}</p>
+        <p>{event.event_date}</p>
+      </div>
+    ));
+  }, [events]);
+
   return (
     <div style={{ padding: "40px", color: "white" }}>
       <h1>Upcoming Events</h1>
@@ -40,21 +62,7 @@ export default function Events() {
         <p>No events found in database.</p>
       )}
 
-      {events.map((event) => (
-        <div
-          key={event.id}
-          style={{
-            marginTop: "20px",
-            padding: "20px",
-            backgroundColor: "#1e293b",
-            borderRadius: "10px",
-          }}
-        >
-          <h2>{event.title}</h2>
-          <p>{event.description}</p>
-          <p>{event.event_date}</p>
-        </div>
-      ))}
+      {eventList}
     </div>
   );
 }

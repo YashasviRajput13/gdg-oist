@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { ArrowRight, Users, CalendarDays, Wrench, Code2 } from "lucide-react";
 import FloatingBlobs from "@/components/FloatingBlobs";
 const pillarLearning = "https://res.cloudinary.com/drzgyob2v/image/upload/f_auto,q_auto/v1773035950/pillar-learning_k6ukqk.png";
@@ -41,12 +41,13 @@ const pillars = [
   },
 ];
 
-const headingWords = ["Empowering", "developers,", "one", "event", "at", "a", "time."];
+const headingWordsData = ["Empowering", "developers,", "one", "event", "at", "a", "time."];
 
 const About = () => {
   const ref = useRef(null);
   const sectionRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const headingWords = useMemo(() => headingWordsData, []);
 
   return (
     <section id="about" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
@@ -75,7 +76,7 @@ const About = () => {
             About Us
           </motion.p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6">
-            {headingWords.map((word, i) => (
+            {useMemo(() => headingWords.map((word, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
@@ -85,7 +86,7 @@ const About = () => {
               >
                 {word}
               </motion.span>
-            ))}
+            )), [isInView, headingWords])}
           </h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}

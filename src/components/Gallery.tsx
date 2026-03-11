@@ -1,5 +1,5 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo, memo } from "react";
 import { createPortal } from "react-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toDirectImageUrl } from "@/lib/driveUrl";
@@ -48,10 +48,18 @@ const Gallery = () => {
     fetchGallery();
   }, []);
 
-  const headingWords = ["Moments", "from", "our", "events"];
+  const headingWords = useMemo(() => ["Moments", "from", "our", "events"], []);
 
-  const row1 = galleryItems.slice(0, Math.ceil(galleryItems.length / 2));
-  const row2 = galleryItems.slice(Math.ceil(galleryItems.length / 2));
+  const row1 = useMemo(() => galleryItems.slice(0, Math.ceil(galleryItems.length / 2)), [galleryItems]);
+  const row2 = useMemo(() => galleryItems.slice(Math.ceil(galleryItems.length / 2)), [galleryItems]);
+
+  const handleLightboxOpen = useCallback((item: GalleryItem) => {
+    setLightboxItem(item);
+  }, []);
+
+  const handleLightboxClose = useCallback(() => {
+    setLightboxItem(null);
+  }, []);
 
   return (
     <section id="gallery" className="section-padding overflow-hidden" ref={ref}>
@@ -81,8 +89,8 @@ const Gallery = () => {
         </motion.div>
 
         <div className="flex flex-col gap-5">
-          <InfiniteScrollRow items={row1} direction="left" speed={30} isInView={isInView} onItemClick={setLightboxItem} />
-          <InfiniteScrollRow items={row2} direction="right" speed={35} isInView={isInView} onItemClick={setLightboxItem} />
+          <InfiniteScrollRow items={row1} direction="left" speed={30} isInView={isInView} onItemClick={handleLightboxOpen} />
+          <InfiniteScrollRow items={row2} direction="right" speed={35} isInView={isInView} onItemClick={handleLightboxOpen} />
         </div>
       </div>
 
@@ -95,11 +103,11 @@ const Gallery = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/80 backdrop-blur-md p-4"
-              onClick={() => setLightboxItem(null)}
+              onClick={handleLightboxClose}
             >
               <motion.button
                 className="absolute top-6 right-6 w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors z-10"
-                onClick={() => setLightboxItem(null)}
+                onClick={handleLightboxClose}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -146,7 +154,7 @@ interface InfiniteScrollRowProps {
   onItemClick: (item: GalleryItem) => void;
 }
 
-const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: InfiniteScrollRowProps) => {
+const InfiniteScrollRow = memo(({ items, direction, speed, isInView, onItemClick }: InfiniteScrollRowProps) => {
   const duplicated = [...items, ...items];
   const totalWidth = items.length * 340;
 
@@ -206,6 +214,6 @@ const InfiniteScrollRow = ({ items, direction, speed, isInView, onItemClick }: I
       </div>
     </motion.div>
   );
-};
+});
 
 export default Gallery;

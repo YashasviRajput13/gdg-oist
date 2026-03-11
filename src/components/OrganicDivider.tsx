@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, memo } from "react";
 
 type Variant = "wave" | "curve" | "blob" | "torn";
 
@@ -10,7 +10,7 @@ interface OrganicDividerProps {
   color?: string; // CSS variable name like "--background" or "--card"
 }
 
-const OrganicDivider = ({
+const OrganicDivider = memo(({
   variant = "wave",
   flip = false,
   className = "",
@@ -56,6 +56,8 @@ const OrganicDivider = ({
       </svg>
     </motion.div>
   );
-};
+});
+
+OrganicDivider.displayName = 'OrganicDivider';
 
 export default OrganicDivider;
