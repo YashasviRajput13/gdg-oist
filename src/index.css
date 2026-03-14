@@ -8,6 +8,7 @@
   html {
     scroll-behavior: smooth;
   }
+
   :root {
     --background: 30 40% 98%;
     --foreground: 230 15% 15%;
@@ -91,18 +92,24 @@
     @apply border-border;
   }
 
-  body, #root {
+  body,
+  #root {
     @apply bg-background text-foreground antialiased relative w-full h-full;
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
-  
+
   html {
     @apply relative w-full h-full;
     scroll-behavior: smooth;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   }
 
@@ -110,13 +117,16 @@
   ::-webkit-scrollbar {
     width: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: hsl(var(--background));
   }
+
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--border));
     border-radius: 3px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--primary) / 0.6);
   }
@@ -125,13 +135,11 @@
 @layer utilities {
   .text-gradient-google {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(
-      90deg,
-      hsl(217 89% 61%) 0%,
-      hsl(7 81% 56%) 33%,
-      hsl(43 96% 50%) 66%,
-      hsl(142 53% 43%) 100%
-    );
+    background-image: linear-gradient(90deg,
+        hsl(217 89% 61%) 0%,
+        hsl(7 81% 56%) 33%,
+        hsl(43 96% 50%) 66%,
+        hsl(142 53% 43%) 100%);
   }
 
   .text-gradient-blue {
@@ -139,33 +147,75 @@
     background-image: linear-gradient(135deg, hsl(217 89% 61%), hsl(190 89% 55%));
   }
 
-  .google-dot-blue { color: hsl(217 89% 61%); }
-  .google-dot-red { color: hsl(7 81% 56%); }
-  .google-dot-yellow { color: hsl(43 96% 50%); }
-  .google-dot-green { color: hsl(142 53% 43%); }
+  .google-dot-blue {
+    color: hsl(217 89% 61%);
+  }
 
-  .bg-google-blue { background-color: hsl(217 89% 61%); }
-  .bg-google-red { background-color: hsl(7 81% 56%); }
-  .bg-google-yellow { background-color: hsl(43 96% 50%); }
-  .bg-google-green { background-color: hsl(142 53% 43%); }
+  .google-dot-red {
+    color: hsl(7 81% 56%);
+  }
+
+  .google-dot-yellow {
+    color: hsl(43 96% 50%);
+  }
+
+  .google-dot-green {
+    color: hsl(142 53% 43%);
+  }
+
+  .bg-google-blue {
+    background-color: hsl(217 89% 61%);
+  }
+
+  .bg-google-red {
+    background-color: hsl(7 81% 56%);
+  }
+
+  .bg-google-yellow {
+    background-color: hsl(43 96% 50%);
+  }
+
+  .bg-google-green {
+    background-color: hsl(142 53% 43%);
+  }
 
   .section-padding {
-    @apply py-24 px-6 md:py-32 md:px-12 lg:px-20;
+    @apply py-16 px-4 sm:px-6 md:py-32 md:px-12 lg:px-20;
   }
 
   .card-hover {
     @apply hover:shadow-2xl hover:-translate-y-2 transition-all duration-500;
   }
+
+  /* Hide scrollbar while preserving scroll functionality */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes marquee-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes marquee-right {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .animate-marquee-left {
@@ -180,17 +230,43 @@
 
 /* Organic blob animation */
 @keyframes blob {
-  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-  50% { border-radius: 50% 60% 30% 60% / 30% 50% 70% 60%; }
-  75% { border-radius: 60% 30% 60% 40% / 70% 40% 50% 60%; }
+
+  0%,
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+
+  50% {
+    border-radius: 50% 60% 30% 60% / 30% 50% 70% 60%;
+  }
+
+  75% {
+    border-radius: 60% 30% 60% 40% / 70% 40% 50% 60%;
+  }
 }
 
 @keyframes blob-reverse {
-  0%, 100% { border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%; }
-  25% { border-radius: 70% 30% 40% 60% / 60% 40% 70% 30%; }
-  50% { border-radius: 30% 50% 60% 40% / 60% 30% 40% 70%; }
-  75% { border-radius: 50% 40% 30% 60% / 40% 60% 50% 30%; }
+
+  0%,
+  100% {
+    border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%;
+  }
+
+  25% {
+    border-radius: 70% 30% 40% 60% / 60% 40% 70% 30%;
+  }
+
+  50% {
+    border-radius: 30% 50% 60% 40% / 60% 30% 40% 70%;
+  }
+
+  75% {
+    border-radius: 50% 40% 30% 60% / 40% 60% 50% 30%;
+  }
 }
 
 .animate-blob {

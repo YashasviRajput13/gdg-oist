@@ -63,7 +63,7 @@ const Contact = () => {
           message: result.data.message,
         },
       }).catch((e) => console.log("Silent error from email function:", e));
-      
+
       setSubmitted(true);
     } else {
       toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
@@ -136,12 +136,12 @@ const Contact = () => {
               <p className="text-muted-foreground">We'll get back to you soon.</p>
             </motion.div>
           ) : (
-            <div className="bg-card rounded-3xl border border-border p-8 md:p-12 shadow-sm">
+            <div className="bg-card rounded-3xl border border-border p-5 md:p-8 lg:p-12 shadow-sm">
               <form onSubmit={handleSubmit} className="space-y-6" noValidate>
                 <div className="grid md:grid-cols-2 gap-6">
                   {[
-                    { name: "name", label: "Name", placeholder: "John Doe", type: "text", maxLength: 100 },
-                    { name: "email", label: "Email", placeholder: "john@example.com", type: "email", maxLength: 255 },
+                    { name: "name", label: "Name", placeholder: "John Doe", type: "text", maxLength: 100, autoComplete: "name" },
+                    { name: "email", label: "Email", placeholder: "john@example.com", type: "email", maxLength: 255, autoComplete: "email" },
                   ].map((field, i) => (
                     <motion.div
                       key={field.name}
@@ -149,10 +149,12 @@ const Contact = () => {
                       animate={isInView ? { opacity: 1, x: 0 } : {}}
                       transition={{ duration: 0.6, delay: 0.6 + i * 0.1 }}
                     >
-                      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 block">{field.label}</label>
+                      <label htmlFor={field.name} className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 block">{field.label}</label>
                       <input
+                        id={field.name}
                         name={field.name}
                         type={field.type}
+                        autoComplete={field.autoComplete}
                         maxLength={field.maxLength}
                         placeholder={field.placeholder}
                         className={`w-full px-5 py-4 rounded-xl bg-background border ${errors[field.name] ? 'border-destructive' : 'border-border'} text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent font-body transition-all`}
@@ -171,8 +173,9 @@ const Contact = () => {
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.8 }}
                 >
-                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 block">Message</label>
+                  <label htmlFor="message" className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 block">Message</label>
                   <textarea
+                    id="message"
                     name="message"
                     rows={5}
                     maxLength={2000}

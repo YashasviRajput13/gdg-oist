@@ -17,7 +17,7 @@ const CTABanner = () => {
         {/* Rich gradient background with organic shape */}
         <div className="absolute inset-0 bg-gradient-to-br from-[hsl(217,89%,55%)] via-[hsl(190,89%,50%)] to-[hsl(142,53%,43%)]" />
         <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10" />
-        
+
         {/* Organic blob shapes */}
         <div className="absolute -top-20 -left-20 w-80 h-80 bg-white/10 animate-blob blur-2xl" />
         <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-white/8 animate-blob-reverse blur-2xl" />
@@ -55,7 +55,7 @@ const CTABanner = () => {
           />
         </div>
 
-        <div className="relative px-8 py-20 md:px-20 md:py-24 text-center">
+        <div className="relative px-5 py-12 sm:px-8 sm:py-16 md:px-20 md:py-24 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -70,7 +70,7 @@ const CTABanner = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.35, duration: 0.8 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6"
+            className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4 md:mb-6"
           >
             Ready to build<br />the future?
           </motion.h2>

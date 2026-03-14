@@ -56,13 +56,13 @@ const Team = () => {
   const subtitle = "MEET OUR HUB";
 
   const availableCategories = useMemo(() => categoryOrder, []);
-  const filteredMembers = useMemo(() => 
+  const filteredMembers = useMemo(() =>
     activeCategory === "All"
       ? members
       : members.filter(m => (m.category || "Other") === activeCategory),
     [activeCategory, members]
   );
-  
+
   const handleCategoryChange = useCallback((cat: string) => {
     setActiveCategory(cat);
   }, []);
@@ -72,7 +72,7 @@ const Team = () => {
       <motion.div style={{ y: bgY }} className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/3 animate-blob blur-3xl" />
 
       <div className="max-w-7xl mx-auto relative" ref={ref}>
-        <motion.div className="text-center mb-20">
+        <motion.div className="text-center mb-10 md:mb-20">
           <motion.p
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -101,7 +101,7 @@ const Team = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap justify-center gap-2.5 mb-14"
+          className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-2 md:gap-2.5 mb-8 md:mb-14 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0"
         >
           {["All", ...availableCategories].map((cat) => {
             const isActive = activeCategory === cat;
@@ -112,8 +112,8 @@ const Team = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
                 className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${isActive
-                    ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30'
-                    : 'bg-card text-foreground/70 border-border hover:border-primary/50 hover:text-foreground'
+                  ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30'
+                  : 'bg-card text-foreground/70 border-border hover:border-primary/50 hover:text-foreground'
                   }`}
               >
                 {cat}

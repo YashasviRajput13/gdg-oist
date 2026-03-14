@@ -185,7 +185,7 @@ const InfiniteScrollRow = memo(({ items, direction, speed, isInView, onItemClick
           <div
             key={`${item.id}-${i}`}
             onClick={() => onItemClick(item)}
-            className="relative flex-shrink-0 w-[300px] h-[200px] md:w-[320px] md:h-[220px] rounded-2xl overflow-hidden group cursor-pointer"
+            className="relative flex-shrink-0 w-[240px] h-[165px] sm:w-[280px] sm:h-[190px] md:w-[320px] md:h-[220px] rounded-2xl overflow-hidden group cursor-pointer"
             style={{
               boxShadow: "0 8px 32px -8px hsl(var(--foreground) / 0.1), 0 2px 8px -2px hsl(var(--foreground) / 0.06)",
             }}

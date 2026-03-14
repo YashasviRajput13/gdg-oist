@@ -18,5 +18,19 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'framer-motion': ['framer-motion'],
+          'lucide': ['lucide-react']
+        }
+      }
+    },
+    // Explicitly disable eval-based source maps (Vite defaults to false in prod, 
+    // but this guarantees safety against CSP strictness)
+    sourcemap: false,
+    target: 'esnext'
+  }
 }));

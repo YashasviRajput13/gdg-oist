@@ -1,5 +1,5 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState, useEffect, memo, useCallback, useMemo } from "react";
+import { useRef, useState, useEffect, memo, useCallback, useMemo, forwardRef } from "react";
 import { Quote, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -21,17 +21,18 @@ const colorOptions = [
   "from-[hsl(var(--google-blue))] to-[hsl(var(--google-green))]",
 ];
 
-const TestimonialCard = memo(({
-  testimonial,
-  direction,
-}: {
+const TestimonialCard = memo(forwardRef<HTMLDivElement, {
   testimonial: Testimonial;
   direction: number;
-}) => {
+}>(({
+  testimonial,
+  direction,
+}, ref) => {
   const color = colorOptions[testimonial.color_index % colorOptions.length];
 
   return (
     <motion.div
+      ref={ref}
       key={testimonial.id}
       initial={{ opacity: 0, x: direction > 0 ? 200 : -200, scale: 0.9, rotateY: direction > 0 ? 15 : -15 }}
       animate={{ opacity: 1, x: 0, scale: 1, rotateY: 0 }}
@@ -40,7 +41,7 @@ const TestimonialCard = memo(({
       className="absolute inset-0"
       style={{ perspective: "1200px" }}
     >
-      <div className="relative h-full rounded-3xl border border-border/40 bg-card/60 backdrop-blur-xl p-8 md:p-12 overflow-hidden group">
+      <div className="relative h-full rounded-3xl border border-border/40 bg-card/60 backdrop-blur-xl p-5 md:p-8 lg:p-12 overflow-hidden group">
         <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${color}`} />
         <Quote className="absolute top-6 right-8 text-foreground/[0.04]" size={120} strokeWidth={1} />
 
@@ -57,7 +58,7 @@ const TestimonialCard = memo(({
           ))}
         </div>
 
-        <blockquote className="text-lg md:text-xl lg:text-2xl text-foreground/80 font-body leading-relaxed mb-8 relative z-10">
+        <blockquote className="text-sm md:text-lg lg:text-xl xl:text-2xl text-foreground/80 font-body leading-relaxed mb-6 md:mb-8 relative z-10">
           "{testimonial.quote}"
         </blockquote>
 
@@ -75,7 +76,7 @@ const TestimonialCard = memo(({
       </div>
     </motion.div>
   );
-});
+}));
 
 const Testimonials = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -147,7 +148,7 @@ const Testimonials = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="relative h-[340px] md:h-[300px]">
+          <div className="relative min-h-[280px] md:h-[300px]">
             <AnimatePresence mode="popLayout" custom={direction}>
               <TestimonialCard
                 key={current}
@@ -179,9 +180,8 @@ const Testimonials = () => {
                   className="relative p-1"
                 >
                   <div
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i === current ? "bg-primary scale-125" : "bg-foreground/20 hover:bg-foreground/40"
-                    }`}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${i === current ? "bg-primary scale-125" : "bg-foreground/20 hover:bg-foreground/40"
+                      }`}
                   />
                 </button>
               ))}

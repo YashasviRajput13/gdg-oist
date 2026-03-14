@@ -68,7 +68,14 @@ const Achievements = () => {
           .select("*")
           .order("display_order", { ascending: true });
         if (!error && data && data.length > 0) {
-          setGalleryItems(data.map((h) => ({ image: toDirectImageUrl(h.image_url), text: h.label })));
+          setGalleryItems(data.map((h) => {
+            // Patch specifically known dead Unsplash image from old DB seeds
+            let imgUrl = h.image_url;
+            if (imgUrl.includes('photo-1591115765373-520b7a2172a7')) {
+              imgUrl = 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop';
+            }
+            return { image: toDirectImageUrl(imgUrl), text: h.label };
+          }));
         }
       } catch {
         // Keep fallback gallery items on failure
@@ -76,8 +83,6 @@ const Achievements = () => {
     };
     fetchHighlights();
   }, []);
-
-  const headingWords = ["Our", "milestones"];
 
   return (
     <section className="section-padding bg-card relative overflow-hidden" ref={ref}>
@@ -87,7 +92,7 @@ const Achievements = () => {
 
       <div className="max-w-7xl mx-auto relative">
         {/* Section header */}
-        <motion.div className="text-center mb-20">
+        <motion.div className="text-center mb-12 md:mb-20">
           <motion.p
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -97,7 +102,7 @@ const Achievements = () => {
             Achievements
           </motion.p>
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            {useMemo(() => headingWords.map((word, i) => (
+            {useMemo(() => ["Our", "milestones"].map((word, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 50, filter: "blur(8px)" }}
@@ -107,7 +112,7 @@ const Achievements = () => {
               >
                 {word}
               </motion.span>
-            )), [isInView, headingWords])}
+            )), [isInView])}
           </h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -162,7 +167,7 @@ const Achievements = () => {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-32"
+          className="mt-16 md:mt-32"
         >
           <div className="text-center mb-12">
             <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground">

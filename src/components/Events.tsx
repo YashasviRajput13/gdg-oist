@@ -58,7 +58,7 @@ const Events = () => {
       <div className="absolute top-20 -right-20 w-80 h-80 bg-primary/5 animate-blob blur-3xl" />
 
       <div className="max-w-7xl mx-auto relative">
-        <motion.div className="text-center mb-16">
+        <motion.div className="text-center mb-10 md:mb-16">
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -125,54 +125,54 @@ const Events = () => {
                   />
                 </div>
               )}
-              <div className="p-8">
-              {event.is_featured && (
-                <div className="absolute top-4 right-4">
-                  <span className="text-xs px-2.5 py-1 rounded-full bg-google-yellow/15 text-google-yellow font-semibold">
-                    ⭐ Featured
-                  </span>
-                </div>
-              )}
+              <div className="p-5 md:p-8">
+                {event.is_featured && (
+                  <div className="absolute top-4 right-4">
+                    <span className="text-xs px-2.5 py-1 rounded-full bg-google-yellow/15 text-google-yellow font-semibold">
+                      ⭐ Featured
+                    </span>
+                  </div>
+                )}
 
-              {event.event_type && (
-                <span className={`inline-flex text-xs px-3 py-1 rounded-full font-medium mb-4 ${eventTypeColors[event.event_type] || "bg-muted text-muted-foreground"}`}>
-                  {event.event_type.charAt(0).toUpperCase() + event.event_type.slice(1)}
-                </span>
-              )}
-
-              <h3 className="font-display text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-                {event.title}
-              </h3>
-
-              {event.description && (
-                <p className="text-muted-foreground text-sm leading-relaxed mb-5 line-clamp-3">
-                  {event.description}
-                </p>
-              )}
-
-              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                <span className="flex items-center gap-2">
-                  <Calendar size={14} className="text-primary" />
-                  {format(new Date(event.event_date), "MMM d, yyyy")}
-                </span>
-                {event.location && (
-                  <span className="flex items-center gap-2">
-                    <MapPin size={14} className="text-destructive" />
-                    {event.location}
+                {event.event_type && (
+                  <span className={`inline-flex text-xs px-3 py-1 rounded-full font-medium mb-4 ${eventTypeColors[event.event_type] || "bg-muted text-muted-foreground"}`}>
+                    {event.event_type.charAt(0).toUpperCase() + event.event_type.slice(1)}
                   </span>
                 )}
-              </div>
 
-              {event.registration_link && (
-                <motion.a
-                  href={event.registration_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:gap-3 transition-all"
-                >
-                  Register Now <ArrowRight size={14} />
-                </motion.a>
-              )}
+                <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                  {event.title}
+                </h3>
+
+                {event.description && (
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-5 line-clamp-3">
+                    {event.description}
+                  </p>
+                )}
+
+                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-2">
+                    <Calendar size={14} className="text-primary" />
+                    {format(new Date(event.event_date), "MMM d, yyyy")}
+                  </span>
+                  {event.location && (
+                    <span className="flex items-center gap-2">
+                      <MapPin size={14} className="text-destructive" />
+                      {event.location}
+                    </span>
+                  )}
+                </div>
+
+                {event.registration_link && (
+                  <motion.a
+                    href={event.registration_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-primary hover:gap-3 transition-all"
+                  >
+                    Register Now <ArrowRight size={14} />
+                  </motion.a>
+                )}
               </div>
             </motion.div>
           ))}
