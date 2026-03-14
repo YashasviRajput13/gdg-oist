@@ -370,7 +370,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = memo(({
                                         </div>
                                         <div className="pc-user-text">
                                             <div className="pc-handle">@{handle}</div>
-                                            <div className="pc-status">{status}</div>
+                                            {/* <div className="pc-status">{status}</div> */}
                                         </div>
                                     </div>
                                     <button

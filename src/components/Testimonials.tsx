@@ -78,29 +78,12 @@ const TestimonialCard = memo(forwardRef<HTMLDivElement, {
   );
 }));
 
-const Testimonials = () => {
+const TestimonialsContent = ({ testimonials }: { testimonials: Testimonial[] }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("testimonials")
-          .select("id, name, role, avatar_initials, quote, rating, color_index")
-          .eq("is_visible", true)
-          .order("display_order", { ascending: true });
-        if (!error && data) setTestimonials(data);
-      } catch {
-        // Silently fail — section will not render if empty
-      }
-    };
-    fetchTestimonials();
-  }, []);
 
   useEffect(() => {
     if (!isAutoPlaying || !isInView || testimonials.length === 0) return;
@@ -116,8 +99,6 @@ const Testimonials = () => {
     setDirection(dir);
     setCurrent((prev) => (prev + dir + testimonials.length) % testimonials.length);
   };
-
-  if (testimonials.length === 0) return null;
 
   return (
     <section ref={sectionRef} id="testimonials" className="relative py-24 md:py-32 px-6 overflow-hidden" style={{ position: "relative" }}>
@@ -200,6 +181,33 @@ const Testimonials = () => {
       </div>
     </section>
   );
+};
+
+const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("testimonials")
+          .select("id, name, role, avatar_initials, quote, rating, color_index")
+          .eq("is_visible", true)
+          .order("display_order", { ascending: true });
+        if (!error && data) setTestimonials(data);
+      } catch {
+        // Silently fail
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTestimonials();
+  }, []);
+
+  if (loading || testimonials.length === 0) return null;
+
+  return <TestimonialsContent testimonials={testimonials} />;
 };
 
 export default Testimonials;
