@@ -32,6 +32,17 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
       if (ticking) return;
@@ -62,7 +73,7 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled
         ? "bg-card/90 backdrop-blur-xl shadow-sm border-b border-border"
         : "bg-transparent"
         }`}
@@ -164,49 +175,61 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu and Backdrop */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden"
-          >
-            <div className="px-6 py-6 space-y-4">
-              {navLinks.map((link, i) => (
-                <motion.a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
+          <>
+            {/* Backdrop overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[-1] md:hidden"
+              aria-hidden="true"
+            />
 
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`block text-base font-medium transition-colors ${activeSection === link.href.replace("#", "")
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                    }`}
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden relative z-10 pointer-events-auto"
+            >
+              <div className="px-6 py-6 space-y-4">
+                {navLinks.map((link, i) => (
+                  <motion.a
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className={`block text-base font-medium transition-colors ${activeSection === link.href.replace("#", "")
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                      }`}
+                  >
+                    {link.label}
+                  </motion.a>
+                ))}
+                <Link
+                  to="/docs"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {link.label}
-                </motion.a>
-              ))}
-              <Link
-                to="/docs"
-                onClick={() => setIsOpen(false)}
-                className="block text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Docs
-              </Link>
-              <a
-                href="#contact"
-                onClick={() => setIsOpen(false)}
-                className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold"
-              >
-                Join Us
-              </a>
-            </div>
-          </motion.div>
+                  Docs
+                </Link>
+                <a
+                  href="#contact"
+                  onClick={() => setIsOpen(false)}
+                  className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold"
+                >
+                  Join Us
+                </a>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.nav>
