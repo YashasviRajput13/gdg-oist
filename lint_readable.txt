@@ -1,6 +1,0 @@
-
-C:\Users\ryash\gdg official\gdg-oist\src\components\Achievements.tsx
-  80:9  warning  The 'headingWords' array makes the dependencies of useMemo Hook (at line 110) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'headingWords' in its own useMemo() Hook  react-hooks/exhaustive-deps
-
-??? 1 problem (0 errors, 1 warning)
-
