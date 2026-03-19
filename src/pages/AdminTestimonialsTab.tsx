@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, Save, X, Eye, EyeOff } from "lucide-react";
 
@@ -41,7 +42,11 @@ const AdminTestimonialsTab = () => {
   const { toast } = useToast();
 
   const fetchData = async () => {
-    const { data } = await supabase.from("testimonials").select("*").order("display_order", { ascending: true });
+    const { data } = await supabase
+      .from("testimonials")
+      .select("*")
+      .order("is_visible", { ascending: true }) // Pending first
+      .order("display_order", { ascending: true });
     if (data) setItems(data);
   };
 
@@ -140,19 +145,36 @@ const AdminTestimonialsTab = () => {
               <TableHead>Name</TableHead>
               <TableHead>Role</TableHead>
               <TableHead className="hidden md:table-cell">Quote</TableHead>
-              <TableHead>Visible</TableHead>
+              <TableHead className="hidden md:table-cell">Status</TableHead>
+              <TableHead>Visibility</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className="font-medium">{item.name}</TableCell>
+              <TableRow key={item.id} className={!item.is_visible ? "bg-muted/10 border-l-2 border-l-orange-500" : ""}>
+                <TableCell className="font-medium">
+                  {item.name}
+                  {!item.is_visible && <div className="text-xs font-semibold text-orange-500 md:hidden mt-0.5">Pending Review</div>}
+                </TableCell>
                 <TableCell>{item.role}</TableCell>
                 <TableCell className="hidden md:table-cell max-w-xs truncate">{item.quote}</TableCell>
+                <TableCell className="hidden md:table-cell">
+                  {item.is_visible ? (
+                    <Badge variant="outline" className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">Approved</Badge>
+                  ) : (
+                    <Badge variant="outline" className="bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20">Pending</Badge>
+                  )}
+                </TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="icon" onClick={() => toggleVisibility(item)}>
-                    {item.is_visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4 text-muted-foreground" />}
+                  <Button 
+                    variant={item.is_visible ? "ghost" : "default"} 
+                    size="sm" 
+                    onClick={() => toggleVisibility(item)}
+                    className={!item.is_visible ? "bg-orange-600 hover:bg-orange-700 text-white" : ""}
+                  >
+                    {item.is_visible ? <EyeOff className="h-4 w-4 mr-1" /> : <Eye className="h-4 w-4 mr-1" />}
+                    {item.is_visible ? "Hide" : "Approve"}
                   </Button>
                 </TableCell>
                 <TableCell>

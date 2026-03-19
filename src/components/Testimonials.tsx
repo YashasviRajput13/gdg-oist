@@ -2,6 +2,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, memo, useCallback, useMemo, forwardRef } from "react";
 import { Quote, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { TestimonialForm } from "./TestimonialForm";
 
 interface Testimonial {
   id: string;
@@ -119,9 +120,12 @@ const TestimonialsContent = ({ testimonials }: { testimonials: Testimonial[] }) 
             </span>{" "}
             Say
           </h2>
-          <p className="text-muted-foreground max-w-lg mx-auto">
+          <p className="text-muted-foreground max-w-lg mx-auto mb-6">
             Real stories from developers who grew with GDG OIST
           </p>
+          <div className="flex justify-center">
+            <TestimonialForm />
+          </div>
         </motion.div>
 
         <motion.div

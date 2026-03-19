@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     Table,
     TableBody,
@@ -23,36 +24,42 @@ interface Submission {
 }
 
 const AdminMessagesTab = () => {
-    const [submissions, setSubmissions] = useState<Submission[]>([]);
-    const [loading, setLoading] = useState(true);
     const { toast } = useToast();
+    const queryClient = useQueryClient();
 
-    useEffect(() => {
-        fetchSubmissions();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const fetchSubmissions = async () => {
-        try {
-            setLoading(true);
+    const { data: submissions = [], isPending: loading } = useQuery({
+        queryKey: ["contact_submissions"],
+        queryFn: async () => {
             const { data, error } = await supabase
                 .from("contact_submissions")
                 .select("*")
                 .order("created_at", { ascending: false });
 
             if (error) throw error;
-            setSubmissions(data || []);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            toast({
-                title: "Error fetching messages",
-                description: error.message,
-                variant: "destructive",
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+            return (data as Submission[]) || [];
+        },
+    });
+
+    useEffect(() => {
+        const channel = supabase
+            .channel("contact-submissions-changes")
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "contact_submissions",
+                },
+                () => {
+                    queryClient.invalidateQueries({ queryKey: ["contact_submissions"] });
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [queryClient]);
 
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure you want to delete this message?")) return;
@@ -65,7 +72,9 @@ const AdminMessagesTab = () => {
 
             if (error) throw error;
 
-            setSubmissions(submissions.filter((s) => s.id !== id));
+            queryClient.setQueryData(["contact_submissions"], (old: Submission[] | undefined) => 
+                old ? old.filter((s) => s.id !== id) : []
+            );
             toast({
                 title: "Deleted",
                 description: "Message has been removed.",

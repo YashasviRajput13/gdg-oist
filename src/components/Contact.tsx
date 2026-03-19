@@ -62,7 +62,7 @@ const Contact = () => {
           email: result.data.email,
           message: result.data.message,
         },
-      }).catch((e) => console.log("Silent error from email function:", e));
+      }).catch((e) => console.error("Edge function failed", { error: e, context: { component: "Contact", action: "invoke_contact_email" } }));
 
       setSubmitted(true);
     } else {
