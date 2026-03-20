@@ -10,7 +10,7 @@ import {
     TableRow
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Trash2, Loader2, Mail, User, Clock, MessageSquare } from "lucide-react";
+import { Trash2, Loader2, Mail, User, Clock, MessageSquare, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
@@ -27,17 +27,27 @@ const AdminMessagesTab = () => {
     const { toast } = useToast();
     const queryClient = useQueryClient();
 
-    const { data: submissions = [], isPending: loading } = useQuery({
+    const { data: submissions = [], isPending: loading, error } = useQuery({
         queryKey: ["contact_submissions"],
         queryFn: async () => {
-            const { data, error } = await supabase
-                .from("contact_submissions")
-                .select("*")
-                .order("created_at", { ascending: false });
+            try {
+                const { data, error } = await supabase
+                    .from("contact_submissions")
+                    .select("*")
+                    .order("created_at", { ascending: false });
 
-            if (error) throw error;
-            return (data as Submission[]) || [];
+                if (error) {
+                    console.error("Query error:", error);
+                    throw error;
+                }
+                return (data as Submission[]) || [];
+            } catch (err) {
+                console.error("Failed to fetch submissions:", err);
+                throw err;
+            }
         },
+        retry: 3,
+        retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
     });
 
     useEffect(() => {
@@ -88,6 +98,26 @@ const AdminMessagesTab = () => {
             });
         }
     };
+
+    if (error) {
+        return (
+            <div className="text-center py-20 bg-destructive/10 rounded-3xl border border-dashed border-destructive/50">
+                <div className="w-16 h-16 bg-destructive/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <AlertCircle className="text-destructive" size={24} />
+                </div>
+                <h3 className="text-lg font-medium text-destructive">Error loading messages</h3>
+                <p className="text-muted-foreground max-w-sm mx-auto mt-2">
+                    {error.message || "Failed to load contact submissions. Please check your database connection."}
+                </p>
+                <button 
+                    onClick={() => window.location.reload()} 
+                    className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
 
     if (loading) {
         return (

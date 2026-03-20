@@ -48,14 +48,42 @@ const Contact = () => {
     }
 
     setLoading(true);
-    const { error } = await supabase.from("contact_submissions").insert({
-      name: result.data.name,
-      email: result.data.email,
-      message: result.data.message,
-    });
+    
+    try {
+      // Prepare insert data with only valid columns
+      const insertData = {
+        name: result.data.name,
+        email: result.data.email,
+        message: result.data.message
+      };
+      
+      console.log("Insert data:", insertData);
+      console.log("SUPABASE URL:", import.meta.env.VITE_SUPABASE_URL);
+      
+      const { error } = await supabase.from("contact_submissions").insert([
+        insertData
+      ]);
 
-    // Trigger email notification via Edge Function (fire and forget)
-    if (!error) {
+      if (error) {
+        console.error("Database insertion error:", error);
+        console.error("Error details:", {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        toast({ 
+          title: "Database Error", 
+          description: `Failed to save message: ${error.message}`, 
+          variant: "destructive" 
+        });
+        setLoading(false);
+        return;
+      }
+      
+      console.log("Insert successful!");
+
+      // Trigger email notification via Edge Function (fire and forget)
       supabase.functions.invoke("contact-email", {
         body: {
           name: result.data.name,
@@ -65,9 +93,19 @@ const Contact = () => {
       }).catch((e) => console.error("Edge function failed", { error: e, context: { component: "Contact", action: "invoke_contact_email" } }));
 
       setSubmitted(true);
-    } else {
-      toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
+      toast({
+        title: "Success!",
+        description: "Your message has been sent successfully.",
+      });
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      toast({ 
+        title: "Unexpected Error", 
+        description: "An unexpected error occurred. Please try again.", 
+        variant: "destructive" 
+      });
     }
+    
     setLoading(false);
   }, [toast]);
 
