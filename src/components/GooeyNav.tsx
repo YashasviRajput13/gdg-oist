@@ -4,6 +4,7 @@ import './GooeyNav.css';
 interface GooeyNavItem {
   label: string;
   href: string;
+  external?: boolean;
 }
 
 interface GooeyNavProps {
@@ -109,10 +110,17 @@ const GooeyNav = ({
 
   const handleClick = (e: React.MouseEvent, index: number) => {
     e.preventDefault();
+    const href = items[index].href;
+    
+    // Check if it's an external link
+    if (href.startsWith('http') || items[index].external) {
+      window.open(href, '_blank');
+      return;
+    }
+    
     const liEl = e.currentTarget as HTMLElement;
     if (internalActive === index) {
       // Still navigate
-      const href = items[index].href;
       const el = document.querySelector(href);
       el?.scrollIntoView({ behavior: 'smooth' });
       return;
@@ -138,7 +146,6 @@ const GooeyNav = ({
     }
 
     // Scroll to section
-    const href = items[index].href;
     const el = document.querySelector(href);
     el?.scrollIntoView({ behavior: 'smooth' });
   };

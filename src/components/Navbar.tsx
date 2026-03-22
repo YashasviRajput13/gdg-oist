@@ -12,7 +12,7 @@ const navLinks = [
   { label: "Gallery", href: "#gallery" },
   { label: "Team", href: "#team" },
   { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "https://www.linkedin.com/in/gdg-oist-bhopal", external: true },
 ];
 
 const Navbar = () => {
@@ -63,6 +63,26 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace("#", "");
+    const element = document.getElementById(targetId);
+    
+    if (element) {
+      const offset = 80; // Navbar height offset
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - offset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+      
+      setActiveSection(targetId);
+      setIsOpen(false); // Close mobile menu
+    }
+  }, [setIsOpen]);
 
   const toggleTheme = useCallback(() => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -136,7 +156,9 @@ const Navbar = () => {
             </Link>
 
             <motion.a
-              href="#contact"
+              href="https://www.linkedin.com/in/gdg-oist-bhopal"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:shadow-lg hover:shadow-primary/25 transition-all"
@@ -185,7 +207,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[-1] md:hidden"
+              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-40 md:hidden pointer-events-none"
               aria-hidden="true"
             />
 
@@ -193,19 +215,21 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden relative z-10 pointer-events-auto"
+              className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden relative z-50 pointer-events-auto"
             >
-              <div className="px-6 py-6 space-y-4">
+              <div className="px-6 py-6 space-y-4 pointer-events-auto">
                 {navLinks.map((link, i) => (
                   <motion.a
                     key={link.label}
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => {
+                      handleNavClick(e, link.href);
+                    }}
 
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className={`block text-base font-medium transition-colors ${activeSection === link.href.replace("#", "")
+                    className={`block text-base font-medium transition-colors cursor-pointer pointer-events-auto ${activeSection === link.href.replace("#", "")
                       ? "text-primary"
                       : "text-muted-foreground hover:text-foreground"
                       }`}
@@ -216,14 +240,16 @@ const Navbar = () => {
                 <Link
                   to="/docs"
                   onClick={() => setIsOpen(false)}
-                  className="block text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  className="block text-base font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer pointer-events-auto"
                 >
                   Docs
                 </Link>
                 <a
-                  href="#contact"
+                  href="https://www.linkedin.com/in/gdg-oist-bhopal"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}
-                  className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold"
+                  className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold cursor-pointer pointer-events-auto"
                 >
                   Join Us
                 </a>

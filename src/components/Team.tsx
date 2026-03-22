@@ -1,5 +1,5 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef, useEffect, useState, useCallback, useMemo, memo } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toDirectImageUrl } from "@/lib/driveUrl";
 import ProfileCard from "./ProfileCard";
@@ -16,140 +16,108 @@ interface TeamMember {
   category: string | null;
 }
 
-const categoryOrder = ["Leads", "Content & Communication", "WIT", "Technical", "Event Management", "Media", "Marketing"];
-
-const googleColors = [
-  { border: 'hsl(217 89% 61%)', glow: 'rgba(66, 133, 244, 0.4)', gradient: 'linear-gradient(145deg, rgba(66, 133, 244, 0.2), rgba(6, 0, 16, 0.8))' },
-  { border: 'hsl(7 81% 56%)', glow: 'rgba(234, 67, 53, 0.4)', gradient: 'linear-gradient(145deg, rgba(234, 67, 53, 0.2), rgba(6, 0, 16, 0.8))' },
-  { border: 'hsl(43 96% 50%)', glow: 'rgba(251, 188, 5, 0.4)', gradient: 'linear-gradient(145deg, rgba(251, 188, 5, 0.2), rgba(6, 0, 16, 0.8))' },
-  { border: 'hsl(142 53% 43%)', glow: 'rgba(52, 168, 83, 0.4)', gradient: 'linear-gradient(145deg, rgba(52, 168, 83, 0.2), rgba(6, 0, 16, 0.8))' },
+const categoryOrder = [
+  "Leads",
+  "Content & Communication",
+  "WIT",
+  "Technical",
+  "Event Management",
+  "Media",
+  "Marketing",
 ];
 
 const Team = () => {
   const ref = useRef(null);
   const sectionRef = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true });
+
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
+
   const bgY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   useEffect(() => {
     const fetchTeam = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("team_members")
-          .select("*")
-          .order("display_order", { ascending: true });
-        if (!error && data) setMembers(data);
-      } catch {
-        // Silently fail — show empty team section
-      }
+      const { data } = await supabase
+        .from("team_members")
+        .select("*")
+        .order("display_order", { ascending: true });
+
+      if (data) setMembers(data);
     };
     fetchTeam();
   }, []);
 
-  const headingWords = useMemo(() => ["The", "people", "behind", "GDG"], []);
-  const subtitle = "MEET OUR HUB";
-
-  const availableCategories = useMemo(() => categoryOrder, []);
-  const filteredMembers = useMemo(() =>
-    activeCategory === "All"
+  const filteredMembers = useMemo(() => {
+    return activeCategory === "All"
       ? members
-      : members.filter(m => (m.category || "Other") === activeCategory),
-    [activeCategory, members]
-  );
-
-  const handleCategoryChange = useCallback((cat: string) => {
-    setActiveCategory(cat);
-  }, []);
+      : members.filter(
+          (m) => (m.category || "Other") === activeCategory
+        );
+  }, [members, activeCategory]);
 
   return (
-    <section id="team" className="section-padding bg-card relative overflow-hidden" ref={sectionRef}>
-      <motion.div style={{ y: bgY }} className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/3 animate-blob blur-3xl" />
+    <section
+      id="team"
+      className="section-padding bg-white dark:bg-gray-900 relative overflow-hidden"
+      ref={sectionRef}
+    >
+      <motion.div
+        style={{ y: bgY }}
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 dark:bg-primary/5 blur-3xl"
+      />
 
       <div className="max-w-7xl mx-auto relative" ref={ref}>
-        <motion.div className="text-center mb-10 md:mb-20">
-          <motion.p
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="text-sm font-medium tracking-widest uppercase text-primary/70 mb-4"
-          >
-            {subtitle}
-          </motion.p>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
-            {headingWords.map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 50, filter: "blur(8px)" }}
-                animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-                transition={{ duration: 0.6, delay: 0.1 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block mr-[0.3em]"
-              >
-                {word}
-              </motion.span>
-            ))}
+        {/* HEADING SECTION */}
+        <div className="text-center mb-10">
+          <p className="text-blue-600 dark:text-blue-400 text-sm font-medium uppercase tracking-wider mb-3">
+            MEET OUR HUB
+          </p>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white">
+            The people behind GDG
           </h2>
-        </motion.div>
+        </div>
 
-        {/* Category filter tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-2 md:gap-2.5 mb-8 md:mb-14 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0"
-        >
-          {["All", ...availableCategories].map((cat) => {
-            const isActive = activeCategory === cat;
-            return (
-              <motion.button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${isActive
-                  ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30'
-                  : 'bg-card text-foreground/70 border-border hover:border-primary/50 hover:text-foreground'
-                  }`}
-              >
-                {cat}
-              </motion.button>
-            );
-          })}
-        </motion.div>
+        {/* CATEGORY FILTER */}
+        <div className="flex gap-3 mb-10 overflow-x-auto pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500 dark:hover:scrollbar-thumb-gray-500">
+          {["All", ...categoryOrder].map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-5 py-2.5 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap border ${
+                activeCategory === cat
+                  ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white border-blue-400/50 shadow-lg shadow-blue-500/25 scale-105"
+                  : "bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-white/20 hover:bg-gray-200 dark:hover:bg-white/20 hover:border-gray-400 dark:hover:border-white/30 hover:shadow-md hover:shadow-gray-200/50 dark:hover:shadow-white/10 hover:scale-105"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
 
-        {/* Filtered members grid */}
-        <motion.div
-          key={activeCategory}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
-        >
-          {useMemo(() => filteredMembers.map((m, i) => {
-            const color = googleColors[i % googleColors.length];
-            const handleMemberClick = () => {
-              const url = m.linkedin_url || m.github_url || m.twitter_url;
-              if (url) window.open(url, '_blank', 'noopener,noreferrer');
-            };
+        {/* GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredMembers.map((m, i) => {
             return (
               <ProfileCard
                 key={m.id}
-                avatarUrl={toDirectImageUrl(m.avatar_url || '/placeholder.svg')}
+                avatarUrl={toDirectImageUrl(m.avatar_url || "/placeholder.svg")}
                 name={m.name}
                 title={m.role}
-                handle={m.name.toLowerCase().replace(/\s+/g, '')}
-                innerGradient={color.gradient}
-                behindGlowColor={color.glow}
-                onContactClick={handleMemberClick}
+                handle={m.name.toLowerCase().replace(/\s+/g, "")}
+                linkedin_url={m.linkedin_url || undefined}
+                github_url={m.github_url || undefined}
+                twitter_url={m.twitter_url || undefined}
+                contactText="Contact"
               />
             );
-          }), [filteredMembers])}
-        </motion.div>
+          })}
+        </div>
       </div>
     </section>
   );
