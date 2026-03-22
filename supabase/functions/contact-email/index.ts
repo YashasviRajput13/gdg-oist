@@ -67,8 +67,8 @@ serve(async (req: Request) => {
         },
       }
     );
-  } catch (error: any) {
-    console.error("Error:", error);
+  } catch (error: unknown) {
+  console.error("Error:", error instanceof Error ? error.message : error);
 
     return new Response(
       JSON.stringify({

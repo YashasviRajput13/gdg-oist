@@ -58,10 +58,10 @@ export const TestimonialForm = () => {
 
       setOpen(false);
       setForm({ name: "", role: "", quote: "", rating: 5 });
-    } catch (err: any) {
-      toast({
-        title: "Submission failed",
-        description: err.message || "Something went wrong. Please try again.",
+    } catch (err: unknown) {
+  toast({
+    title: "Submission failed",
+    description: err instanceof Error ? err.message : "Something went wrong",
         variant: "destructive",
       });
     } finally {
