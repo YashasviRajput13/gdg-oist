@@ -18,10 +18,10 @@ interface Event {
 }
 
 const eventTypeColors: Record<string, string> = {
-  workshop: "bg-google-blue/10 text-google-blue",
-  hackathon: "bg-google-red/10 text-google-red",
-  talk: "bg-google-yellow/10 text-google-yellow",
-  meetup: "bg-google-green/10 text-google-green",
+  workshop: "bg-google-blue/10 dark:bg-google-blue/20 text-google-blue dark:text-google-blue-300",
+  hackathon: "bg-google-red/10 dark:bg-google-red/20 text-google-red dark:text-google-red-300",
+  talk: "bg-google-yellow/10 dark:bg-google-yellow/20 text-google-yellow dark:text-google-yellow-300",
+  meetup: "bg-google-green/10 dark:bg-google-green/20 text-google-green dark:text-google-green-300",
 };
 
 import { useRef } from "react";
@@ -140,17 +140,17 @@ const Events = () => {
                   </span>
                 )}
 
-                <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                <h3 className="font-display text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors drop-shadow-sm">
                   {event.title}
                 </h3>
 
                 {event.description && (
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-5 line-clamp-3">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-5 line-clamp-3">
                     {event.description}
                   </p>
                 )}
 
-                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
                   <span className="flex items-center gap-2">
                     <Calendar size={14} className="text-primary" />
                     {format(new Date(event.event_date), "MMM d, yyyy")}

@@ -32,10 +32,10 @@ const AnimatedCounter = ({ value, suffix = "", label, icon: Icon, delay = 0 }: {
       className="flex flex-col items-center gap-1.5 px-6"
     >
       <Icon className="text-primary/70 mb-1" size={20} />
-      <span className="font-display text-3xl md:text-4xl font-bold text-foreground tabular-nums">
+      <span className="font-display text-3xl md:text-4xl font-bold text-black dark:text-white tabular-nums">
         {display}{suffix}
       </span>
-      <span className="text-xs md:text-sm text-foreground/50 font-medium tracking-wide uppercase">{label}</span>
+      <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300 font-medium tracking-wide uppercase">{label}</span>
     </motion.div>
   );
 };
@@ -83,7 +83,7 @@ const Hero = () => {
   const subtitle = "Join the most vibrant developer community at OIST Bhopal. We host workshops, hackathons, and tech talks powered by Google technologies.";
 
   const heroWords = [
-    { text: "Build.", className: "text-foreground" },
+    { text: "Build.", className: "text-black dark:text-white" },
     { text: "Learn.", className: "google-dot-blue" },
     { text: "Grow.", className: "google-dot-red" },
   ];
@@ -166,7 +166,7 @@ const Hero = () => {
                 />
               ))}
             </div>
-            <span className="text-xs md:text-sm font-medium tracking-widest uppercase text-foreground/80">
+            <span className="text-xs md:text-sm font-medium tracking-widest uppercase text-gray-900 dark:text-white">
               Google Developer Group
             </span>
           </div>
@@ -197,7 +197,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.3, ease: [0.16, 1, 0.3, 1] }}
-          className="text-base md:text-xl text-foreground/70 max-w-2xl mx-auto mb-8 md:mb-12 font-body leading-relaxed"
+          className="text-base md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-8 md:mb-12 font-body leading-relaxed"
         >
           {subtitle}
         </motion.p>
@@ -222,7 +222,7 @@ const Hero = () => {
             href="#about"
             whileHover={{ scale: 1.05, backgroundColor: "hsl(var(--secondary))" }}
             whileTap={{ scale: 0.97 }}
-            className="px-8 py-4 rounded-full border border-border/50 text-foreground font-semibold text-sm backdrop-blur-sm transition-all duration-300"
+            className="px-8 py-4 rounded-full border border-border/50 text-black dark:text-white font-semibold text-sm backdrop-blur-sm transition-all duration-300"
           >
             Learn More
           </motion.a>
@@ -242,8 +242,8 @@ const Hero = () => {
           transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
           className="flex flex-col items-center gap-2"
         >
-          <span className="text-xs text-foreground/40 tracking-widest uppercase">Scroll</span>
-          <ArrowDown className="text-foreground/40" size={20} />
+          <span className="text-xs text-gray-700 dark:text-gray-300 tracking-widest uppercase">Scroll</span>
+          <ArrowDown className="text-gray-700 dark:text-gray-300" size={20} />
         </motion.div>
       </motion.div>
     </section>
