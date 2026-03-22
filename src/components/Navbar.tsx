@@ -202,20 +202,20 @@ const Navbar = () => {
         {isOpen && (
           <>
             {/* Backdrop overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-40 md:hidden pointer-events-none"
-              aria-hidden="true"
-            />
+          <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[90] md:hidden"
+          aria-hidden="true"
+/>
 
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden relative z-50 pointer-events-auto"
+              className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden relative z-[110] pointer-events-auto"
             >
               <div className="px-6 py-6 space-y-4 pointer-events-auto">
                 {navLinks.map((link, i) => (

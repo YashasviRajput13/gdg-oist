@@ -100,9 +100,20 @@ const Team = () => {
           ))}
         </div>
 
-        {/* GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredMembers.map((m, i) => {
+        {/* Filtered members grid */}
+        <motion.div
+          key={activeCategory}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 place-items-center md:place-items-stretch"
+        >
+          {useMemo(() => filteredMembers.map((m, i) => {
+            const color = googleColors[i % googleColors.length];
+            const handleMemberClick = () => {
+              const url = m.linkedin_url || m.github_url || m.twitter_url;
+              if (url) window.open(url, '_blank', 'noopener,noreferrer');
+            };
             return (
               <ProfileCard
                 key={m.id}
