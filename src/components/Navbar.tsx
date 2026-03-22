@@ -185,7 +185,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[-1] md:hidden"
+              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[90] md:hidden"
               aria-hidden="true"
             />
 
@@ -193,7 +193,7 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden relative z-10 pointer-events-auto"
+              className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden relative z-[110] pointer-events-auto"
             >
               <div className="px-6 py-6 space-y-4">
                 {navLinks.map((link, i) => (
