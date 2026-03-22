@@ -78,7 +78,7 @@ const Team = () => {
           <p className="text-blue-600 dark:text-blue-400 text-sm font-medium uppercase tracking-wider mb-3">
             MEET OUR HUB
           </p>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-gray-100">
             The people behind GDG
           </h2>
         </div>
@@ -92,7 +92,7 @@ const Team = () => {
               className={`px-5 py-2.5 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap border ${
                 activeCategory === cat
                   ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white border-blue-400/50 shadow-lg shadow-blue-500/25 scale-105"
-                  : "bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-white/20 hover:bg-gray-200 dark:hover:bg-white/20 hover:border-gray-400 dark:hover:border-white/30 hover:shadow-md hover:shadow-gray-200/50 dark:hover:shadow-white/10 hover:scale-105"
+                  : "bg-gray-100 dark:bg-gray-800 text-black dark:text-white border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-md hover:shadow-gray-200/50 dark:hover:shadow-gray-800/50 hover:scale-105"
               }`}
             >
               {cat}
@@ -101,15 +101,8 @@ const Team = () => {
         </div>
 
         {/* Filtered members grid */}
-        <motion.div
-          key={activeCategory}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 place-items-center md:place-items-stretch"
-        >
-          {useMemo(() => filteredMembers.map((m, i) => {
-            const color = googleColors[i % googleColors.length];
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 place-items-center md:place-items-stretch">
+          {filteredMembers.map((m, i) => {
             const handleMemberClick = () => {
               const url = m.linkedin_url || m.github_url || m.twitter_url;
               if (url) window.open(url, '_blank', 'noopener,noreferrer');
