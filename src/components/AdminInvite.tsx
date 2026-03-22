@@ -30,6 +30,9 @@ const AdminInvite = () => {
 
       const { data, error } = await supabase.functions.invoke("send-admin-invite", {
         body: { email: email.trim() },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`
+        }
       });
 
       if (error) {
