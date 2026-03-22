@@ -180,14 +180,14 @@ const Navbar = () => {
         {isOpen && (
           <>
             {/* Backdrop overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[90] md:hidden"
-              aria-hidden="true"
-            />
+          <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[90] md:hidden"
+          aria-hidden="true"
+/>
 
             <motion.div
               initial={{ opacity: 0, height: 0 }}
