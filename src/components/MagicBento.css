@@ -116,17 +116,25 @@
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
-    color: #fff;
+    color: #000;
     margin: 0 0 0.4rem;
     line-height: 1.25;
+}
+
+.dark .magic-bento-card__title {
+    color: #fff;
 }
 
 .magic-bento-card__description {
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(0, 0, 0, 0.7);
     margin: 0;
     line-height: 1.5;
+}
+
+.dark .magic-bento-card__description {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 /* ── Global spotlight (injected into body) ─────────────────── */

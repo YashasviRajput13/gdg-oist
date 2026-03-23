@@ -154,7 +154,7 @@ const Achievements = () => {
           <FlowingMenu
             items={milestoneItems}
             speed={18}
-            textColor="hsl(var(--foreground))"
+            textColor="#3B82F6"
             bgColor="hsl(var(--background))"
             marqueeBgColor="hsl(var(--primary))"
             marqueeTextColor="hsl(var(--primary-foreground))"
@@ -182,7 +182,7 @@ const Achievements = () => {
             <CircularGallery
               items={galleryItems}
               bend={3}
-              textColor="hsl(var(--foreground))"
+              textColor="#3B82F6"
               borderRadius={0.05}
               font="bold 24px Inter"
             />
