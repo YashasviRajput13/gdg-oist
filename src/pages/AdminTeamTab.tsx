@@ -56,13 +56,48 @@ const AdminTeamTab = () => {
 
   const handleUpdate = async () => {
     if (!editing) return;
-    const { error } = await supabase.from("team_members").update({
+    
+    // Debug logs
+    console.log("Updating member with ID:", editing.id);
+    console.log("Update data:", {
+      name: form.name, 
+      role: form.role, 
+      bio: form.bio || null, 
+      avatar_url: form.avatar_url || null,
+      linkedin_url: form.linkedin_url || null, 
+      github_url: form.github_url || null,
+      twitter_url: form.twitter_url || null, 
+      display_order: form.display_order ?? 0, 
+      category: form.category || "Tech",
+    });
+    
+    if (!editing.id) {
+      toast({ title: "Error", description: "Member ID is missing", variant: "destructive" });
+      return;
+    }
+    
+    const { data, error } = await supabase.from("team_members").update({
       name: form.name, role: form.role, bio: form.bio || null, avatar_url: form.avatar_url || null,
       linkedin_url: form.linkedin_url || null, github_url: form.github_url || null,
       twitter_url: form.twitter_url || null, display_order: form.display_order ?? 0, category: form.category || "Tech",
-    }).eq("id", editing.id);
-    if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
-    toast({ title: "Member updated" }); setEditing(null); setForm(empty); fetch();
+    }).eq("id", editing.id).select();
+    
+    console.log("Update response:", { data, error });
+    
+    if (error) { 
+      toast({ title: "Error", description: error.message, variant: "destructive" }); 
+      return; 
+    }
+    
+    if (!data || data.length === 0) {
+      toast({ title: "Error", description: "No rows were updated. Member may not exist.", variant: "destructive" });
+      return;
+    }
+    
+    toast({ title: "Member updated successfully" }); 
+    setEditing(null); 
+    setForm(empty); 
+    fetch();
   };
 
   const handleDelete = async (id: string) => {

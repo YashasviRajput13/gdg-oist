@@ -11,7 +11,7 @@ const navLinks = [
   { label: "Gallery", href: "#gallery" },
   { label: "Team", href: "#team" },
   { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "https://www.linkedin.com/in/gdg-oist-bhopal", external: true },
+  { label: "Contact", href: "https://www.linkedin.com/company/gdg-on-campus-oist/?lipi=urn%3Ali%3Apage%3Ad_flagship3_search_srp_all%3BjafJRJEtR02vaJJql2L7SQ%3D%3D", external: true },
 ];
 
 const Navbar = () => {
@@ -106,17 +106,8 @@ const Navbar = () => {
               colors={[1, 2, 3, 4]}
             />
 
-            <Link
-              to="/docs"
-              className="px-4 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Docs
-            </Link>
-
             <motion.a
-              href="https://www.linkedin.com/in/gdg-oist-bhopal"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#contact"
               className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold"
             >
               Join Us
@@ -170,14 +161,9 @@ const Navbar = () => {
                   </motion.a>
                 ))}
 
-                <Link to="/docs" onClick={() => setIsOpen(false)}>
-                  Docs
-                </Link>
-
                 <a
-                  href="https://www.linkedin.com/in/gdg-oist-bhopal"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#contact"
+                  onClick={(e) => handleMobileNavClick(e, "#contact")}
                   className="block mt-4 px-5 py-3 rounded-full bg-primary text-center"
                 >
                   Join Us
