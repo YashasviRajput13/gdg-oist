@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Menu, X } from "lucide-react";
 import GooeyNav from "@/components/GooeyNav";
 
 const navLinks = [
@@ -23,13 +22,6 @@ const Navbar = () => {
     const idx = navLinks.findIndex(l => l.href.replace("#", "") === activeSection);
     return idx >= 0 ? idx : 0;
   }, [activeSection]);
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -64,9 +56,18 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleTheme = useCallback(() => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  }, [theme, setTheme]);
+  // AI-generated — reviewed by Antigravity on 2026-03-23
+  const handleMobileNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    // 1. Close the menu which unlocks the body 'overflow: hidden'
+    setIsOpen(false);
+    
+    // 2. Wait for the state to render and body lock to release before scrolling
+    setTimeout(() => {
+      const el = document.querySelector(href);
+      el?.scrollIntoView({ behavior: "smooth" });
+    }, 150);
+  }, []);
 
   return (
     <motion.nav
@@ -108,26 +109,6 @@ const Navbar = () => {
               colors={[1, 2, 3, 4]}
             />
 
-            <div className="flex items-center gap-2">
-
-              {/* Dark mode toggle - pill switch */}
-              {mounted && (
-                <button
-                  onClick={toggleTheme}
-                  className="relative w-16 h-8 rounded-full border border-border bg-muted/60 backdrop-blur-sm transition-colors duration-300 focus:outline-none"
-                  aria-label="Toggle dark mode"
-                >
-                  <Sun size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-yellow-500" />
-                  <Moon size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <motion.div
-                    className="absolute top-1 w-6 h-6 rounded-full bg-yellow-400 dark:bg-slate-600 shadow-md"
-                    animate={{ left: theme === "dark" ? "calc(100% - 28px)" : "4px" }}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                </button>
-              )}
-            </div>
-
             <Link
               to="/docs"
               className="px-4 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -146,22 +127,6 @@ const Navbar = () => {
           </div>
 
           <div className="md:hidden flex items-center gap-3">
-            {mounted && (
-              <button
-                onClick={toggleTheme}
-                className="relative w-14 h-7 rounded-full border border-border bg-muted/60 transition-colors duration-300"
-                aria-label="Toggle dark mode"
-              >
-                <Sun size={12} className="absolute left-1.5 top-1/2 -translate-y-1/2 text-yellow-500" />
-                <Moon size={12} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <motion.div
-                  className="absolute top-0.5 rounded-full bg-yellow-400 dark:bg-slate-600 shadow-md"
-                  style={{ width: 22, height: 22 }}
-                  animate={{ left: theme === "dark" ? "calc(100% - 25px)" : "3px" }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                />
-              </button>
-            )}
             <button
               onClick={() => {
                 setIsOpen(!isOpen);
@@ -178,29 +143,32 @@ const Navbar = () => {
       {/* Mobile menu and Backdrop */}
       <AnimatePresence>
         {isOpen && (
-          <>
+          <motion.div
+            key="mobile-nav-container"
+            className="md:hidden absolute top-0 left-0 w-full h-[100dvh] z-40 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
             {/* Backdrop overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+            <div
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[-1] md:hidden"
+              className="absolute inset-0 bg-background/60 backdrop-blur-sm pointer-events-auto"
               aria-hidden="true"
             />
 
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden relative z-10 pointer-events-auto"
+              initial={{ height: 0 }}
+              animate={{ height: "auto" }}
+              exit={{ height: 0 }}
+              className="bg-card/95 backdrop-blur-xl border-b border-border overflow-y-auto max-h-[85vh] relative z-50 pointer-events-auto"
             >
-              <div className="px-6 py-6 space-y-4">
+              <div className="px-6 py-6 pb-24 space-y-4">
                 {navLinks.map((link, i) => (
                   <motion.a
                     key={link.label}
                     href={link.href}
-                    onClick={() => setIsOpen(false)}
+                    onClick={(e) => handleMobileNavClick(e, link.href)}
 
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -222,14 +190,14 @@ const Navbar = () => {
                 </Link>
                 <a
                   href="#contact"
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => handleMobileNavClick(e, "#contact")}
                   className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold"
                 >
                   Join Us
                 </a>
               </div>
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     </motion.nav>
