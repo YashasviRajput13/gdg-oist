@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Menu, X } from "lucide-react";
 import GooeyNav from "@/components/GooeyNav";
 
 const navLinks = [
@@ -19,17 +18,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+
   const activeIndex = useMemo(() => {
     const idx = navLinks.findIndex(l => l.href.replace("#", "") === activeSection);
     return idx >= 0 ? idx : 0;
   }, [activeSection]);
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -60,33 +53,20 @@ const Navbar = () => {
         ticking = false;
       });
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleMobileNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const targetId = href.replace("#", "");
-    const element = document.getElementById(targetId);
-    
-    if (element) {
-      const offset = 80; // Navbar height offset
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - offset;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-      
-      setActiveSection(targetId);
-      setIsOpen(false); // Close mobile menu
-    }
-  }, [setIsOpen]);
+    setIsOpen(false);
 
-  const toggleTheme = useCallback(() => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  }, [theme, setTheme]);
+    setTimeout(() => {
+      const el = document.querySelector(href);
+      el?.scrollIntoView({ behavior: "smooth" });
+    }, 150);
+  }, []);
 
   return (
     <motion.nav
@@ -100,11 +80,9 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
         <div className="flex items-center justify-between h-20">
+
           {/* Logo */}
-          <a
-            href="#home"
-            className="flex items-center gap-2 group"
-          >
+          <a href="#home" className="flex items-center gap-2 group">
             <div className="flex gap-1">
               {["bg-google-blue", "bg-google-red", "bg-google-yellow", "bg-google-green"].map((c) => (
                 <span key={c} className={`w-3 h-3 rounded-full ${c} group-hover:scale-110 transition-transform`} />
@@ -115,7 +93,7 @@ const Navbar = () => {
             </span>
           </a>
 
-          {/* Desktop links */}
+          {/* Desktop */}
           <div className="hidden md:flex items-center gap-4">
             <GooeyNav
               items={navLinks}
@@ -128,29 +106,9 @@ const Navbar = () => {
               colors={[1, 2, 3, 4]}
             />
 
-            <div className="flex items-center gap-2">
-
-              {/* Dark mode toggle - pill switch */}
-              {mounted && (
-                <button
-                  onClick={toggleTheme}
-                  className="relative w-16 h-8 rounded-full border border-border bg-muted/60 backdrop-blur-sm transition-colors duration-300 focus:outline-none"
-                  aria-label="Toggle dark mode"
-                >
-                  <Sun size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-yellow-500" />
-                  <Moon size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <motion.div
-                    className="absolute top-1 w-6 h-6 rounded-full bg-yellow-400 dark:bg-slate-600 shadow-md"
-                    animate={{ left: theme === "dark" ? "calc(100% - 28px)" : "4px" }}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                </button>
-              )}
-            </div>
-
             <Link
               to="/docs"
-              className="px-4 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="px-4 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground"
             >
               Docs
             </Link>
@@ -159,103 +117,75 @@ const Navbar = () => {
               href="https://www.linkedin.com/in/gdg-oist-bhopal"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:shadow-lg hover:shadow-primary/25 transition-all"
+              className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold"
             >
               Join Us
             </motion.a>
           </div>
 
+          {/* Mobile */}
           <div className="md:hidden flex items-center gap-3">
-            {mounted && (
-              <button
-                onClick={toggleTheme}
-                className="relative w-14 h-7 rounded-full border border-border bg-muted/60 transition-colors duration-300"
-                aria-label="Toggle dark mode"
-              >
-                <Sun size={12} className="absolute left-1.5 top-1/2 -translate-y-1/2 text-yellow-500" />
-                <Moon size={12} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <motion.div
-                  className="absolute top-0.5 rounded-full bg-yellow-400 dark:bg-slate-600 shadow-md"
-                  style={{ width: 22, height: 22 }}
-                  animate={{ left: theme === "dark" ? "calc(100% - 25px)" : "3px" }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                />
-              </button>
-            )}
             <button
-              onClick={() => {
-                setIsOpen(!isOpen);
-              }}
+              onClick={() => setIsOpen(!isOpen)}
               className="text-foreground"
-              aria-label="Toggle menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
+
         </div>
       </div>
 
-      {/* Mobile menu and Backdrop */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
-          <>
-            {/* Backdrop overlay */}
           <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[90] md:hidden"
-          aria-hidden="true"
-/>
+            className="md:hidden absolute top-0 left-0 w-full h-[100dvh] z-40 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+
+            {/* Backdrop */}
+            <div
+              onClick={() => setIsOpen(false)}
+              className="absolute inset-0 bg-background/60 backdrop-blur-sm pointer-events-auto"
+            />
 
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-card/95 backdrop-blur-xl border-b border-border overflow-hidden relative z-[110] pointer-events-auto"
+              initial={{ height: 0 }}
+              animate={{ height: "auto" }}
+              exit={{ height: 0 }}
+              className="bg-card/95 backdrop-blur-xl border-b border-border relative z-50 pointer-events-auto"
             >
-              <div className="px-6 py-6 space-y-4 pointer-events-auto">
+              <div className="px-6 py-6 space-y-4">
                 {navLinks.map((link, i) => (
                   <motion.a
                     key={link.label}
                     href={link.href}
-                    onClick={(e) => {
-                      handleNavClick(e, link.href);
-                    }}
-
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className={`block text-base font-medium transition-colors cursor-pointer pointer-events-auto ${activeSection === link.href.replace("#", "")
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                      }`}
+                    onClick={(e) => handleMobileNavClick(e, link.href)}
+                    className="block text-base font-medium"
                   >
                     {link.label}
                   </motion.a>
                 ))}
-                <Link
-                  to="/docs"
-                  onClick={() => setIsOpen(false)}
-                  className="block text-base font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer pointer-events-auto"
-                >
+
+                <Link to="/docs" onClick={() => setIsOpen(false)}>
                   Docs
                 </Link>
+
                 <a
                   href="https://www.linkedin.com/in/gdg-oist-bhopal"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => setIsOpen(false)}
-                  className="block mt-4 px-5 py-3 rounded-full bg-primary text-primary-foreground text-center text-sm font-semibold cursor-pointer pointer-events-auto"
+                  className="block mt-4 px-5 py-3 rounded-full bg-primary text-center"
                 >
                   Join Us
                 </a>
+
               </div>
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     </motion.nav>
