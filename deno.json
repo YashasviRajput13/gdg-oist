@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["deno.window"],
+    "lib": ["deno.window", "deno.unstable"],
     "strict": true
   },
   "lint": {

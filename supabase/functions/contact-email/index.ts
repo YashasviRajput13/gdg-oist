@@ -1,3 +1,4 @@
+/// <reference types="../types" />
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
@@ -67,8 +68,8 @@ serve(async (req: Request) => {
         },
       }
     );
-  }catch (error: unknown) {
-  console.error("Error:", error instanceof Error ? error.message : error);
+  } catch (error: any) {
+    console.error("Error:", error);
 
     return new Response(
       JSON.stringify({
