@@ -594,6 +594,14 @@ export default function CircularGallery({
         if (!containerRef.current) return;
         let app: AppInstance;
         try {
+            // Explicitly test for WebGL support before initializing the 3D renderer
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (!gl) {
+                setHasError(true);
+                return;
+            }
+            
             app = new AppInstance(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase });
         } catch (err) {
             console.error("WebGL CircularGallery initialization failed:", err);
@@ -601,15 +609,28 @@ export default function CircularGallery({
             return;
         }
         return () => {
-            app.destroy();
+            if (app) app.destroy();
         };
     }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
 
     if (hasError) {
         return (
-            <div className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground border-t border-border mt-8">
-                <p>3D Gallery requires WebGL support.</p>
-                <p className="text-sm opacity-70 mt-2">Please enable hardware acceleration or try a different browser.</p>
+            <div className="w-full py-8 px-4 bg-background/50 backdrop-blur-sm rounded-3xl overflow-hidden">
+                <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted-foreground/30 hover:scrollbar-thumb-muted-foreground/50">
+                    {items && items.length > 0 ? items.map((item, idx) => (
+                        <div key={idx} className="relative flex-none w-72 md:w-80 h-96 snap-center rounded-2xl overflow-hidden shadow-lg border border-border group transition-all duration-300">
+                            <img src={item.image} alt={item.text} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                            <div className="absolute bottom-6 left-0 right-0 text-center px-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                <h4 className="text-white font-bold text-xl md:text-2xl drop-shadow-lg tracking-wide">{item.text}</h4>
+                            </div>
+                        </div>
+                    )) : (
+                        <div className="w-full text-center text-muted-foreground p-12 border rounded-2xl">
+                            No event highlights available.
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }
