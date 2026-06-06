@@ -67,68 +67,88 @@ const Index = () => {
             <Navbar />
             <Hero />
 
-            <Suspense fallback={<div className="min-h-[200px]" />}>
               {/* Organic wave transition from Hero to Marquee */}
               <OrganicDivider variant="wave" color="--card" />
 
-              <SectionTransition>
-                <TechMarquee />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition>
+                  <TechMarquee />
+                </SectionTransition>
+              </Suspense>
 
               <OrganicDivider variant="curve" flip color="--card" />
 
-              <SectionTransition delay={0.05}>
-                <About />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <About />
+                </SectionTransition>
+              </Suspense>
 
               <OrganicDivider variant="blob" color="--background" />
 
-              <SectionTransition delay={0.05}>
-                <Events />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <Events />
+                </SectionTransition>
+              </Suspense>
 
               <OrganicDivider variant="wave" flip color="--background" />
 
-              <SectionTransition delay={0.05}>
-                <Gallery />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <Gallery />
+                </SectionTransition>
+              </Suspense>
 
               <OrganicDivider variant="curve" color="--card" />
 
-              <SectionTransition delay={0.05}>
-                <Achievements />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <Achievements />
+                </SectionTransition>
+              </Suspense>
 
               <OrganicDivider variant="blob" flip color="--background" />
 
-              <SectionTransition delay={0.05}>
-                <Testimonials />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <Testimonials />
+                </SectionTransition>
+              </Suspense>
 
               <OrganicDivider variant="curve" flip color="--background" />
 
-              <SectionTransition delay={0.05}>
-                <Team />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <Team />
+                </SectionTransition>
+              </Suspense>
 
               <OrganicDivider variant="wave" color="--background" />
 
-              <SectionTransition delay={0.05}>
-                <FAQ />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <FAQ />
+                </SectionTransition>
+              </Suspense>
 
-              <SectionTransition delay={0.05}>
-                <Contact />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <Contact />
+                </SectionTransition>
+              </Suspense>
 
-              <SectionTransition delay={0.05}>
-                <CTABanner />
-              </SectionTransition>
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <CTABanner />
+                </SectionTransition>
+              </Suspense>
 
-              <SectionTransition delay={0.05}>
-                <Footer />
-              </SectionTransition>
-            </Suspense>
+              <Suspense fallback={<div className="min-h-[100px]" />}>
+                <SectionTransition delay={0.05}>
+                  <Footer />
+                </SectionTransition>
+              </Suspense>
           </motion.div>
         )}
       </AnimatePresence>
