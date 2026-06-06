@@ -29,7 +29,7 @@ const categoryOrder = [
 const Team = () => {
   const ref = useRef(null);
   const sectionRef = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: true }); // intentionally left here in case user needs it
 
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("All");
@@ -43,12 +43,20 @@ const Team = () => {
 
   useEffect(() => {
     const fetchTeam = async () => {
-      const { data } = await supabase
-        .from("team_members")
-        .select("*")
-        .order("display_order", { ascending: true });
+      try {
+        const { data, error } = await supabase
+          .from("team_members")
+          .select("*")
+          .order("display_order", { ascending: true });
 
-      if (data) setMembers(data);
+        if (error) {
+          console.error("Supabase error fetching team members:", error);
+        } else if (data) {
+          setMembers(data);
+        }
+      } catch (err) {
+        console.error("Exception fetching team members from Supabase:", err);
+      }
     };
     fetchTeam();
   }, []);
@@ -87,6 +95,7 @@ const Team = () => {
         <div className="flex gap-3 mb-10 overflow-x-auto pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500 dark:hover:scrollbar-thumb-gray-500">
           {["All", ...categoryOrder].map((cat) => (
             <button
+              type="button"
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-full font-medium text-sm transition-all duration-300 whitespace-nowrap border ${
@@ -102,11 +111,7 @@ const Team = () => {
 
         {/* Filtered members grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 place-items-center md:place-items-stretch">
-          {filteredMembers.map((m, i) => {
-            const handleMemberClick = () => {
-              const url = m.linkedin_url || m.github_url || m.twitter_url;
-              if (url) window.open(url, '_blank', 'noopener,noreferrer');
-            };
+          {filteredMembers.map((m) => {
             return (
               <ProfileCard
                 key={m.id}

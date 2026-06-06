@@ -1,5 +1,5 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState, useEffect, memo, useCallback, useMemo, forwardRef } from "react";
+import { useRef, useState, useEffect, memo, forwardRef } from "react";
 import { Quote, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { TestimonialForm } from "./TestimonialForm";
@@ -156,6 +156,7 @@ const TestimonialsContent = ({ testimonials }: { testimonials: Testimonial[] }) 
             <div className="flex gap-2">
               {testimonials.map((_, i) => (
                 <button
+                  type="button"
                   key={i}
                   onClick={() => {
                     setIsAutoPlaying(false);
@@ -199,8 +200,13 @@ const Testimonials = () => {
           .select("id, name, role, avatar_initials, quote, rating, color_index")
           .eq("is_visible", true)
           .order("display_order", { ascending: true });
-        if (!error && data) setTestimonials(data);
-      } catch {
+        if (error) {
+          console.error("Supabase error fetching testimonials:", error);
+        } else if (data) {
+          setTestimonials(data);
+        }
+      } catch (err) {
+        console.error("Exception fetching testimonials from Supabase:", err);
         // Silently fail
       } finally {
         setLoading(false);

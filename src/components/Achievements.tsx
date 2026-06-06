@@ -67,8 +67,10 @@ const Achievements = () => {
           .from("event_highlights")
           .select("*")
           .order("display_order", { ascending: true });
-        if (!error && data && data.length > 0) {
-          setGalleryItems(data.map((h) => {
+        if (error) {
+          console.error("Supabase error fetching event highlights:", error);
+        } else if (data && data.length > 0) {
+          setGalleryItems(data.map((h: any) => {
             // Patch specifically known dead Unsplash image from old DB seeds
             let imgUrl = h.image_url;
             if (imgUrl.includes('photo-1591115765373-520b7a2172a7')) {
@@ -77,7 +79,8 @@ const Achievements = () => {
             return { image: toDirectImageUrl(imgUrl), text: h.label };
           }));
         }
-      } catch {
+      } catch (err) {
+        console.error("Exception fetching event highlights from Supabase:", err);
         // Keep fallback gallery items on failure
       }
     };

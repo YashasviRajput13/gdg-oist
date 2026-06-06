@@ -38,10 +38,13 @@ const Gallery = () => {
           .from("gallery_items")
           .select("id, src, alt, caption")
           .order("created_at", { ascending: true });
-        if (!error && data && data.length > 0) {
+        if (error) {
+          console.error("Supabase error fetching gallery items:", error);
+        } else if (data && data.length > 0) {
           setGalleryItems(data);
         }
-      } catch {
+      } catch (err) {
+        console.error("Exception fetching gallery items from Supabase:", err);
         // Keep fallback gallery items on failure
       }
     };

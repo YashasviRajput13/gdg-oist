@@ -40,10 +40,13 @@ const Events = () => {
           .order("event_date", { ascending: true })
           .limit(4);
 
-        if (!error && data) {
+        if (error) {
+          console.error("Supabase error fetching events:", error);
+        } else if (data) {
           setEvents(data as Event[]);
         }
-      } catch {
+      } catch (err) {
+        console.error("Exception fetching events from Supabase:", err);
         // Silently fail — show empty events section
       }
     };

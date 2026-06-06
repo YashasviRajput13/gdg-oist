@@ -1,4 +1,5 @@
 {
+  "exclude": ["src", "public", "dist", "node_modules", ".git"],
   "compilerOptions": {
     "lib": ["deno.window", "deno.unstable"],
     "strict": true
