@@ -134,15 +134,26 @@ export default function Aurora(props: AuroraProps) {
 
         let renderer, gl: any;
         try {
+            // Explicitly test for WebGL support to avoid noisy console errors from Renderer
+            const canvas = document.createElement('canvas');
+            const glContext = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (!glContext) {
+                setHasError(true);
+                return;
+            }
+
             renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true });
             gl = renderer.gl;
-            if (!gl) throw new Error("unable to create webgl context");
+            if (!gl) {
+                setHasError(true);
+                return;
+            }
             gl.clearColor(0, 0, 0, 0);
             gl.enable(gl.BLEND);
             gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
             (gl.canvas as HTMLCanvasElement).style.backgroundColor = 'transparent';
         } catch (err) {
-            console.error("WebGL Aurora initialization failed:", err);
+            // Silently fail and use CSS fallback without polluting the console
             setHasError(true);
             return;
         }
