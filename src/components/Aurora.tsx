@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Aurora.css';
 
 const VERT = `#version 300 es
@@ -123,6 +123,8 @@ export default function Aurora(props: AuroraProps) {
 
     const ctnDom = useRef<HTMLDivElement>(null);
 
+    const [hasError, setHasError] = useState(false);
+
     useEffect(() => {
         const ctn = ctnDom.current;
         if (!ctn) return;
@@ -130,12 +132,20 @@ export default function Aurora(props: AuroraProps) {
         // Skip heavy WebGL on touch/mobile devices to prevent GPU overload
         if (window.matchMedia?.("(pointer: coarse)").matches) return;
 
-        const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true });
-        const gl = renderer.gl;
-        gl.clearColor(0, 0, 0, 0);
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        (gl.canvas as HTMLCanvasElement).style.backgroundColor = 'transparent';
+        let renderer, gl: any;
+        try {
+            renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true });
+            gl = renderer.gl;
+            if (!gl) throw new Error("unable to create webgl context");
+            gl.clearColor(0, 0, 0, 0);
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+            (gl.canvas as HTMLCanvasElement).style.backgroundColor = 'transparent';
+        } catch (err) {
+            console.error("WebGL Aurora initialization failed:", err);
+            setHasError(true);
+            return;
+        }
 
         // eslint-disable-next-line prefer-const
         let program: Program;
@@ -223,6 +233,8 @@ export default function Aurora(props: AuroraProps) {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [amplitude]);
+
+    if (hasError) return <div className="aurora-container bg-gradient-to-br from-google-blue/20 via-transparent to-google-green/20" />;
 
     return <div ref={ctnDom} className="aurora-container" />;
 }

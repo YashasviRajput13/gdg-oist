@@ -1,7 +1,7 @@
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform, OGLRenderingContext } from 'ogl';
 /* eslint-disable */
 // @ts-nocheck
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './CircularGallery.css';
 
 interface GalleryItem {
@@ -411,6 +411,7 @@ class AppInstance {
             dpr: Math.min(window.devicePixelRatio || 1, 2)
         });
         this.gl = this.renderer.gl;
+        if (!this.gl) throw new Error("unable to create webgl context");
         this.gl.clearColor(0, 0, 0, 0);
         this.container.appendChild(this.gl.canvas);
     }
@@ -587,14 +588,31 @@ export default function CircularGallery({
     scrollEase = 0.05
 }: CircularGalleryProps) {
     const containerRef = useRef<HTMLDivElement>(null);
+    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
         if (!containerRef.current) return;
-        const app = new AppInstance(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase });
+        let app: AppInstance;
+        try {
+            app = new AppInstance(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase });
+        } catch (err) {
+            console.error("WebGL CircularGallery initialization failed:", err);
+            setHasError(true);
+            return;
+        }
         return () => {
             app.destroy();
         };
     }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
+
+    if (hasError) {
+        return (
+            <div className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground border-t border-border mt-8">
+                <p>3D Gallery requires WebGL support.</p>
+                <p className="text-sm opacity-70 mt-2">Please enable hardware acceleration or try a different browser.</p>
+            </div>
+        );
+    }
 
     return <div className="circular-gallery" ref={containerRef} />;
 }

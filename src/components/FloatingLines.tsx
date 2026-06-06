@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Scene,
   OrthographicCamera,
@@ -252,21 +252,29 @@ export default function FloatingLines({
   const middleLineDistance = enabledWaves.includes('middle') ? getLineDistance('middle') * 0.01 : 0.01;
   const bottomLineDistance = enabledWaves.includes('bottom') ? getLineDistance('bottom') * 0.01 : 0.01;
 
+  const [hasError, setHasError] = useState(false);
+
   useEffect(() => {
     if (!containerRef.current) return;
 
     // Skip heavy WebGL on touch/mobile devices to prevent GPU overload
     if (window.matchMedia?.("(pointer: coarse)").matches) return;
 
-    const scene = new Scene();
-    const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    camera.position.z = 1;
+    let renderer: WebGLRenderer;
+    try {
+      renderer = new WebGLRenderer({ antialias: true, alpha: false });
+      if (!renderer) throw new Error("unable to create webgl context");
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
+      containerRef.current.appendChild(renderer.domElement);
+    } catch (err) {
+      console.error("WebGL FloatingLines initialization failed:", err);
+      setHasError(true);
+      return;
+    }
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
-    containerRef.current.appendChild(renderer.domElement);
+    const scene = new Scene();
 
     const uniforms = {
       iTime: { value: 0 },
@@ -399,6 +407,8 @@ export default function FloatingLines({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [linesGradient, enabledWaves, lineCount, lineDistance, topWavePosition, middleWavePosition, bottomWavePosition,
     animationSpeed, interactive, bendRadius, bendStrength, mouseDamping, parallax, parallaxStrength]);
+
+  if (hasError) return null;
 
   return (
     <div
