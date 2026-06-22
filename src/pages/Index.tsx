@@ -13,6 +13,7 @@ const TechMarquee = lazy(() => import("@/components/TechMarquee"));
 const About = lazy(() => import("@/components/About"));
 const Events = lazy(() => import("@/components/Events"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
+const MemberCardGenerator = lazy(() => import("@/components/MemberCardGenerator"));
 const Gallery = lazy(() => import("@/components/Gallery"));
 const Achievements = lazy(() => import("@/components/Achievements"));
 const Team = lazy(() => import("@/components/Team"));
@@ -113,6 +114,14 @@ const Index = () => {
               <Suspense fallback={<div className="min-h-[200px]" />}>
                 <SectionTransition delay={0.05}>
                   <Testimonials />
+                </SectionTransition>
+              </Suspense>
+
+              <OrganicDivider variant="wave" color="--background" />
+
+              <Suspense fallback={<div className="min-h-[200px]" />}>
+                <SectionTransition delay={0.05}>
+                  <MemberCardGenerator />
                 </SectionTransition>
               </Suspense>
 

@@ -9,6 +9,8 @@ const navLinks = [
   { label: "About", href: "#about" },
   { label: "Events", href: "#events" },
   { label: "Gallery", href: "#gallery" },
+  { label: "Stories", href: "#testimonials" },
+  { label: "Card", href: "#community-card" },
   { label: "Team", href: "#team" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "https://www.linkedin.com/company/gdg-on-campus-oist/?lipi=urn%3Ali%3Apage%3Ad_flagship3_search_srp_all%3BjafJRJEtR02vaJJql2L7SQ%3D%3D", external: true },
