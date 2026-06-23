@@ -19,7 +19,7 @@ interface TeamMember {
 const categoryOrder = [
   "Leads",
   "Content & Communication",
-  "WIT",
+  "Community,Experience & Growth",
   "Technical",
   "Event Management",
   "Media",
