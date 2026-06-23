@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import gdgOistLogo from "@/assets/gdg-oist.png";
 
 const TRACKS = [
   "AI/ML",
@@ -380,12 +381,11 @@ const MemberCardGenerator = () => {
                   >
                     {/* GDG OIST text branding with colored dots */}
                     <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
-                      <div style={{ display: "flex", gap: "4px" }}>
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#4285F4" }} />
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#EA4335" }} />
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#FBBC04" }} />
-                        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#34A853" }} />
-                      </div>
+                      <img
+                        src={gdgOistLogo}
+                        alt="GDG OIST logo"
+                        style={{ width: "36px", height: "auto", objectFit: "contain", flexShrink: 0 }}
+                      />
                       <div style={{ display: "flex", flexDirection: "column", lineHeight: "1.1" }}>
                         <span style={{ fontSize: "14px", fontWeight: "800", color: "#202124", fontFamily: CARD_FONT, letterSpacing: "-0.2px" }}>GDG</span>
                         <span style={{ fontSize: "8px", fontWeight: "600", color: "#5f6368", letterSpacing: "0.2px", fontFamily: CARD_FONT }}>On Campus • OIST Bhopal</span>
