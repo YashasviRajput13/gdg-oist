@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { Download, Upload, User, Sparkles } from "lucide-react";
 import { toPng } from "html-to-image";
+import ShareCardModal from "@/components/ShareCardModal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -61,6 +62,8 @@ const MemberCardGenerator = () => {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [photoName, setPhotoName] = useState<string>("");
   const [downloading, setDownloading] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [cardFile, setCardFile] = useState<File | null>(null);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -87,10 +90,27 @@ const MemberCardGenerator = () => {
         skipFonts: true,
         fontEmbedCSS: "",
       });
+
+      // Download the PNG
+      const fileName = `gdg-oist-card-${(name || "community").replace(/\s+/g, "-").toLowerCase()}.png`;
       const link = document.createElement("a");
-      link.download = `gdg-oist-card-${(name || "community").replace(/\s+/g, "-").toLowerCase()}.png`;
+      link.download = fileName;
       link.href = dataUrl;
       link.click();
+
+      // Convert data URL to File for native sharing
+      try {
+        const res = await fetch(dataUrl);
+        const blob = await res.blob();
+        const file = new File([blob], fileName, { type: "image/png" });
+        setCardFile(file);
+      } catch {
+        // If File creation fails, share modal still works without file
+        setCardFile(null);
+      }
+
+      // Open share modal after successful download
+      setShareModalOpen(true);
     } catch (err) {
       console.error("Failed to generate card image:", err);
     } finally {
@@ -115,6 +135,7 @@ const MemberCardGenerator = () => {
   }, []);
 
   return (
+    <>
     <section
       ref={sectionRef}
       id="community-card"
@@ -701,6 +722,14 @@ const MemberCardGenerator = () => {
         </div>
       </div>
     </section>
+
+    <ShareCardModal
+      open={shareModalOpen}
+      onOpenChange={setShareModalOpen}
+      cardFile={cardFile}
+      cardName={name || "community"}
+    />
+    </>
   );
 };
 
